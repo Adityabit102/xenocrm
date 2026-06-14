@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { getSegmentCustomerIds } from "@/lib/segment-engine/executor";
-import { addDispatchJob } from "@/lib/queue/worker";
+import { processCampaignDispatch } from "@/lib/queue/jobs/dispatch-campaign";
 import { Channel } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -110,7 +110,7 @@ export async function POST(request: Request) {
 
     
     if (isImmediate) {
-      await addDispatchJob(campaign.id);
+      processCampaignDispatch(campaign.id).catch((err: any) => console.error("Agent dispatch failed:", err.message));
     }
 
     
