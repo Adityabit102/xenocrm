@@ -62,7 +62,7 @@ export async function GET() {
 Analyze customer data and generate exactly 3 autonomous campaign suggestions in JSON.
 Each suggestion must be actionable, specific, and reference real data signals.
 Currency is INR. Be specific about customer counts and revenue estimates.
-Return ONLY valid JSON matching the schema. No markdown, no explanation.`;
+Return ONLY valid JSON as an object with a "suggestions" key. Format: {"suggestions": [...]}. No markdown, no explanation.`;
 
         const userMessage = `Customer data signals:
 - Total customers: ${totalCustomers.toLocaleString()}
