@@ -26,12 +26,14 @@ export async function POST(
     // Update status to in_progress immediately
     await db.campaign.update({ where: { id }, data: { status: "in_progress" } });
 
-    // Run dispatch directly without Redis queue (serverless compatible)
-    processCampaignDispatch(id).catch(err => {
-      console.error(`[Dispatch] Background dispatch failed for ${id}:`, err.message);
-    });
+    // Await dispatch directly — Vercel kills background tasks after response
+    try {
+      await processCampaignDispatch(id);
+    } catch (err: any) {
+      console.error(`[Dispatch] Dispatch failed for ${id}:`, err.message);
+    }
 
-    return NextResponse.json({ status: "dispatching", message: "Campaign dispatch started" });
+    return NextResponse.json({ status: "dispatched", message: "Campaign dispatch completed" });
   } catch (error: any) {
     console.error("POST /api/campaigns/[id]/dispatch error:", error);
     return NextResponse.json({ error: "Failed to dispatch campaign" }, { status: 500 });
