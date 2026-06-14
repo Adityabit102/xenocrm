@@ -37,3 +37,5 @@ export async function POST(
     return NextResponse.json({ error: "Failed to dispatch campaign" }, { status: 500 });
   }
 }
+
+export const maxDuration = 60;

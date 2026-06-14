@@ -86,3 +86,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to create segment" }, { status: 500 });
   }
 }
+
+export const maxDuration = 60;
