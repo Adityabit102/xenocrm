@@ -1,0 +1,123 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../node_modules/.prisma/client"
+}
+
+model Customer {
+  id                 String              @id @default(cuid())
+  externalId         String?             @unique
+  firstName          String
+  lastName           String
+  phone              String?
+  email              String?
+  city               String?
+  gender             String?
+  tier               String?
+  rfmRecency         Float?
+  rfmFrequency       Float?
+  rfmMonetary        Float?
+  rfmTier            String?
+  createdAt          DateTime            @default(now())
+  orders             Order[]
+  communications     CommunicationLog[]
+  segmentMemberships SegmentMembership[]
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  customerId  String
+  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  orderDate   DateTime
+  amountInr   Float
+  category    String?
+  channel     String?
+  status      String?
+  createdAt   DateTime @default(now())
+}
+
+model Segment {
+  id                   String              @id @default(cuid())
+  name                 String
+  description          String?
+  filterRules          Json
+  naturalLanguageQuery String?
+  createdByAi          Boolean             @default(false)
+  customerCount        Int                 @default(0)
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  campaigns            Campaign[]
+  memberships          SegmentMembership[]
+}
+
+model SegmentMembership {
+  id         String   @id @default(cuid())
+  segmentId  String
+  segment    Segment  @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@unique([segmentId, customerId])
+}
+
+model Campaign {
+  id                  String             @id @default(cuid())
+  name                String
+  segmentId           String
+  segment             Segment            @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+  channel             String
+  messageTemplate     String
+  status              String             @default("draft")
+  scheduledAt         DateTime?
+  createdByAgent      Boolean            @default(false)
+  agentReasoningTrace Json?
+  createdAt           DateTime           @default(now())
+  stats               CampaignStats?
+  communications      CommunicationLog[]
+}
+
+model CommunicationLog {
+  id              String    @id @default(cuid())
+  campaignId      String
+  campaign        Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  customerId      String
+  customer        Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  channel         String
+  renderedMessage String
+  status          String    @default("queued")
+  failureReason   String?
+  queuedAt        DateTime  @default(now())
+  sentAt          DateTime?
+  deliveredAt     DateTime?
+  openedAt        DateTime?
+  readAt          DateTime?
+  clickedAt       DateTime?
+  orderPlacedAt   DateTime?
+  eventId         String?   @unique
+}
+
+model CampaignStats {
+  id                    String   @id @default(cuid())
+  campaignId            String   @unique
+  campaign              Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  totalSent             Int      @default(0)
+  totalDelivered        Int      @default(0)
+  totalFailed           Int      @default(0)
+  totalOpened           Int      @default(0)
+  totalRead             Int      @default(0)
+  totalClicked          Int      @default(0)
+  totalOrdersAttributed Int      @default(0)
+  attributedRevenueInr  Float    @default(0)
+  lastUpdated           DateTime @default(now()) @updatedAt
+}
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
