@@ -46,13 +46,88 @@ An AI-native CRM for D2C brands to segment shoppers, generate personalised campa
 ## Architecture
 
 ```
-Browser → Next.js (Vercel)
-             ↓
-         Neon PostgreSQL
-             ↓
-     POST /send → Channel Service (Render)
-                        ↓ (async callbacks)
-             POST /api/receipts → Neon
+┌─────────────────────────────────────────────────────────┐
+│                     BROWSER CLIENT                       │
+│         Next.js 15 App Router (React 19)                │
+│                                                          │
+│  Pages: Dashboard, Campaigns, Segments,                 │
+│         Scheduler, Customers, AutoReach Agent           │
+│                                                          │
+│  State: TanStack Query (server state)                   │
+│  Auth:  NextAuth.js (session management)                │
+│  UI:    Tailwind CSS, Recharts, Framer Motion           │
+└────────────────────┬────────────────────────────────────┘
+                     │ HTTP / RSC
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│              NEXT.JS API LAYER (Vercel)                  │
+│                                                          │
+│  /api/campaigns        — CRUD + dispatch                │
+│  /api/segments         — CRUD + AI build                │
+│  /api/customers        — CRUD + import                  │
+│  /api/receipts         — callback ingestion             │
+│  /api/dashboard        — suggestions (Groq)             │
+│  /api/analytics        — overview + performance         │
+│  /api/ai/assistant     — Groq text generation           │
+│  /api/ai/segment-insight — campaign AI summary          │
+│  /api/cron/attribution — revenue attribution            │
+└──────┬─────────────────────────┬───────────────────────┘
+       │                         │
+       ▼                         ▼
+┌──────────────┐      ┌─────────────────────────────────┐
+│  NEON        │      │         GROQ AI                  │
+│  PostgreSQL  │      │   llama-3.3-70b-versatile        │
+│              │      │                                  │
+│  Tables:     │      │  • Segment rules from NL         │
+│  Customer    │      │  • Message generation            │
+│  Order       │      │  • A/B challenger variants       │
+│  Segment     │      │  • Performance predictions       │
+│  Campaign    │      │  • Autonomous suggestions        │
+│  CommLog     │      │  • Campaign insights             │
+│  CampaignStat│      └─────────────────────────────────┘
+│  SegmentMem  │
+└──────────────┘
+       │
+       │ POST /send (batched messages)
+       ▼
+┌─────────────────────────────────────────────────────────┐
+│           CHANNEL SERVICE (Render — Fastify)             │
+│                                                          │
+│  POST /send                                             │
+│    → validates x-api-secret                             │
+│    → enqueues MessageJob[] to in-memory queue           │
+│    → returns 202 immediately                            │
+│                                                          │
+│  In-Memory Queue                                        │
+│    → dequeues jobs one by one                           │
+│    → runs simulateDelivery() per message                │
+│                                                          │
+│  Event Simulator                                        │
+│    → sent (immediate)                                   │
+│    → delivered (500ms-2s delay, 85% success rate)      │
+│    → opened (2-8s delay, 60% of delivered)             │
+│    → read (1-4s delay, 45% of opened)                  │
+│    → clicked (0.5-3s delay, 20% of read)               │
+│    → order_placed (5-15s delay, 8% of clicked)         │
+│    → failed → retry (70% retry success rate)           │
+│                                                          │
+│  Callback Client                                        │
+│    → POST /api/receipts on Vercel                       │
+│    → x-webhook-secret header                           │
+│    → retries up to 3 times with exponential backoff    │
+└─────────────────────────────────────────────────────────┘
+       │ POST /api/receipts (event callbacks)
+       ▼
+┌─────────────────────────────────────────────────────────┐
+│              RECEIPTS API (Vercel)                       │
+│                                                          │
+│  1. Validates x-webhook-secret                          │
+│  2. Finds CommunicationLog by messageId                 │
+│  3. Updates log status + timestamp                      │
+│  4. Increments CampaignStats atomically                 │
+│     (totalDelivered, totalOpened, totalClicked etc.)    │
+│  5. Updates attributedRevenueInr on order_placed        │
+└─────────────────────────────────────────────────────────┘
 ```
 
 The channel service simulates message delivery and asynchronously calls back into the CRM receipts API with events: `sent`, `delivered`, `opened`, `read`, `clicked`, `order_placed`. The CRM ingests these and updates campaign stats in real time.
