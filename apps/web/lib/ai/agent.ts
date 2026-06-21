@@ -36,7 +36,7 @@ export async function planCampaign(
   goal: string,
   context: AgentContext
 ): Promise<AgentPlan> {
-  const systemPrompt = `You are AutoReach, an AI campaign planning agent for XenoCRM, an Indian retail CRM. 
+  const systemPrompt = `You are AutoReach, an AI campaign planning agent for Cove, an Indian retail CRM. 
 Given a marketer's goal, create a complete campaign plan. 
 You have access to existing segments and performance data. 
 
@@ -143,13 +143,13 @@ ${context.recentCampaignPerformance.length === 0
     
     let messageTemplate = "";
     if (recommendedChannel === Channel.SMS) {
-      messageTemplate = `Hey {{first_name}}, special offer just for you! Get 15% off our {{favourite_category}} collection. Use code XENO15 at checkout! Shop now: {{city}} store or online.`;
+      messageTemplate = `Hey {{first_name}}, special offer just for you! Get 15% off our {{favourite_category}} collection. Use code COVE15 at checkout! Shop now: {{city}} store or online.`;
     } else if (recommendedChannel === Channel.WHATSAPP) {
-      messageTemplate = `Hi {{first_name}}! 👋 We noticed you love shopping for {{favourite_category}} (last purchased on {{last_order_date}}). 🌟\n\nTo thank you for being a ${selectedSegmentId ? "valued member" : "loyal customer"}, here is an exclusive 15% discount code: *XENO15*.\n\nEnjoy free shipping or visit our {{city}} store today!`;
+      messageTemplate = `Hi {{first_name}}! 👋 We noticed you love shopping for {{favourite_category}} (last purchased on {{last_order_date}}). 🌟\n\nTo thank you for being a ${selectedSegmentId ? "valued member" : "loyal customer"}, here is an exclusive 15% discount code: *COVE15*.\n\nEnjoy free shipping or visit our {{city}} store today!`;
     } else if (recommendedChannel === Channel.EMAIL) {
-      messageTemplate = `Subject: Special Gift inside: 15% Off your favourite category! 🎁\n\nDear {{first_name}},\n\nWe love having you as a customer. Since you've spent a total of {{total_spend}} with us, we wanted to share an exclusive reward.\n\nUse code **XENO15** to get 15% off your next purchase in the {{favourite_category}} department. Valid online and at our {{city}} outlet.\n\nCheers,\nCRM Team`;
+      messageTemplate = `Subject: Special Gift inside: 15% Off your favourite category! 🎁\n\nDear {{first_name}},\n\nWe love having you as a customer. Since you've spent a total of {{total_spend}} with us, we wanted to share an exclusive reward.\n\nUse code **COVE15** to get 15% off your next purchase in the {{favourite_category}} department. Valid online and at our {{city}} outlet.\n\nCheers,\nCRM Team`;
     } else {
-      messageTemplate = `Hey {{first_name}}! 🎁 Get 15% off on {{favourite_category}} items. Use code XENO15 online or at our {{city}} store!`;
+      messageTemplate = `Hey {{first_name}}! 🎁 Get 15% off on {{favourite_category}} items. Use code COVE15 online or at our {{city}} store!`;
     }
 
     

@@ -71,13 +71,13 @@ export function Topbar() {
     const exportData = {
       exportedAt: new Date().toISOString(),
       page: pathname,
-      data: "XenoCRM Export - " + pathname,
+      data: "Cove Export - " + pathname,
     };
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `xenocrm-export-${Date.now()}.json`;
+    a.download = `cove-export-${Date.now()}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -87,7 +87,7 @@ export function Topbar() {
       <header className="topbar-root" style={{
         position: "sticky", top: 0, zIndex: 40, height: 64,
         background: "rgba(13,16,23,0.9)", backdropFilter: "blur(12px)",
-        borderBottom: "1px solid #1A2035",
+        borderBottom: "1px solid #E5DBC9",
         display: "flex", alignItems: "center",
         padding: "0 24px", gap: 16,
       }}>
@@ -99,18 +99,18 @@ export function Topbar() {
           style={{
             display: "flex", alignItems: "center", gap: 8,
             padding: "6px 12px",
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid #1A2035", borderRadius: 8,
+            background: "rgba(56, 50, 46,0.04)",
+            border: "1px solid #E5DBC9", borderRadius: 8,
             cursor: "pointer", width: 220, minWidth: 160,
           }}
         >
-          <Search style={{ width: 14, height: 14, color: "#7B82A0", flexShrink: 0 }} />
-          <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#7B82A0", flex: 1, textAlign: "left" }}>
+          <Search style={{ width: 14, height: 14, color: "#8A7F76", flexShrink: 0 }} />
+          <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#8A7F76", flex: 1, textAlign: "left" }}>
             Command Intelligence...
           </span>
           <kbd style={{
-            fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: "#464555",
-            background: "#1A2035", border: "1px solid #252D48", borderRadius: 4,
+            fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: "#C9BFB0",
+            background: "#E5DBC9", border: "1px solid #D8CCB6", borderRadius: 4,
             padding: "1px 5px", flexShrink: 0,
           }}>⌘K</kbd>
         </button>
@@ -127,12 +127,12 @@ export function Topbar() {
                     padding: "6px 18px", borderRadius: "6px 6px 0 0", cursor: "pointer",
                     fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem",
                     fontWeight: active ? 700 : 400,
-                    color: active ? "#EDF0FF" : "#7B82A0",
-                    borderBottom: active ? "2px solid #c0c1ff" : "2px solid transparent",
+                    color: active ? "#38322E" : "#8A7F76",
+                    borderBottom: active ? "2px solid #2C6A7B" : "2px solid transparent",
                     transition: "all 0.15s",
                   }}
-                  onMouseEnter={e => { if (!active) (e.currentTarget as HTMLDivElement).style.color = "#EDF0FF"; }}
-                  onMouseLeave={e => { if (!active) (e.currentTarget as HTMLDivElement).style.color = "#7B82A0"; }}
+                  onMouseEnter={e => { if (!active) (e.currentTarget as HTMLDivElement).style.color = "#38322E"; }}
+                  onMouseLeave={e => { if (!active) (e.currentTarget as HTMLDivElement).style.color = "#8A7F76"; }}
                 >
                   {tab.label}
                 </div>
@@ -151,18 +151,18 @@ export function Topbar() {
             style={{
               display: "flex", alignItems: "center", gap: 6,
               padding: "6px 12px", borderRadius: 8,
-              background: "rgba(255,255,255,0.04)", border: "1px solid #1A2035",
+              background: "rgba(56, 50, 46,0.04)", border: "1px solid #E5DBC9",
               cursor: "pointer", transition: "all 0.15s",
               fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem",
-              color: "#7B82A0", fontWeight: 600,
+              color: "#8A7F76", fontWeight: 600,
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLButtonElement).style.color = "#EDF0FF";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(91,95,239,0.4)";
+              (e.currentTarget as HTMLButtonElement).style.color = "#38322E";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(62, 138, 158,0.4)";
             }}
             onMouseLeave={e => {
-              (e.currentTarget as HTMLButtonElement).style.color = "#7B82A0";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "#1A2035";
+              (e.currentTarget as HTMLButtonElement).style.color = "#8A7F76";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "#E5DBC9";
             }}
           >
             <Download style={{ width: 13, height: 13 }} />
@@ -176,9 +176,9 @@ export function Topbar() {
               className="topbar-icon-btn"
               style={{
                 width: 36, height: 36, borderRadius: "50%",
-                background: "rgba(255,255,255,0.04)", border: "1px solid #1A2035",
+                background: "rgba(56, 50, 46,0.04)", border: "1px solid #E5DBC9",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: "#7B82A0", cursor: "pointer", position: "relative",
+                color: "#8A7F76", cursor: "pointer", position: "relative",
               }}
             >
               <Bell style={{ width: 15, height: 15 }} />
@@ -186,7 +186,7 @@ export function Topbar() {
                 <span style={{
                   position: "absolute", top: 7, right: 7,
                   width: 6, height: 6, borderRadius: "50%",
-                  background: "#00e293", border: "1.5px solid #0D1017",
+                  background: "#4E9B8A", border: "1.5px solid #F4EEDF",
                 }} />
               )}
             </button>
@@ -194,24 +194,24 @@ export function Topbar() {
             {isNotifOpen && (
               <div style={{
                 position: "absolute", right: 0, top: "calc(100% + 8px)",
-                background: "#13151F", border: "1px solid #1A2035",
+                background: "#FFFFFF", border: "1px solid #E5DBC9",
                 borderRadius: 12, width: 320, overflow: "hidden",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.4)", zIndex: 60,
+                boxShadow: "0 8px 32px rgba(99, 86, 70,0.4)", zIndex: 60,
               }}>
                 {/* Header */}
                 <div style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
-                  padding: "14px 16px", borderBottom: "1px solid #1A2035"
+                  padding: "14px 16px", borderBottom: "1px solid #E5DBC9"
                 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.82rem", color: "#EDF0FF" }}>
+                    <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.82rem", color: "#38322E" }}>
                       Notifications
                     </span>
                     {unreadCount > 0 && (
                       <span style={{
                         padding: "1px 7px", borderRadius: 20,
-                        background: "rgba(0,226,147,0.1)", border: "1px solid rgba(0,226,147,0.2)",
-                        fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#00e293"
+                        background: "rgba(78, 155, 138,0.1)", border: "1px solid rgba(78, 155, 138,0.2)",
+                        fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#4E9B8A"
                       }}>
                         {unreadCount} new
                       </span>
@@ -221,7 +221,7 @@ export function Topbar() {
                     onClick={() => setNotifications(prev => prev.map(n => ({ ...n, read: true })))}
                     style={{
                       background: "none", border: "none", cursor: "pointer",
-                      fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#5B5FEF"
+                      fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#3E8A9E"
                     }}
                   >
                     Mark all read
@@ -236,25 +236,25 @@ export function Topbar() {
                     style={{
                       padding: "12px 16px",
                       borderBottom: "1px solid rgba(26,32,53,0.6)",
-                      background: n.read ? "transparent" : "rgba(91,95,239,0.04)",
+                      background: n.read ? "transparent" : "rgba(62, 138, 158,0.04)",
                       cursor: "pointer", transition: "background 0.15s"
                     }}
-                    onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "#1A2035")}
-                    onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.background = n.read ? "transparent" : "rgba(91,95,239,0.04)")}
+                    onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "#E5DBC9")}
+                    onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.background = n.read ? "transparent" : "rgba(62, 138, 158,0.04)")}
                   >
                     <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
                       <div style={{
                         width: 8, height: 8, borderRadius: "50%", marginTop: 5, flexShrink: 0,
-                        background: n.read ? "#464555" : "#00e293"
+                        background: n.read ? "#C9BFB0" : "#4E9B8A"
                       }} />
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "#EDF0FF" }}>
+                        <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "#38322E" }}>
                           {n.title}
                         </div>
-                        <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#7B82A0", marginTop: 2 }}>
+                        <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", marginTop: 2 }}>
                           {n.body}
                         </div>
-                        <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#464555", marginTop: 4 }}>
+                        <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#C9BFB0", marginTop: 4 }}>
                           {n.time}
                         </div>
                       </div>
@@ -266,7 +266,7 @@ export function Topbar() {
                 <div style={{ padding: "10px 16px", textAlign: "center" }}>
                   <button style={{
                     background: "none", border: "none", cursor: "pointer",
-                    fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#5B5FEF"
+                    fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#3E8A9E"
                   }}>
                     View all notifications
                   </button>
@@ -283,18 +283,18 @@ export function Topbar() {
               style={{
                 display: "flex", alignItems: "center", gap: 6,
                 padding: "4px 8px 4px 4px", borderRadius: 20,
-                background: "rgba(255,255,255,0.04)", border: "1px solid #1A2035",
+                background: "rgba(56, 50, 46,0.04)", border: "1px solid #E5DBC9",
                 cursor: "pointer", transition: "all 0.15s",
               }}
             >
               <div style={{
                 width: 28, height: 28, borderRadius: "50%",
-                background: "rgba(91,95,239,0.2)", border: "1px solid rgba(192,193,255,0.25)",
+                background: "rgba(62, 138, 158,0.2)", border: "1px solid rgba(62, 138, 158,0.25)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.65rem", color: "#c0c1ff",
+                fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.65rem", color: "#2C6A7B",
               }}>{userInitials}</div>
               <ChevronDown style={{
-                width: 12, height: 12, color: "#7B82A0",
+                width: 12, height: 12, color: "#8A7F76",
                 transform: isProfileOpen ? "rotate(180deg)" : "rotate(0deg)",
                 transition: "transform 0.2s",
               }} />
@@ -303,13 +303,13 @@ export function Topbar() {
             {isProfileOpen && (
               <div className="topbar-dropdown" style={{
                 position: "absolute", right: 0, top: "calc(100% + 8px)",
-                background: "#13151F", border: "1px solid #1A2035",
+                background: "#FFFFFF", border: "1px solid #E5DBC9",
                 borderRadius: 10, width: 200, overflow: "hidden",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.4)", zIndex: 60,
+                boxShadow: "0 8px 32px rgba(99, 86, 70,0.4)", zIndex: 60,
               }}>
-                <div className="topbar-dropdown-item" style={{ padding: "12px 14px", borderBottom: "1px solid #1A2035" }}>
-                  <div className="topbar-dropdown-text" style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.8rem", color: "#EDF0FF" }}>{userName}</div>
-                  <div className="topbar-dropdown-subtext" style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#7B82A0", marginTop: 2 }}>{session?.user?.email || "demo@xenocrm.com"}</div>
+                <div className="topbar-dropdown-item" style={{ padding: "12px 14px", borderBottom: "1px solid #E5DBC9" }}>
+                  <div className="topbar-dropdown-text" style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.8rem", color: "#38322E" }}>{userName}</div>
+                  <div className="topbar-dropdown-subtext" style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#8A7F76", marginTop: 2 }}>{session?.user?.email || "demo@cove.io"}</div>
                 </div>
                 {[
                   { icon: User, label: "My Profile", href: "/profile" },
@@ -320,15 +320,15 @@ export function Topbar() {
                     <div
                       className="topbar-dropdown-item"
                       style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", cursor: "pointer", transition: "background 0.15s" }}
-                      onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "#1A2035")}
+                      onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "#E5DBC9")}
                       onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.background = "transparent")}
                     >
-                      <Icon style={{ width: 14, height: 14, color: "#7B82A0" }} />
-                      <span className="topbar-dropdown-text" style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#c6c5d7" }}>{label}</span>
+                      <Icon style={{ width: 14, height: 14, color: "#8A7F76" }} />
+                      <span className="topbar-dropdown-text" style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#6E635D" }}>{label}</span>
                     </div>
                   </Link>
                 ))}
-                <div style={{ borderTop: "1px solid #1A2035" }}>
+                <div style={{ borderTop: "1px solid #E5DBC9" }}>
                   <button
                     onClick={() => signOut({ callbackUrl: "/login" })}
                     style={{
@@ -336,11 +336,11 @@ export function Topbar() {
                       padding: "10px 14px", background: "none", border: "none",
                       cursor: "pointer", transition: "background 0.15s",
                     }}
-                    onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(255,77,106,0.08)")}
+                    onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(204, 107, 107,0.08)")}
                     onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = "none")}
                   >
-                    <LogOut style={{ width: 14, height: 14, color: "#FF4D6A" }} />
-                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#FF4D6A" }}>Sign out</span>
+                    <LogOut style={{ width: 14, height: 14, color: "#CC6B6B" }} />
+                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#CC6B6B" }}>Sign out</span>
                   </button>
                 </div>
               </div>
@@ -351,13 +351,13 @@ export function Topbar() {
 
       {/* Command Palette */}
       <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-        <DialogContent className="max-w-[480px] p-0 overflow-hidden rounded-2xl" style={{ background: "#13151F", border: "1px solid #1A2035" }}>
+        <DialogContent className="max-w-[480px] p-0 overflow-hidden rounded-2xl" style={{ background: "#FFFFFF", border: "1px solid #E5DBC9" }}>
           <DialogHeader className="sr-only">
             <DialogTitle>Command Search</DialogTitle>
             <DialogDescription>Navigate quickly</DialogDescription>
           </DialogHeader>
-          <div style={{ display: "flex", alignItems: "center", borderBottom: "1px solid #1A2035", padding: "12px 16px", gap: 10 }}>
-            <Search style={{ width: 15, height: 15, color: "#7B82A0", flexShrink: 0 }} />
+          <div style={{ display: "flex", alignItems: "center", borderBottom: "1px solid #E5DBC9", padding: "12px 16px", gap: 10 }}>
+            <Search style={{ width: 15, height: 15, color: "#8A7F76", flexShrink: 0 }} />
             <input
               type="text"
               placeholder="Command Intelligence..."
@@ -366,7 +366,7 @@ export function Topbar() {
               autoFocus
               style={{
                 flex: 1, background: "transparent", border: "none", outline: "none",
-                fontFamily: "JetBrains Mono,monospace", fontSize: "0.82rem", color: "#EDF0FF",
+                fontFamily: "JetBrains Mono,monospace", fontSize: "0.82rem", color: "#38322E",
               }}
             />
           </div>
@@ -391,9 +391,9 @@ export function Topbar() {
                     padding: "10px 12px", background: "none", border: "none",
                     borderRadius: 8, cursor: "pointer",
                     fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem",
-                    color: "#c6c5d7", textAlign: "left", transition: "background 0.15s",
+                    color: "#6E635D", textAlign: "left", transition: "background 0.15s",
                   }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = "#1A2035")}
+                  onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = "#E5DBC9")}
                   onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = "none")}
                 >
                   {cmd.label}

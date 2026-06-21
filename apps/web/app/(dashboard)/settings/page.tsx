@@ -10,7 +10,7 @@ const SETTINGS_SECTIONS = [
         description: "Theme, colors, and display preferences",
         items: [
             { label: "Theme", value: "Dark Mode", type: "toggle" },
-            { label: "Accent Color", value: "Indigo (#5B5FEF)", type: "select" },
+            { label: "Accent Color", value: "Indigo (#3E8A9E)", type: "select" },
             { label: "Font Size", value: "Medium (14px)", type: "select" },
             { label: "Compact Mode", value: "Off", type: "toggle" },
         ]
@@ -77,37 +77,37 @@ export default function SettingsPage() {
     return (
         <div style={{ maxWidth: 780, margin: "0 auto", padding: "32px 0" }}>
             <div style={{ marginBottom: 32 }}>
-                <h1 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.6rem", fontWeight: 800, color: "#EDF0FF", margin: 0 }}>
+                <h1 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.6rem", fontWeight: 800, color: "#38322E", margin: 0 }}>
                     Settings
                 </h1>
-                <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#7B82A0", marginTop: 6 }}>
-                    Configure your XenoCRM workspace preferences and integrations.
+                <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#8A7F76", marginTop: 6 }}>
+                    Configure your Cove workspace preferences and integrations.
                 </p>
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {SETTINGS_SECTIONS.map(({ icon: Icon, title, description, items }) => (
                     <div key={title} style={{
-                        background: "#13151F", border: "1px solid #1A2035",
+                        background: "#FFFFFF", border: "1px solid #E5DBC9",
                         borderRadius: 16, overflow: "hidden"
                     }}>
                         {/* Section Header */}
                         <div style={{
                             display: "flex", alignItems: "center", gap: 12,
-                            padding: "20px 28px", borderBottom: "1px solid #1A2035"
+                            padding: "20px 28px", borderBottom: "1px solid #E5DBC9"
                         }}>
                             <div style={{
                                 width: 36, height: 36, borderRadius: 10,
-                                background: "rgba(91,95,239,0.12)", border: "1px solid rgba(91,95,239,0.2)",
+                                background: "rgba(62, 138, 158,0.12)", border: "1px solid rgba(62, 138, 158,0.2)",
                                 display: "flex", alignItems: "center", justifyContent: "center"
                             }}>
-                                <Icon style={{ width: 16, height: 16, color: "#c0c1ff" }} />
+                                <Icon style={{ width: 16, height: 16, color: "#2C6A7B" }} />
                             </div>
                             <div>
-                                <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.9rem", color: "#EDF0FF" }}>
+                                <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.9rem", color: "#38322E" }}>
                                     {title}
                                 </div>
-                                <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#7B82A0", marginTop: 2 }}>
+                                <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#8A7F76", marginTop: 2 }}>
                                     {description}
                                 </div>
                             </div>
@@ -123,7 +123,7 @@ export default function SettingsPage() {
                                         padding: "14px 28px",
                                         borderBottom: idx < items.length - 1 ? "1px solid rgba(26,32,53,0.6)" : "none",
                                     }}>
-                                        <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#c6c5d7" }}>
+                                        <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#6E635D" }}>
                                             {label}
                                         </span>
                                         {type === "toggle" ? (
@@ -131,8 +131,8 @@ export default function SettingsPage() {
                                                 onClick={() => toggle(label)}
                                                 style={{
                                                     width: 40, height: 22, borderRadius: 11,
-                                                    background: isOn ? "rgba(0,226,147,0.2)" : "rgba(255,255,255,0.06)",
-                                                    border: `1px solid ${isOn ? "rgba(0,226,147,0.3)" : "#1A2035"}`,
+                                                    background: isOn ? "rgba(78, 155, 138,0.2)" : "rgba(56, 50, 46,0.06)",
+                                                    border: `1px solid ${isOn ? "rgba(78, 155, 138,0.3)" : "#E5DBC9"}`,
                                                     display: "flex", alignItems: "center",
                                                     padding: "0 3px", cursor: "pointer",
                                                     justifyContent: isOn ? "flex-end" : "flex-start",
@@ -141,21 +141,21 @@ export default function SettingsPage() {
                                             >
                                                 <div style={{
                                                     width: 16, height: 16, borderRadius: "50%",
-                                                    background: isOn ? "#00e293" : "#7B82A0",
+                                                    background: isOn ? "#4E9B8A" : "#8A7F76",
                                                     transition: "background 0.2s"
                                                 }} />
                                             </button>
                                         ) : type === "copy" ? (
                                             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                                                <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#7B82A0" }}>
+                                                <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#8A7F76" }}>
                                                     {value}
                                                 </span>
                                                 <button
                                                     onClick={() => navigator.clipboard.writeText(value)}
                                                     style={{
                                                         padding: "4px 10px", borderRadius: 6,
-                                                        background: "rgba(91,95,239,0.12)", border: "1px solid rgba(91,95,239,0.25)",
-                                                        fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#c0c1ff",
+                                                        background: "rgba(62, 138, 158,0.12)", border: "1px solid rgba(62, 138, 158,0.25)",
+                                                        fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#2C6A7B",
                                                         cursor: "pointer", fontWeight: 600
                                                     }}
                                                 >
@@ -164,10 +164,10 @@ export default function SettingsPage() {
                                             </div>
                                         ) : (
                                             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                                                <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#7B82A0" }}>
+                                                <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#8A7F76" }}>
                                                     {value}
                                                 </span>
-                                                <ChevronRight style={{ width: 13, height: 13, color: "#464555" }} />
+                                                <ChevronRight style={{ width: 13, height: 13, color: "#C9BFB0" }} />
                                             </div>
                                         )}
                                     </div>

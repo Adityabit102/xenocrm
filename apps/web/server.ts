@@ -26,6 +26,6 @@ app.prepare().then(() => {
   getSocketServer(server);
 
   server.listen(port, () => {
-    console.log(`> XenoCRM Web Client ready on http://${hostname}:${port}`);
+    console.log(`> Cove Web Client ready on http://${hostname}:${port}`);
   });
 });

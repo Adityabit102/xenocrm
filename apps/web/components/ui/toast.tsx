@@ -17,7 +17,7 @@ export const toast = {
         color: "var(--color-text-primary)",
         padding: "12px 16px",
         borderRadius: "8px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+        boxShadow: "0 4px 12px rgba(99, 86, 70,0.08)",
         fontSize: "14px",
         fontWeight: 500
       }
@@ -32,7 +32,7 @@ export const toast = {
         color: "var(--color-text-primary)",
         padding: "12px 16px",
         borderRadius: "8px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+        boxShadow: "0 4px 12px rgba(99, 86, 70,0.08)",
         fontSize: "14px",
         fontWeight: 500
       }
@@ -48,7 +48,7 @@ export const toast = {
         color: "var(--color-text-primary)",
         padding: "12px 16px",
         borderRadius: "8px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+        boxShadow: "0 4px 12px rgba(99, 86, 70,0.08)",
         fontSize: "14px",
         fontWeight: 500
       }
@@ -64,7 +64,7 @@ export const toast = {
         color: "var(--color-text-primary)",
         padding: "12px 16px",
         borderRadius: "8px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+        boxShadow: "0 4px 12px rgba(99, 86, 70,0.08)",
         fontSize: "14px",
         fontWeight: 500
       }

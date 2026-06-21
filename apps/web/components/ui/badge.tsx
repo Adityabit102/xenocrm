@@ -17,7 +17,7 @@ const badgeVariants = cva(
         attributed: "bg-secondary-fixed-dim/10 text-secondary-fixed-dim border-secondary-fixed-dim/20",
 
         
-        whatsapp:   "bg-[#25D366]/10 text-[#25D366] border-[#25D366]/20",
+        whatsapp:   "bg-[#2FA56F]/10 text-[#2FA56F] border-[#2FA56F]/20",
         sms:        "bg-surface-container-high text-text-secondary border-border-mid",
         email:      "bg-status-info/10 text-status-info border-status-info/20",
         rcs:        "bg-status-danger/10 text-status-danger border-status-danger/20",

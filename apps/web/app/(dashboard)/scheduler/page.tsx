@@ -22,11 +22,11 @@ const getChannelLabel = (ch: string) =>
 
 const getChannelStyle = (ch: string): React.CSSProperties =>
 (({
-    whatsapp: { background: "rgba(37,211,102,0.12)", color: "#25D366", border: "1px solid rgba(37,211,102,0.25)" },
-    email: { background: "rgba(77,195,255,0.12)", color: "#4DC3FF", border: "1px solid rgba(77,195,255,0.25)" },
-    sms: { background: "rgba(123,130,160,0.1)", color: "#7B82A0", border: "1px solid #252D48" },
-    rcs: { background: "rgba(255,77,106,0.12)", color: "#FF4D6A", border: "1px solid rgba(255,77,106,0.25)" },
-} as any)[ch?.toLowerCase()] || { background: "rgba(123,130,160,0.1)", color: "#7B82A0", border: "1px solid #252D48" });
+    whatsapp: { background: "rgba(47, 165, 111,0.12)", color: "#2FA56F", border: "1px solid rgba(47, 165, 111,0.25)" },
+    email: { background: "rgba(77, 143, 168,0.12)", color: "#4D8FA8", border: "1px solid rgba(77, 143, 168,0.25)" },
+    sms: { background: "rgba(123,130,160,0.1)", color: "#8A7F76", border: "1px solid #D8CCB6" },
+    rcs: { background: "rgba(204, 107, 107,0.12)", color: "#CC6B6B", border: "1px solid rgba(204, 107, 107,0.25)" },
+} as any)[ch?.toLowerCase()] || { background: "rgba(123,130,160,0.1)", color: "#8A7F76", border: "1px solid #D8CCB6" });
 
 /* ── countdown helper ───────────────────────────────────────────── */
 function useCountdown(target: Date | null) {
@@ -52,10 +52,10 @@ function useCountdown(target: Date | null) {
 function CountdownCell({ scheduledAt }: { scheduledAt: string }) {
     const countdown = useCountdown(new Date(scheduledAt));
     if (!countdown) return (
-        <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#FF4D6A" }}>Overdue</span>
+        <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#CC6B6B" }}>Overdue</span>
     );
     return (
-        <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#00e293" }}>
+        <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#4E9B8A" }}>
             {countdown}
         </span>
     );
@@ -118,45 +118,45 @@ function ScheduleModal({ open, onClose, onSave, segments, saving }: ScheduleModa
 
     const inp: React.CSSProperties = {
         width: "100%", background: "rgba(24,29,46,0.6)",
-        border: "1px solid #252D48", borderRadius: 8,
+        border: "1px solid #D8CCB6", borderRadius: 8,
         padding: "9px 12px", fontFamily: "DM Sans,sans-serif",
-        fontSize: "0.82rem", color: "#EDF0FF", outline: "none",
+        fontSize: "0.82rem", color: "#38322E", outline: "none",
         boxSizing: "border-box",
     };
     const label: React.CSSProperties = {
         fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem",
         fontWeight: 700, letterSpacing: "0.08em",
-        textTransform: "uppercase", color: "#7B82A0", marginBottom: 6, display: "block",
+        textTransform: "uppercase", color: "#8A7F76", marginBottom: 6, display: "block",
     };
     const err: React.CSSProperties = {
         fontFamily: "DM Sans,sans-serif", fontSize: "0.7rem",
-        color: "#FF4D6A", marginTop: 4,
+        color: "#CC6B6B", marginTop: 4,
     };
 
     if (!open) return null;
     return (
         <>
-            <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)", zIndex: 200 }} />
+            <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(99, 86, 70,0.6)", backdropFilter: "blur(4px)", zIndex: 200 }} />
             <div style={{
                 position: "fixed", top: "50%", left: "50%",
                 transform: "translate(-50%,-50%)",
                 width: "min(560px,95vw)", zIndex: 201,
-                background: "#13151F", border: "1px solid #1A2035",
+                background: "#FFFFFF", border: "1px solid #E5DBC9",
                 borderRadius: 16, overflow: "hidden",
-                boxShadow: "0 24px 80px rgba(0,0,0,0.7)",
+                boxShadow: "0 24px 80px rgba(99, 86, 70,0.7)",
             }}>
                 {/* Modal header */}
-                <div style={{ padding: "18px 24px", borderBottom: "1px solid #1A2035", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ padding: "18px 24px", borderBottom: "1px solid #E5DBC9", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(91,95,239,0.12)", border: "1px solid rgba(91,95,239,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <CalendarClock style={{ width: 15, height: 15, color: "#c0c1ff" }} />
+                        <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(62, 138, 158,0.12)", border: "1px solid rgba(62, 138, 158,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <CalendarClock style={{ width: 15, height: 15, color: "#2C6A7B" }} />
                         </div>
                         <div>
-                            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.95rem", color: "#EDF0FF" }}>Schedule a Campaign</div>
-                            <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#7B82A0" }}>It will launch automatically at the set time</div>
+                            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.95rem", color: "#38322E" }}>Schedule a Campaign</div>
+                            <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#8A7F76" }}>It will launch automatically at the set time</div>
                         </div>
                     </div>
-                    <button onClick={onClose} style={{ background: "none", border: "none", color: "#7B82A0", cursor: "pointer", padding: 4, lineHeight: 1, fontSize: "1.1rem" }}>✕</button>
+                    <button onClick={onClose} style={{ background: "none", border: "none", color: "#8A7F76", cursor: "pointer", padding: 4, lineHeight: 1, fontSize: "1.1rem" }}>✕</button>
                 </div>
 
                 {/* Body */}
@@ -168,9 +168,9 @@ function ScheduleModal({ open, onClose, onSave, segments, saving }: ScheduleModa
                         <input
                             value={name} onChange={e => setName(e.target.value)}
                             placeholder="e.g. Diwali Win-back — WhatsApp"
-                            style={{ ...inp, borderColor: errors.name ? "#FF4D6A" : "#252D48" }}
-                            onFocus={e => (e.target.style.borderColor = "#5b5fef")}
-                            onBlur={e => (e.target.style.borderColor = errors.name ? "#FF4D6A" : "#252D48")}
+                            style={{ ...inp, borderColor: errors.name ? "#CC6B6B" : "#D8CCB6" }}
+                            onFocus={e => (e.target.style.borderColor = "#3E8A9E")}
+                            onBlur={e => (e.target.style.borderColor = errors.name ? "#CC6B6B" : "#D8CCB6")}
                         />
                         {errors.name && <p style={err}>{errors.name}</p>}
                     </div>
@@ -180,7 +180,7 @@ function ScheduleModal({ open, onClose, onSave, segments, saving }: ScheduleModa
                         <span style={label}>Segment</span>
                         <select
                             value={segId} onChange={e => setSegId(e.target.value)}
-                            style={{ ...inp, borderColor: errors.segId ? "#FF4D6A" : "#252D48", cursor: "pointer" }}
+                            style={{ ...inp, borderColor: errors.segId ? "#CC6B6B" : "#D8CCB6", cursor: "pointer" }}
                         >
                             <option value="" disabled>Select a segment…</option>
                             {segments.map(s => (
@@ -201,9 +201,9 @@ function ScheduleModal({ open, onClose, onSave, segments, saving }: ScheduleModa
                                     <button key={ch} type="button" onClick={() => setChannel(ch)} style={{
                                         display: "flex", alignItems: "center", gap: 6,
                                         padding: "7px 14px", borderRadius: 8,
-                                        border: active ? "1px solid rgba(91,95,239,0.5)" : "1px solid #252D48",
-                                        background: active ? "rgba(91,95,239,0.12)" : "rgba(255,255,255,0.03)",
-                                        color: active ? "#c0c1ff" : "#7B82A0",
+                                        border: active ? "1px solid rgba(62, 138, 158,0.5)" : "1px solid #D8CCB6",
+                                        background: active ? "rgba(62, 138, 158,0.12)" : "rgba(56, 50, 46,0.03)",
+                                        color: active ? "#2C6A7B" : "#8A7F76",
                                         fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", fontWeight: 600,
                                         cursor: "pointer", transition: "all 0.15s",
                                     }}>
@@ -219,7 +219,7 @@ function ScheduleModal({ open, onClose, onSave, segments, saving }: ScheduleModa
                     <div>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                             <span style={label}>Message Template</span>
-                            <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: message.length > 450 ? "#FF4D6A" : "#464555" }}>
+                            <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: message.length > 450 ? "#CC6B6B" : "#C9BFB0" }}>
                                 {message.length}/500
                             </span>
                         </div>
@@ -227,12 +227,12 @@ function ScheduleModal({ open, onClose, onSave, segments, saving }: ScheduleModa
                             value={message} onChange={e => setMessage(e.target.value.slice(0, 500))}
                             rows={4}
                             placeholder="Hi {{firstName}}, we have something special for you…"
-                            style={{ ...inp, resize: "vertical", borderColor: errors.message ? "#FF4D6A" : "#252D48" }}
-                            onFocus={e => (e.target.style.borderColor = "#5b5fef")}
-                            onBlur={e => (e.target.style.borderColor = errors.message ? "#FF4D6A" : "#252D48")}
+                            style={{ ...inp, resize: "vertical", borderColor: errors.message ? "#CC6B6B" : "#D8CCB6" }}
+                            onFocus={e => (e.target.style.borderColor = "#3E8A9E")}
+                            onBlur={e => (e.target.style.borderColor = errors.message ? "#CC6B6B" : "#D8CCB6")}
                         />
-                        <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#464555", marginTop: 4 }}>
-                            Use <code style={{ color: "#c0c1ff" }}>{"{{firstName}}"}</code> to personalise
+                        <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#C9BFB0", marginTop: 4 }}>
+                            Use <code style={{ color: "#2C6A7B" }}>{"{{firstName}}"}</code> to personalise
                         </p>
                         {errors.message && <p style={err}>{errors.message}</p>}
                     </div>
@@ -245,9 +245,9 @@ function ScheduleModal({ open, onClose, onSave, segments, saving }: ScheduleModa
                                 <input
                                     type="date" value={dateStr} min={minDate}
                                     onChange={e => setDateStr(e.target.value)}
-                                    style={{ ...inp, borderColor: errors.date ? "#FF4D6A" : "#252D48", colorScheme: "dark" }}
-                                    onFocus={e => (e.target.style.borderColor = "#5b5fef")}
-                                    onBlur={e => (e.target.style.borderColor = errors.date ? "#FF4D6A" : "#252D48")}
+                                    style={{ ...inp, borderColor: errors.date ? "#CC6B6B" : "#D8CCB6", colorScheme: "dark" }}
+                                    onFocus={e => (e.target.style.borderColor = "#3E8A9E")}
+                                    onBlur={e => (e.target.style.borderColor = errors.date ? "#CC6B6B" : "#D8CCB6")}
                                 />
                             </div>
                             <div style={{ flex: 1 }}>
@@ -255,14 +255,14 @@ function ScheduleModal({ open, onClose, onSave, segments, saving }: ScheduleModa
                                     type="time" value={timeStr}
                                     onChange={e => setTimeStr(e.target.value)}
                                     style={{ ...inp, colorScheme: "dark" }}
-                                    onFocus={e => (e.target.style.borderColor = "#5b5fef")}
-                                    onBlur={e => (e.target.style.borderColor = "#252D48")}
+                                    onFocus={e => (e.target.style.borderColor = "#3E8A9E")}
+                                    onBlur={e => (e.target.style.borderColor = "#D8CCB6")}
                                 />
                             </div>
                         </div>
                         {errors.date && <p style={err}>{errors.date}</p>}
                         {dateStr && timeStr && !errors.date && (
-                            <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#00e293", marginTop: 6 }}>
+                            <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#4E9B8A", marginTop: 6 }}>
                                 ✓ Launches {new Date(`${dateStr}T${timeStr}:00`).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
                             </p>
                         )}
@@ -270,11 +270,11 @@ function ScheduleModal({ open, onClose, onSave, segments, saving }: ScheduleModa
                 </div>
 
                 {/* Footer */}
-                <div style={{ padding: "16px 24px", borderTop: "1px solid #1A2035", display: "flex", justifyContent: "flex-end", gap: 10 }}>
-                    <button onClick={onClose} style={{ padding: "9px 18px", background: "rgba(255,255,255,0.04)", border: "1px solid #1A2035", borderRadius: 8, color: "#7B82A0", fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", cursor: "pointer", transition: "all 0.15s" }}>
+                <div style={{ padding: "16px 24px", borderTop: "1px solid #E5DBC9", display: "flex", justifyContent: "flex-end", gap: 10 }}>
+                    <button onClick={onClose} style={{ padding: "9px 18px", background: "rgba(56, 50, 46,0.04)", border: "1px solid #E5DBC9", borderRadius: 8, color: "#8A7F76", fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", cursor: "pointer", transition: "all 0.15s" }}>
                         Cancel
                     </button>
-                    <button onClick={handleSave} disabled={saving} style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 20px", background: "#5b5fef", border: "none", borderRadius: 8, color: "#fff", fontFamily: "Syne,sans-serif", fontSize: "0.85rem", fontWeight: 700, cursor: saving ? "not-allowed" : "pointer", opacity: saving ? 0.7 : 1, transition: "all 0.15s" }}>
+                    <button onClick={handleSave} disabled={saving} style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 20px", background: "#3E8A9E", border: "none", borderRadius: 8, color: "#fff", fontFamily: "Syne,sans-serif", fontSize: "0.85rem", fontWeight: 700, cursor: saving ? "not-allowed" : "pointer", opacity: saving ? 0.7 : 1, transition: "all 0.15s" }}>
                         {saving
                             ? <><Loader2 style={{ width: 13, height: 13, animation: "sch-spin 1s linear infinite" }} /> Scheduling…</>
                             : <><CalendarClock style={{ width: 13, height: 13 }} /> Schedule Campaign</>
@@ -369,28 +369,28 @@ export default function SchedulerPage() {
         .sort((a: any, b: any) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())[0];
 
     const card: React.CSSProperties = {
-        background: "#13151F", border: "1px solid #1A2035", borderRadius: 12,
+        background: "#FFFFFF", border: "1px solid #E5DBC9", borderRadius: 12,
     };
 
     return (
-        <div style={{ fontFamily: "DM Sans,sans-serif", color: "#EDF0FF", maxWidth: 1400 }}>
+        <div style={{ fontFamily: "DM Sans,sans-serif", color: "#38322E", maxWidth: 1400 }}>
 
             {/* ── Page header ── */}
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
                 <div>
-                    <h1 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.75rem", fontWeight: 700, color: "#EDF0FF", margin: "0 0 4px 0" }}>
+                    <h1 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.75rem", fontWeight: 700, color: "#38322E", margin: "0 0 4px 0" }}>
                         Scheduler
                     </h1>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FFB547", display: "inline-block", flexShrink: 0 }} />
-                        <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.8rem", color: "#7B82A0" }}>
+                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C9954E", display: "inline-block", flexShrink: 0 }} />
+                        <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.8rem", color: "#8A7F76" }}>
                             Set campaigns to launch automatically — no manual intervention needed.
                         </span>
                     </div>
                 </div>
                 <button
                     onClick={() => setModalOpen(true)}
-                    style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 18px", background: "#5b5fef", border: "none", borderRadius: 8, color: "#fff", fontFamily: "Syne,sans-serif", fontSize: "0.85rem", fontWeight: 700, cursor: "pointer", transition: "all 0.15s", flexShrink: 0 }}
+                    style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 18px", background: "#3E8A9E", border: "none", borderRadius: 8, color: "#fff", fontFamily: "Syne,sans-serif", fontSize: "0.85rem", fontWeight: 700, cursor: "pointer", transition: "all 0.15s", flexShrink: 0 }}
                 >
                     <Plus style={{ width: 14, height: 14 }} /> Schedule Campaign
                 </button>
@@ -400,12 +400,12 @@ export default function SchedulerPage() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 20 }}>
                 {/* Scheduled */}
                 <div style={{ ...card, padding: "18px 20px" }}>
-                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7B82A0", display: "block", marginBottom: 8 }}>Scheduled</span>
+                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A7F76", display: "block", marginBottom: 8 }}>Scheduled</span>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(255,181,71,0.1)", border: "1px solid rgba(255,181,71,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                            <Clock style={{ width: 16, height: 16, color: "#FFB547" }} />
+                        <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(201, 149, 78,0.1)", border: "1px solid rgba(201, 149, 78,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <Clock style={{ width: 16, height: 16, color: "#C9954E" }} />
                         </div>
-                        <span style={{ fontFamily: "Syne,sans-serif", fontSize: "2rem", fontWeight: 800, color: "#EDF0FF", letterSpacing: "-0.03em", lineHeight: 1 }}>
+                        <span style={{ fontFamily: "Syne,sans-serif", fontSize: "2rem", fontWeight: 800, color: "#38322E", letterSpacing: "-0.03em", lineHeight: 1 }}>
                             {isLoading ? "—" : totalScheduled}
                         </span>
                     </div>
@@ -413,29 +413,29 @@ export default function SchedulerPage() {
 
                 {/* Next launch */}
                 <div style={{ ...card, padding: "18px 20px" }}>
-                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7B82A0", display: "block", marginBottom: 8 }}>Next Launch</span>
+                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A7F76", display: "block", marginBottom: 8 }}>Next Launch</span>
                     {next ? (
                         <div>
-                            <div style={{ fontFamily: "Syne,sans-serif", fontSize: "0.9rem", fontWeight: 700, color: "#EDF0FF", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            <div style={{ fontFamily: "Syne,sans-serif", fontSize: "0.9rem", fontWeight: 700, color: "#38322E", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                 {next.name}
                             </div>
                             <CountdownCell scheduledAt={next.scheduledAt} />
                         </div>
                     ) : (
-                        <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.8rem", color: "#464555" }}>No upcoming campaigns</div>
+                        <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.8rem", color: "#C9BFB0" }}>No upcoming campaigns</div>
                     )}
                 </div>
 
                 {/* Auto-launch */}
                 <div style={{ ...card, padding: "18px 20px" }}>
-                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7B82A0", display: "block", marginBottom: 8 }}>Auto-launch</span>
+                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A7F76", display: "block", marginBottom: 8 }}>Auto-launch</span>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(0,226,147,0.1)", border: "1px solid rgba(0,226,147,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                            <Zap style={{ width: 16, height: 16, color: "#00e293" }} />
+                        <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(78, 155, 138,0.1)", border: "1px solid rgba(78, 155, 138,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <Zap style={{ width: 16, height: 16, color: "#4E9B8A" }} />
                         </div>
                         <div>
-                            <div style={{ fontFamily: "Syne,sans-serif", fontSize: "0.85rem", fontWeight: 700, color: "#00e293" }}>Active</div>
-                            <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#464555" }}>Runs without intervention</div>
+                            <div style={{ fontFamily: "Syne,sans-serif", fontSize: "0.85rem", fontWeight: 700, color: "#4E9B8A" }}>Active</div>
+                            <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#C9BFB0" }}>Runs without intervention</div>
                         </div>
                     </div>
                 </div>
@@ -444,14 +444,14 @@ export default function SchedulerPage() {
             {/* ── How it works banner (shown when empty) ── */}
             {!isLoading && scheduled.length === 0 && (
                 <div style={{ ...card, padding: "40px 32px", marginBottom: 20, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 20 }}>
-                    <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(91,95,239,0.1)", border: "1px solid rgba(91,95,239,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <CalendarClock style={{ width: 24, height: 24, color: "#c0c1ff" }} />
+                    <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(62, 138, 158,0.1)", border: "1px solid rgba(62, 138, 158,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <CalendarClock style={{ width: 24, height: 24, color: "#2C6A7B" }} />
                     </div>
                     <div>
-                        <h3 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "#EDF0FF", marginBottom: 8 }}>
+                        <h3 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "#38322E", marginBottom: 8 }}>
                             No scheduled campaigns yet
                         </h3>
-                        <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#7B82A0", maxWidth: 420, margin: "0 auto", lineHeight: 1.6 }}>
+                        <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#8A7F76", maxWidth: 420, margin: "0 auto", lineHeight: 1.6 }}>
                             Schedule a campaign now and it will launch automatically at the set time — no need to be online. Perfect for off-hours, weekends, or planned promotions.
                         </p>
                     </div>
@@ -463,19 +463,19 @@ export default function SchedulerPage() {
                             { icon: Calendar, label: "Set a time", desc: "Date and time to launch" },
                             { icon: Zap, label: "Launches automatically", desc: "We handle the rest" },
                         ].map(({ icon: Icon, label, desc }, i) => (
-                            <div key={i} style={{ padding: "16px 12px", background: "rgba(255,255,255,0.02)", border: "1px solid #1A2035", borderRadius: 10, textAlign: "center" }}>
-                                <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(91,95,239,0.1)", border: "1px solid rgba(91,95,239,0.15)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px" }}>
-                                    <Icon style={{ width: 14, height: 14, color: "#c0c1ff" }} />
+                            <div key={i} style={{ padding: "16px 12px", background: "rgba(56, 50, 46,0.02)", border: "1px solid #E5DBC9", borderRadius: 10, textAlign: "center" }}>
+                                <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(62, 138, 158,0.1)", border: "1px solid rgba(62, 138, 158,0.15)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px" }}>
+                                    <Icon style={{ width: 14, height: 14, color: "#2C6A7B" }} />
                                 </div>
-                                <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.78rem", color: "#EDF0FF", marginBottom: 4 }}>{label}</div>
-                                <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#7B82A0" }}>{desc}</div>
+                                <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.78rem", color: "#38322E", marginBottom: 4 }}>{label}</div>
+                                <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#8A7F76" }}>{desc}</div>
                             </div>
                         ))}
                     </div>
 
                     <button
                         onClick={() => setModalOpen(true)}
-                        style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 22px", background: "#5b5fef", border: "none", borderRadius: 8, color: "#fff", fontFamily: "Syne,sans-serif", fontSize: "0.88rem", fontWeight: 700, cursor: "pointer", marginTop: 4 }}
+                        style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 22px", background: "#3E8A9E", border: "none", borderRadius: 8, color: "#fff", fontFamily: "Syne,sans-serif", fontSize: "0.88rem", fontWeight: 700, cursor: "pointer", marginTop: 4 }}
                     >
                         <Plus style={{ width: 14, height: 14 }} /> Schedule your first campaign
                     </button>
@@ -486,12 +486,12 @@ export default function SchedulerPage() {
             {isLoading && (
                 <div style={{ ...card, padding: 24 }}>
                     {Array.from({ length: 4 }).map((_, i) => (
-                        <div key={i} style={{ display: "flex", gap: 16, alignItems: "center", padding: "14px 0", borderBottom: "1px solid #1A2035" }}>
-                            <div style={{ flex: 2, height: 12, background: "#1A2035", borderRadius: 4 }} className="animate-pulse" />
-                            <div style={{ flex: 1, height: 20, background: "#1A2035", borderRadius: 99 }} className="animate-pulse" />
-                            <div style={{ flex: 1, height: 12, background: "#1A2035", borderRadius: 4 }} className="animate-pulse" />
-                            <div style={{ flex: 1, height: 12, background: "#1A2035", borderRadius: 4 }} className="animate-pulse" />
-                            <div style={{ width: 60, height: 28, background: "#1A2035", borderRadius: 6 }} className="animate-pulse" />
+                        <div key={i} style={{ display: "flex", gap: 16, alignItems: "center", padding: "14px 0", borderBottom: "1px solid #E5DBC9" }}>
+                            <div style={{ flex: 2, height: 12, background: "#E5DBC9", borderRadius: 4 }} className="animate-pulse" />
+                            <div style={{ flex: 1, height: 20, background: "#E5DBC9", borderRadius: 99 }} className="animate-pulse" />
+                            <div style={{ flex: 1, height: 12, background: "#E5DBC9", borderRadius: 4 }} className="animate-pulse" />
+                            <div style={{ flex: 1, height: 12, background: "#E5DBC9", borderRadius: 4 }} className="animate-pulse" />
+                            <div style={{ width: 60, height: 28, background: "#E5DBC9", borderRadius: 6 }} className="animate-pulse" />
                         </div>
                     ))}
                 </div>
@@ -501,12 +501,12 @@ export default function SchedulerPage() {
             {!isLoading && scheduled.length > 0 && (
                 <div style={{ ...card, overflow: "hidden" }}>
                     {/* Table header row */}
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: "1px solid #1A2035" }}>
-                        <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#464555" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: "1px solid #E5DBC9" }}>
+                        <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#C9BFB0" }}>
                             {totalScheduled} scheduled campaign{totalScheduled !== 1 ? "s" : ""}
                         </span>
                         {isRefetching && (
-                            <div style={{ display: "flex", alignItems: "center", gap: 6, color: "#7B82A0", fontSize: "0.72rem" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 6, color: "#8A7F76", fontSize: "0.72rem" }}>
                                 <Loader2 style={{ width: 12, height: 12, animation: "sch-spin 1s linear infinite" }} /> Syncing…
                             </div>
                         )}
@@ -515,13 +515,13 @@ export default function SchedulerPage() {
                     <div style={{ overflowX: "auto" }}>
                         <table style={{ width: "100%", borderCollapse: "collapse" }}>
                             <thead>
-                                <tr style={{ borderBottom: "1px solid #1A2035", background: "rgba(255,255,255,0.01)" }}>
+                                <tr style={{ borderBottom: "1px solid #E5DBC9", background: "rgba(56, 50, 46,0.01)" }}>
                                     {["Campaign", "Segment", "Channel", "Launch Time", "Countdown", "Actions"].map((h, i) => (
                                         <th key={i} style={{
                                             padding: "11px 18px", textAlign: "left",
                                             fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem",
                                             fontWeight: 700, letterSpacing: "0.1em",
-                                            textTransform: "uppercase", color: "#464555", whiteSpace: "nowrap",
+                                            textTransform: "uppercase", color: "#C9BFB0", whiteSpace: "nowrap",
                                         }}>
                                             {h}
                                         </th>
@@ -537,23 +537,23 @@ export default function SchedulerPage() {
                                     return (
                                         <tr
                                             key={camp.id}
-                                            style={{ borderBottom: "1px solid #1A2035", transition: "background 0.15s" }}
-                                            onMouseEnter={e => (e.currentTarget.style.background = "#181D2E")}
+                                            style={{ borderBottom: "1px solid #E5DBC9", transition: "background 0.15s" }}
+                                            onMouseEnter={e => (e.currentTarget.style.background = "#FFFFFF")}
                                             onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                                         >
                                             {/* Campaign name */}
                                             <td style={{ padding: "14px 18px", minWidth: 180 }}>
                                                 <Link href={`/campaigns/${camp.id}`} style={{ textDecoration: "none" }}>
-                                                    <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, color: "#EDF0FF", fontSize: "0.85rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 220, transition: "color 0.15s" }}
-                                                        onMouseEnter={e => ((e.target as HTMLElement).style.color = "#c0c1ff")}
-                                                        onMouseLeave={e => ((e.target as HTMLElement).style.color = "#EDF0FF")}>
+                                                    <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, color: "#38322E", fontSize: "0.85rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 220, transition: "color 0.15s" }}
+                                                        onMouseEnter={e => ((e.target as HTMLElement).style.color = "#2C6A7B")}
+                                                        onMouseLeave={e => ((e.target as HTMLElement).style.color = "#38322E")}>
                                                         {camp.name}
                                                     </div>
                                                 </Link>
                                             </td>
 
                                             {/* Segment */}
-                                            <td style={{ padding: "14px 18px", fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#7B82A0", maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                            <td style={{ padding: "14px 18px", fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#8A7F76", maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                                 {camp.segment?.name || "—"}
                                             </td>
 
@@ -568,8 +568,8 @@ export default function SchedulerPage() {
                                             {/* Launch time */}
                                             <td style={{ padding: "14px 18px", whiteSpace: "nowrap" }}>
                                                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                                                    <Calendar style={{ width: 12, height: 12, color: "#464555", flexShrink: 0 }} />
-                                                    <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: isPast ? "#FF4D6A" : "#EDF0FF" }}>
+                                                    <Calendar style={{ width: 12, height: 12, color: "#C9BFB0", flexShrink: 0 }} />
+                                                    <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: isPast ? "#CC6B6B" : "#38322E" }}>
                                                         {launchDt.toLocaleString("en-IN", { day: "numeric", month: "short", year: "2-digit", hour: "2-digit", minute: "2-digit" })}
                                                     </span>
                                                 </div>
@@ -578,12 +578,12 @@ export default function SchedulerPage() {
                                             {/* Countdown */}
                                             <td style={{ padding: "14px 18px" }}>
                                                 {isPast ? (
-                                                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, background: "rgba(255,77,106,0.08)", border: "1px solid rgba(255,77,106,0.2)", fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#FF4D6A" }}>
+                                                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, background: "rgba(204, 107, 107,0.08)", border: "1px solid rgba(204, 107, 107,0.2)", fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#CC6B6B" }}>
                                                         <AlertCircle style={{ width: 10, height: 10 }} /> Overdue
                                                     </span>
                                                 ) : (
-                                                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, background: "rgba(0,226,147,0.06)", border: "1px solid rgba(0,226,147,0.15)" }}>
-                                                        <Clock style={{ width: 10, height: 10, color: "#00e293" }} />
+                                                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, background: "rgba(78, 155, 138,0.06)", border: "1px solid rgba(78, 155, 138,0.15)" }}>
+                                                        <Clock style={{ width: 10, height: 10, color: "#4E9B8A" }} />
                                                         <CountdownCell scheduledAt={camp.scheduledAt} />
                                                     </span>
                                                 )}
@@ -596,9 +596,9 @@ export default function SchedulerPage() {
                                                     <Link href={`/campaigns/${camp.id}`}>
                                                         <button
                                                             title="View campaign"
-                                                            style={{ width: 30, height: 30, borderRadius: 6, background: "none", border: "none", color: "#7B82A0", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.15s" }}
-                                                            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLButtonElement).style.color = "#EDF0FF"; }}
-                                                            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "#7B82A0"; }}
+                                                            style={{ width: 30, height: 30, borderRadius: 6, background: "none", border: "none", color: "#8A7F76", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.15s" }}
+                                                            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(56, 50, 46,0.06)"; (e.currentTarget as HTMLButtonElement).style.color = "#38322E"; }}
+                                                            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "#8A7F76"; }}
                                                         >
                                                             <Edit2 style={{ width: 13, height: 13 }} />
                                                         </button>
@@ -608,9 +608,9 @@ export default function SchedulerPage() {
                                                         onClick={() => handleDispatch(camp.id, camp.name)}
                                                         disabled={dispatchMutation.isPending}
                                                         title="Launch now"
-                                                        style={{ width: 30, height: 30, borderRadius: 6, background: "none", border: "none", color: "#7B82A0", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.15s" }}
-                                                        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,226,147,0.08)"; (e.currentTarget as HTMLButtonElement).style.color = "#00e293"; }}
-                                                        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "#7B82A0"; }}
+                                                        style={{ width: 30, height: 30, borderRadius: 6, background: "none", border: "none", color: "#8A7F76", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.15s" }}
+                                                        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(78, 155, 138,0.08)"; (e.currentTarget as HTMLButtonElement).style.color = "#4E9B8A"; }}
+                                                        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "#8A7F76"; }}
                                                     >
                                                         <Play style={{ width: 13, height: 13 }} />
                                                     </button>
@@ -619,9 +619,9 @@ export default function SchedulerPage() {
                                                         onClick={() => handleDelete(camp.id, camp.name)}
                                                         disabled={deleteMutation.isPending}
                                                         title="Delete scheduled campaign"
-                                                        style={{ width: 30, height: 30, borderRadius: 6, background: "none", border: "none", color: "#7B82A0", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.15s" }}
-                                                        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,77,106,0.08)"; (e.currentTarget as HTMLButtonElement).style.color = "#FF4D6A"; }}
-                                                        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "#7B82A0"; }}
+                                                        style={{ width: 30, height: 30, borderRadius: 6, background: "none", border: "none", color: "#8A7F76", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.15s" }}
+                                                        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(204, 107, 107,0.08)"; (e.currentTarget as HTMLButtonElement).style.color = "#CC6B6B"; }}
+                                                        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "#8A7F76"; }}
                                                     >
                                                         <Trash2 style={{ width: 13, height: 13 }} />
                                                     </button>
@@ -636,17 +636,17 @@ export default function SchedulerPage() {
 
                     {/* Pagination */}
                     {pagination.totalPages > 1 && (
-                        <div style={{ padding: "12px 18px", borderTop: "1px solid #1A2035", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                            <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#7B82A0" }}>
-                                Page <strong style={{ color: "#EDF0FF" }}>{pagination.page}</strong> of <strong style={{ color: "#EDF0FF" }}>{pagination.totalPages}</strong>
+                        <div style={{ padding: "12px 18px", borderTop: "1px solid #E5DBC9", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                            <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#8A7F76" }}>
+                                Page <strong style={{ color: "#38322E" }}>{pagination.page}</strong> of <strong style={{ color: "#38322E" }}>{pagination.totalPages}</strong>
                             </span>
                             <div style={{ display: "flex", gap: 6 }}>
                                 <button onClick={() => setPage(p => Math.max(p - 1, 1))} disabled={page === 1}
-                                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 12px", background: "rgba(255,255,255,0.04)", border: "1px solid #1A2035", borderRadius: 8, color: "#EDF0FF", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", opacity: page === 1 ? 0.4 : 1 }}>
+                                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 12px", background: "rgba(56, 50, 46,0.04)", border: "1px solid #E5DBC9", borderRadius: 8, color: "#38322E", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", opacity: page === 1 ? 0.4 : 1 }}>
                                     <ChevronLeft style={{ width: 14, height: 14 }} /> Prev
                                 </button>
                                 <button onClick={() => setPage(p => Math.min(p + 1, pagination.totalPages))} disabled={page === pagination.totalPages}
-                                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 12px", background: "rgba(255,255,255,0.04)", border: "1px solid #1A2035", borderRadius: 8, color: "#EDF0FF", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", opacity: page === pagination.totalPages ? 0.4 : 1 }}>
+                                    style={{ display: "flex", alignItems: "center", gap: 4, padding: "6px 12px", background: "rgba(56, 50, 46,0.04)", border: "1px solid #E5DBC9", borderRadius: 8, color: "#38322E", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", opacity: page === pagination.totalPages ? 0.4 : 1 }}>
                                     Next <ChevronRight style={{ width: 14, height: 14 }} />
                                 </button>
                             </div>

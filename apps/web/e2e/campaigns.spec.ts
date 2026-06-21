@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('XenoCRM — Full Campaign Flow', () => {
+test.describe('Cove — Full Campaign Flow', () => {
   test.beforeEach(async ({ page }) => {
     
     await page.goto('/login')
-    await page.fill('input[name="email"]', 'demo@xenocrm.com')
+    await page.fill('input[name="email"]', 'demo@cove.io')
     await page.fill('input[name="password"]', 'demo123')
     await page.click('button[type="submit"]')
     await page.waitForURL('**/dashboard')
@@ -147,10 +147,10 @@ test.describe('XenoCRM — Full Campaign Flow', () => {
   })
 })
 
-test.describe('XenoCRM — AutoReach Agent', () => {
+test.describe('Cove — AutoReach Agent', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/login')
-    await page.fill('input[name="email"]', 'demo@xenocrm.com')
+    await page.fill('input[name="email"]', 'demo@cove.io')
     await page.fill('input[name="password"]', 'demo123')
     await page.click('button[type="submit"]')
     await page.waitForURL('**/dashboard')

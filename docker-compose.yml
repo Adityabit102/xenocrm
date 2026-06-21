@@ -3,35 +3,35 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: xenocrm-postgres
+    container_name: cove-postgres
     environment:
-      POSTGRES_USER: xenocrm
-      POSTGRES_PASSWORD: xenocrm
-      POSTGRES_DB: xenocrm
+      POSTGRES_USER: cove
+      POSTGRES_PASSWORD: cove
+      POSTGRES_DB: cove
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - xenocrm-network
+      - cove-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U xenocrm -d xenocrm"]
+      test: ["CMD-SHELL", "pg_isready -U cove -d cove"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: xenocrm-redis
+    container_name: cove-redis
     ports:
       - "6379:6379"
     networks:
-      - xenocrm-network
+      - cove-network
 
 volumes:
   postgres_data:
     driver: local
 
 networks:
-  xenocrm-network:
+  cove-network:
     driver: bridge

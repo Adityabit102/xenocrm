@@ -64,9 +64,9 @@ export function DeliveryFunnel({
       label: "Sent",
       count: sent,
       percentage: pSent,
-      barColor: "#5b5fef",
-      iconColor: "#c0c1ff",
-      iconBg: "rgba(91,95,239,0.15)",
+      barColor: "#3E8A9E",
+      iconColor: "#2C6A7B",
+      iconBg: "rgba(62, 138, 158,0.15)",
       icon: Send,
       drop: null,
     },
@@ -75,9 +75,9 @@ export function DeliveryFunnel({
       label: "Delivered",
       count: delivered,
       percentage: pDelivered,
-      barColor: "#00e293",
-      iconColor: "#00e293",
-      iconBg: "rgba(0,226,147,0.12)",
+      barColor: "#4E9B8A",
+      iconColor: "#4E9B8A",
+      iconBg: "rgba(78, 155, 138,0.12)",
       icon: Check,
       drop: dropDelivered,
     },
@@ -86,9 +86,9 @@ export function DeliveryFunnel({
       label: "Opened",
       count: opened,
       percentage: pOpened,
-      barColor: "#4DC3FF",
-      iconColor: "#4DC3FF",
-      iconBg: "rgba(77,195,255,0.12)",
+      barColor: "#4D8FA8",
+      iconColor: "#4D8FA8",
+      iconBg: "rgba(77, 143, 168,0.12)",
       icon: Eye,
       drop: dropOpened,
     },
@@ -97,9 +97,9 @@ export function DeliveryFunnel({
       label: "Read",
       count: read,
       percentage: pRead,
-      barColor: "#d7baff",
-      iconColor: "#d7baff",
-      iconBg: "rgba(215,186,255,0.12)",
+      barColor: "#C98E83",
+      iconColor: "#C98E83",
+      iconBg: "rgba(201, 142, 131,0.12)",
       icon: CheckCheck,
       drop: dropRead,
     },
@@ -108,9 +108,9 @@ export function DeliveryFunnel({
       label: "Clicked",
       count: clicked,
       percentage: pClicked,
-      barColor: "#FFB547",
-      iconColor: "#FFB547",
-      iconBg: "rgba(255,181,71,0.12)",
+      barColor: "#C9954E",
+      iconColor: "#C9954E",
+      iconBg: "rgba(201, 149, 78,0.12)",
       icon: MousePointerClick,
       drop: dropClicked,
     },
@@ -119,9 +119,9 @@ export function DeliveryFunnel({
       label: "Attributed",
       count: attributed,
       percentage: pAttributed,
-      barColor: "#00e293",
-      iconColor: "#00e293",
-      iconBg: "rgba(0,226,147,0.12)",
+      barColor: "#4E9B8A",
+      iconColor: "#4E9B8A",
+      iconBg: "rgba(78, 155, 138,0.12)",
       icon: ShoppingBag,
       drop: dropAttributed,
     },
@@ -130,8 +130,8 @@ export function DeliveryFunnel({
   return (
     <div
       style={{
-        background: "#13151F",
-        border: "1px solid #1A2035",
+        background: "#FFFFFF",
+        border: "1px solid #E5DBC9",
         borderRadius: 12,
         padding: "20px 22px",
         fontFamily: "DM Sans,sans-serif",
@@ -141,14 +141,14 @@ export function DeliveryFunnel({
       {}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
         <div>
-          <h3 style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#464555", margin: "0 0 3px 0" }}>
+          <h3 style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#C9BFB0", margin: "0 0 3px 0" }}>
             Outreach & Delivery Funnel
           </h3>
-          <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#7B82A0", margin: 0 }}>
+          <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", margin: 0 }}>
             Real-time campaign conversion performance across delivery pipeline
           </p>
         </div>
-        <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", fontWeight: 600, color: "#EDF0FF", padding: "5px 14px", borderRadius: 99, border: "1px solid #252D48", whiteSpace: "nowrap" }}>
+        <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", fontWeight: 600, color: "#38322E", padding: "5px 14px", borderRadius: 99, border: "1px solid #D8CCB6", whiteSpace: "nowrap" }}>
           Live Funnel
         </span>
       </div>
@@ -162,20 +162,20 @@ export function DeliveryFunnel({
 
             /* Drop badge colours */
             const dropBg = stage.drop !== null && stage.drop > 50
-              ? "rgba(255,77,106,0.12)"
+              ? "rgba(204, 107, 107,0.12)"
               : stage.drop !== null && stage.drop > 20
-                ? "rgba(255,181,71,0.1)"
-                : "rgba(255,255,255,0.04)";
+                ? "rgba(201, 149, 78,0.1)"
+                : "rgba(56, 50, 46,0.04)";
             const dropColor = stage.drop !== null && stage.drop > 50
-              ? "#FF4D6A"
+              ? "#CC6B6B"
               : stage.drop !== null && stage.drop > 20
-                ? "#FFB547"
-                : "#7B82A0";
+                ? "#C9954E"
+                : "#8A7F76";
             const dropBorder = stage.drop !== null && stage.drop > 50
-              ? "rgba(255,77,106,0.2)"
+              ? "rgba(204, 107, 107,0.2)"
               : stage.drop !== null && stage.drop > 20
-                ? "rgba(255,181,71,0.2)"
-                : "#252D48";
+                ? "rgba(201, 149, 78,0.2)"
+                : "#D8CCB6";
 
             return (
               <React.Fragment key={stage.id}>
@@ -186,8 +186,8 @@ export function DeliveryFunnel({
                     <div style={{ padding: "2px 8px", borderRadius: 99, background: dropBg, border: `1px solid ${dropBorder}`, color: dropColor, fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", fontWeight: 700, whiteSpace: "nowrap" }}>
                       -{stage.drop.toFixed(1)}%
                     </div>
-                    <div style={{ height: 12, width: 1, background: "#252D48" }} />
-                    <ArrowRight style={{ width: 13, height: 13, color: "#252D48" }} />
+                    <div style={{ height: 12, width: 1, background: "#D8CCB6" }} />
+                    <ArrowRight style={{ width: 13, height: 13, color: "#D8CCB6" }} />
                   </div>
                 )}
 
@@ -195,16 +195,16 @@ export function DeliveryFunnel({
                 <div
                   style={{
                     flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between",
-                    padding: "14px 14px", background: "rgba(255,255,255,0.02)",
-                    border: "1px solid #1A2035", borderRadius: 10,
+                    padding: "14px 14px", background: "rgba(56, 50, 46,0.02)",
+                    border: "1px solid #E5DBC9", borderRadius: 10,
                     transition: "border-color 0.15s",
                   }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.borderColor = "#252D48")}
-                  onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.borderColor = "#1A2035")}
+                  onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.borderColor = "#D8CCB6")}
+                  onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.borderColor = "#E5DBC9")}
                 >
                   {/* Label + icon */}
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 14 }}>
-                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#7B82A0" }}>
+                    <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#8A7F76" }}>
                       {stage.label}
                     </span>
                     <div style={{ width: 26, height: 26, borderRadius: 6, background: stage.iconBg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -213,7 +213,7 @@ export function DeliveryFunnel({
                   </div>
 
                   {/* Progress bar */}
-                  <div style={{ height: 6, background: "rgba(255,255,255,0.05)", borderRadius: 99, overflow: "hidden", border: "1px solid rgba(255,255,255,0.04)", marginBottom: 14, position: "relative" }}>
+                  <div style={{ height: 6, background: "rgba(56, 50, 46,0.05)", borderRadius: 99, overflow: "hidden", border: "1px solid rgba(56, 50, 46,0.04)", marginBottom: 14, position: "relative" }}>
                     <div
                       style={{
                         height: "100%",
@@ -227,10 +227,10 @@ export function DeliveryFunnel({
 
                   {/* Count + conversion rate */}
                   <div>
-                    <div style={{ fontFamily: "Syne,sans-serif", fontSize: "clamp(1.2rem,2vw,1.6rem)", fontWeight: 800, color: "#EDF0FF", letterSpacing: "-0.03em", lineHeight: 1 }}>
+                    <div style={{ fontFamily: "Syne,sans-serif", fontSize: "clamp(1.2rem,2vw,1.6rem)", fontWeight: 800, color: "#38322E", letterSpacing: "-0.03em", lineHeight: 1 }}>
                       {stage.count.toLocaleString("en-IN")}
                     </div>
-                    <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#7B82A0", marginTop: 4 }}>
+                    <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.68rem", color: "#8A7F76", marginTop: 4 }}>
                       {stage.percentage.toFixed(1)}% conversion
                     </div>
                   </div>

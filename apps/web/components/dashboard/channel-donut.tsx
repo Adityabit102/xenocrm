@@ -7,7 +7,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 interface ChannelDonutProps { dateFrom?: string; dateTo?: string; className?: string; }
 
 const COLORS: Record<string,string> = {
-  whatsapp:"#25D366", sms:"#7B82A0", email:"#4DC3FF", rcs:"#FF4D6A",
+  whatsapp:"#2FA56F", sms:"#8A7F76", email:"#4D8FA8", rcs:"#CC6B6B",
 };
 
 export function ChannelDonut({ dateFrom, dateTo, className="" }: ChannelDonutProps) {
@@ -41,7 +41,7 @@ export function ChannelDonut({ dateFrom, dateTo, className="" }: ChannelDonutPro
     return (
       <div className="glow-card px-3 py-2 text-xs">
         <span className="flex items-center gap-2 font-bold text-text-primary">
-          <span className="w-2 h-2 rounded-full" style={{backgroundColor:COLORS[s.key]||"#7B82A0"}}/>
+          <span className="w-2 h-2 rounded-full" style={{backgroundColor:COLORS[s.key]||"#8A7F76"}}/>
           {s.name}: {s.value.toLocaleString()} ({total>0?((s.value/total)*100).toFixed(1):0}%)
         </span>
       </div>
@@ -75,7 +75,7 @@ export function ChannelDonut({ dateFrom, dateTo, className="" }: ChannelDonutPro
               <Pie data={chartData} cx="50%" cy="50%" innerRadius="58%" outerRadius="78%"
                 paddingAngle={chartData.length>1?3:0} dataKey="value" animationDuration={1000}>
                 {chartData.map((e,i)=>(
-                  <Cell key={i} fill={COLORS[e.key]||"#252D48"} stroke="var(--surface)" strokeWidth={2}/>
+                  <Cell key={i} fill={COLORS[e.key]||"#D8CCB6"} stroke="var(--surface)" strokeWidth={2}/>
                 ))}
               </Pie>
             </PieChart>

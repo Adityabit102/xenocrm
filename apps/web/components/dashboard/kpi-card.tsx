@@ -99,7 +99,7 @@ export function KPICard({ title, value, subtitle, trend, icon, sparklineData, cl
         <div className="mt-md h-8 w-full opacity-60">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={sparklineData.map((v,i)=>({i,v}))} margin={{top:2,right:2,bottom:2,left:2}}>
-              <Line type="monotone" dataKey="v" stroke={positive?"#00e293":"#FF4D6A"} strokeWidth={1.5} dot={false}/>
+              <Line type="monotone" dataKey="v" stroke={positive?"#4E9B8A":"#CC6B6B"} strokeWidth={1.5} dot={false}/>
             </LineChart>
           </ResponsiveContainer>
         </div>

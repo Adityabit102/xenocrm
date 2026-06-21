@@ -247,7 +247,7 @@ export function MessageEditor({ channel, value, onChange, segmentId }: MessageEd
                   <User className="h-3.5 w-3.5" />
                 </div>
                 <div className="truncate">
-                  <div className="text-[11px] font-bold">Xeno Brand Updates</div>
+                  <div className="text-[11px] font-bold">Cove Brand Updates</div>
                   <div className="text-[8px] opacity-75">online</div>
                 </div>
               </div>
@@ -276,7 +276,7 @@ export function MessageEditor({ channel, value, onChange, segmentId }: MessageEd
             <div className="w-full bg-bg-surface rounded-xl border border-border shadow-md p-4 space-y-3">
               <div className="border-b border-border/60 pb-3 space-y-1.5 text-xs text-text-secondary">
                 <div>
-                  <strong className="text-text-primary font-bold">From:</strong> updates@brand.xenocrm.com
+                  <strong className="text-text-primary font-bold">From:</strong> updates@brand.cove.io
                 </div>
                 <div>
                   <strong className="text-text-primary font-bold">To:</strong> {selectedCustomer?.firstName?.toLowerCase() || "customer"}@gmail.com
@@ -313,7 +313,7 @@ export function MessageEditor({ channel, value, onChange, segmentId }: MessageEd
                 <input
                   id="ai-goal-input"
                   type="text"
-                  placeholder="e.g. invite inactive VIP customers back with a 20% discount coupon code XENO20"
+                  placeholder="e.g. invite inactive VIP customers back with a 20% discount coupon code COVE20"
                   value={aiGoal}
                   onChange={(e) => setAiGoal(e.target.value)}
                   disabled={isGenerating}

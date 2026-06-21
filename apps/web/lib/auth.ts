@@ -16,10 +16,10 @@ export const { handlers, auth } = NextAuth({
 
         
         if (
-          credentials.email === "demo@xenocrm.com" &&
+          credentials.email === "demo@cove.io" &&
           credentials.password === "demo123"
         ) {
-          return { id: "demo-user-id", name: "Demo Marketer", email: "demo@xenocrm.com" };
+          return { id: "demo-user-id", name: "Demo Marketer", email: "demo@cove.io" };
         }
 
         

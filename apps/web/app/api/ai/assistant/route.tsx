@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     try {
         const { query, history } = await request.json();
 
-        const systemPrompt = `You are Xeno Intelligence, an AI assistant embedded in XenoCRM — an Indian D2C retail CRM.
+        const systemPrompt = `You are Cove Intelligence, an AI assistant embedded in Cove — an Indian D2C retail CRM.
 
 You help marketers with:
 - Answering questions about campaigns, segments, customers, and analytics
@@ -33,7 +33,7 @@ Be direct and action-oriented, not instructional.`;
 
         const historyText = history?.length
             ? history.map((m: { role: string; text: string }) =>
-                `${m.role === "user" ? "User" : "Xeno"}: ${m.text}`
+                `${m.role === "user" ? "User" : "Cove"}: ${m.text}`
             ).join("\n")
             : "";
 

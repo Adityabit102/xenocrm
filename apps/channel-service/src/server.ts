@@ -25,7 +25,7 @@ async function start() {
     await fastify.register(sendRoutes, { prefix: "/" });
     fastify.log.info(`[Queue] In-memory simulator queue initialized and listening.`);
     await fastify.listen({ port: PORT, host: "0.0.0.0" });
-    console.log(`XenoCRM Channel Service running on port ${PORT}`);
+    console.log(`Cove Channel Service running on port ${PORT}`);
   } catch (err) {
     fastify.log.error(err as any, "Fatal startup error");
     process.exit(1);

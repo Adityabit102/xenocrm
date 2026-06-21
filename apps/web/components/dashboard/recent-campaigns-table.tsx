@@ -10,7 +10,7 @@ import { CampaignStatusBadge } from "@/components/campaigns/status-badge";
 interface RecentCampaignsTableProps { dateFrom?: string; dateTo?: string; className?: string; }
 
 const CHANNEL_META: Record<string,{label:string;icon:any;classes:string}> = {
-  whatsapp: { label:"WhatsApp", icon:MessageSquare, classes:"bg-[#25D366]/10 text-[#25D366] border-[#25D366]/20" },
+  whatsapp: { label:"WhatsApp", icon:MessageSquare, classes:"bg-[#2FA56F]/10 text-[#2FA56F] border-[#2FA56F]/20" },
   email:    { label:"Email",    icon:Mail,          classes:"bg-status-info/10 text-status-info border-status-info/20" },
   sms:      { label:"SMS",      icon:Smartphone,    classes:"bg-surface-container-high text-text-secondary border-border-mid" },
   rcs:      { label:"RCS",      icon:Send,          classes:"bg-status-danger/10 text-status-danger border-status-danger/20" },

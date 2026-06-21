@@ -40,7 +40,7 @@ export async function POST(request: Request) {
         totalSent, deliveryRate, openRate, clickRate, revenue, status,
       } = body;
 
-      const systemPrompt = `You are AutoReach, an AI marketing analyst for XenoCRM, an Indian retail CRM.
+      const systemPrompt = `You are AutoReach, an AI marketing analyst for Cove, an Indian retail CRM.
 Analyze campaign performance data and provide clear, actionable insights in plain text.
 Write 3-4 short paragraphs: performance summary, what worked well, what needs improvement, and one concrete recommendation.
 No markdown, no bullet points, no headers. Plain conversational text only.`;

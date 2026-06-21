@@ -1,5 +1,5 @@
 {
-  "name": "@xenocrm/channel-service",
+  "name": "@cove/channel-service",
   "version": "1.0.0",
   "private": true,
   "main": "dist/server.js",

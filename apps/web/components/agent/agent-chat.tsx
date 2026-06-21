@@ -40,7 +40,7 @@ export function AgentChat({ messages, inputText, setInputText, isStreaming, isEx
           <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-on-primary-container"/>
         </div>
         <div className="min-w-0">
-          <h2 className="font-headline-h2 text-primary leading-none text-sm sm:text-base">XenoCRM Intelligence</h2>
+          <h2 className="font-headline-h2 text-primary leading-none text-sm sm:text-base">Cove Intelligence</h2>
           <p className="font-label-sm text-text-secondary mt-0.5 text-[11px] leading-snug hidden sm:block">
             Describe your campaign goal and the agent will plan segments, copy, and channels.
           </p>

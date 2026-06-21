@@ -99,24 +99,24 @@ export function MessagesChart({ dateFrom, dateTo, className = "" }: MessagesChar
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData} margin={{top:10,right:4,left:-24,bottom:0}}>
             <defs>
-              <linearGradient id="gSent"      x1="0" y1="0" x2="0" y2="1"><stop offset="5%"  stopColor="#5b5fef" stopOpacity={0.3}/><stop offset="95%" stopColor="#5b5fef" stopOpacity={0}/></linearGradient>
-              <linearGradient id="gDelivered" x1="0" y1="0" x2="0" y2="1"><stop offset="5%"  stopColor="#00e293" stopOpacity={0.25}/><stop offset="95%" stopColor="#00e293" stopOpacity={0}/></linearGradient>
-              <linearGradient id="gClicked"   x1="0" y1="0" x2="0" y2="1"><stop offset="5%"  stopColor="#d7baff" stopOpacity={0.2}/><stop offset="95%" stopColor="#d7baff" stopOpacity={0}/></linearGradient>
+              <linearGradient id="gSent"      x1="0" y1="0" x2="0" y2="1"><stop offset="5%"  stopColor="#3E8A9E" stopOpacity={0.3}/><stop offset="95%" stopColor="#3E8A9E" stopOpacity={0}/></linearGradient>
+              <linearGradient id="gDelivered" x1="0" y1="0" x2="0" y2="1"><stop offset="5%"  stopColor="#4E9B8A" stopOpacity={0.25}/><stop offset="95%" stopColor="#4E9B8A" stopOpacity={0}/></linearGradient>
+              <linearGradient id="gClicked"   x1="0" y1="0" x2="0" y2="1"><stop offset="5%"  stopColor="#C98E83" stopOpacity={0.2}/><stop offset="95%" stopColor="#C98E83" stopOpacity={0}/></linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#252D48" opacity={0.6}/>
-            <XAxis dataKey="date" tickFormatter={fmtX} stroke="#7B82A0" fontSize={9} dy={10} tickLine={false} axisLine={false}/>
-            <YAxis stroke="#7B82A0" fontSize={9} dx={-4} tickLine={false} axisLine={false} allowDecimals={false}/>
-            <Tooltip content={<CustomTooltip/>} cursor={{stroke:"#252D48",strokeWidth:1}}/>
-            <Area type="monotone" dataKey="sent"      name="Sent"      stroke="#5b5fef" fill="url(#gSent)"      strokeWidth={2} dot={false} activeDot={{r:4,strokeWidth:0}}/>
-            <Area type="monotone" dataKey="delivered" name="Delivered" stroke="#00e293" fill="url(#gDelivered)" strokeWidth={2} dot={false} activeDot={{r:4,strokeWidth:0}}/>
-            <Area type="monotone" dataKey="clicked"   name="Clicked"   stroke="#d7baff" fill="url(#gClicked)"   strokeWidth={2} dot={false} activeDot={{r:4,strokeWidth:0}}/>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#D8CCB6" opacity={0.6}/>
+            <XAxis dataKey="date" tickFormatter={fmtX} stroke="#8A7F76" fontSize={9} dy={10} tickLine={false} axisLine={false}/>
+            <YAxis stroke="#8A7F76" fontSize={9} dx={-4} tickLine={false} axisLine={false} allowDecimals={false}/>
+            <Tooltip content={<CustomTooltip/>} cursor={{stroke:"#D8CCB6",strokeWidth:1}}/>
+            <Area type="monotone" dataKey="sent"      name="Sent"      stroke="#3E8A9E" fill="url(#gSent)"      strokeWidth={2} dot={false} activeDot={{r:4,strokeWidth:0}}/>
+            <Area type="monotone" dataKey="delivered" name="Delivered" stroke="#4E9B8A" fill="url(#gDelivered)" strokeWidth={2} dot={false} activeDot={{r:4,strokeWidth:0}}/>
+            <Area type="monotone" dataKey="clicked"   name="Clicked"   stroke="#C98E83" fill="url(#gClicked)"   strokeWidth={2} dot={false} activeDot={{r:4,strokeWidth:0}}/>
           </AreaChart>
         </ResponsiveContainer>
       </div>
 
       {/* Legend */}
       <div className="flex flex-wrap items-center gap-md mt-md">
-        {[["#5b5fef","Sent"],["#00e293","Delivered"],["#d7baff","Clicked"]].map(([color,label])=>(
+        {[["#3E8A9E","Sent"],["#4E9B8A","Delivered"],["#C98E83","Clicked"]].map(([color,label])=>(
           <div key={label} className="flex items-center gap-1.5 text-xs text-text-secondary">
             <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{backgroundColor:color}}/>
             <span className="font-label-sm">{label}</span>

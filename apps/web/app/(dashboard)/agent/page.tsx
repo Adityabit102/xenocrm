@@ -35,7 +35,7 @@ function HighlightMessage({ text }: { text: string }) {
     <span>
       {parts.map((p, i) =>
         p.startsWith("{{") ? (
-          <code key={i} style={{ background: "rgba(192,193,255,0.12)", border: "1px solid rgba(192,193,255,0.2)", borderRadius: 4, padding: "1px 6px", fontFamily: "JetBrains Mono,monospace", fontSize: "0.78em", color: "#c0c1ff" }}>
+          <code key={i} style={{ background: "rgba(62, 138, 158,0.12)", border: "1px solid rgba(62, 138, 158,0.2)", borderRadius: 4, padding: "1px 6px", fontFamily: "JetBrains Mono,monospace", fontSize: "0.78em", color: "#2C6A7B" }}>
             {p.slice(2, -2)}
           </code>
         ) : <span key={i}>{p}</span>
@@ -191,7 +191,7 @@ export default function AgentPage() {
           : goal.toLowerCase().includes("sms") ? "sms"
             : goal.toLowerCase().includes("rcs") ? "rcs"
               : "whatsapp",
-        messageTemplate: `Hi {{first_name}}! 👋 We have an exclusive offer just for you. Visit our {{city}} store or shop online with code XENO15 for 15% off {{favourite_category}}!`,
+        messageTemplate: `Hi {{first_name}}! 👋 We have an exclusive offer just for you. Visit our {{city}} store or shop online with code COVE15 for 15% off {{favourite_category}}!`,
         newSegmentName: "AI Planned Audience",
         estimatedReach: 169,
         expectedClickRate: 12.4,
@@ -260,28 +260,28 @@ export default function AgentPage() {
   ];
 
   const s = {
-    card: { background: "#13151F", border: "1px solid #1A2035", borderRadius: 12 } as React.CSSProperties,
+    card: { background: "#FFFFFF", border: "1px solid #E5DBC9", borderRadius: 12 } as React.CSSProperties,
   };
 
   return (
-    <div style={{ fontFamily: "DM Sans,sans-serif", color: "#EDF0FF", maxWidth: 1400, height: "calc(100vh - 128px)", display: "flex", flexDirection: "column" }}>
+    <div style={{ fontFamily: "DM Sans,sans-serif", color: "#38322E", maxWidth: 1400, height: "calc(100vh - 128px)", display: "flex", flexDirection: "column" }}>
 
       {/* Header */}
       <div style={{ marginBottom: 16, flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-          <Sparkles style={{ width: 22, height: 22, color: "#d7baff" }} />
-          <h1 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.5rem", fontWeight: 700, color: "#EDF0FF", margin: 0 }}>AutoReach Agent</h1>
+          <Sparkles style={{ width: 22, height: 22, color: "#C98E83" }} />
+          <h1 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.5rem", fontWeight: 700, color: "#38322E", margin: 0 }}>AutoReach Agent</h1>
           {planReady && (
-            <span style={{ display: "flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 99, background: "rgba(0,226,147,0.1)", border: "1px solid rgba(0,226,147,0.25)", color: "#00e293", fontFamily: "DM Sans,sans-serif", fontSize: "0.65rem", fontWeight: 700 }}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#00e293", animation: "pulse 2s infinite", display: "inline-block" }} />
+            <span style={{ display: "flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 99, background: "rgba(78, 155, 138,0.1)", border: "1px solid rgba(78, 155, 138,0.25)", color: "#4E9B8A", fontFamily: "DM Sans,sans-serif", fontSize: "0.65rem", fontWeight: 700 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4E9B8A", animation: "pulse 2s infinite", display: "inline-block" }} />
               Autonomous Agent Live
             </span>
           )}
         </div>
-        <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.875rem", color: "#7B82A0", margin: 0 }}>
+        <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.875rem", color: "#8A7F76", margin: 0 }}>
           Describe a campaign goal and let AI plan and execute it
         </p>
-        <div style={{ height: 1, background: "#1A2035", marginTop: 14 }} />
+        <div style={{ height: 1, background: "#E5DBC9", marginTop: 14 }} />
       </div>
 
       {/* Two-column layout */}
@@ -291,13 +291,13 @@ export default function AgentPage() {
         <div style={{ ...s.card, display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
           {/* Chat header */}
-          <div style={{ padding: "16px 20px", borderBottom: "1px solid #1A2035", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(215,186,255,0.1)", border: "1px solid rgba(215,186,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Zap style={{ width: 16, height: 16, color: "#d7baff" }} />
+          <div style={{ padding: "16px 20px", borderBottom: "1px solid #E5DBC9", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(201, 142, 131,0.1)", border: "1px solid rgba(201, 142, 131,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Zap style={{ width: 16, height: 16, color: "#C98E83" }} />
             </div>
             <div>
-              <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, color: "#EDF0FF", fontSize: "0.9rem" }}>XenoCRM Intelligence</div>
-              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#7B82A0" }}>Describe your campaign goal and the agent will plan segments, copy, and channels.</div>
+              <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, color: "#38322E", fontSize: "0.9rem" }}>Cove Intelligence</div>
+              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76" }}>Describe your campaign goal and the agent will plan segments, copy, and channels.</div>
             </div>
           </div>
 
@@ -306,12 +306,12 @@ export default function AgentPage() {
 
             {messages.length === 0 && (
               <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, textAlign: "center", paddingBottom: 40 }}>
-                <div style={{ width: 72, height: 72, borderRadius: 20, background: "rgba(215,186,255,0.08)", border: "1px solid rgba(215,186,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Sparkles style={{ width: 32, height: 32, color: "#d7baff" }} />
+                <div style={{ width: 72, height: 72, borderRadius: 20, background: "rgba(201, 142, 131,0.08)", border: "1px solid rgba(201, 142, 131,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Sparkles style={{ width: 32, height: 32, color: "#C98E83" }} />
                 </div>
                 <div>
-                  <h3 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "#EDF0FF", marginBottom: 8 }}>Describe your Campaign Goal</h3>
-                  <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#7B82A0", lineHeight: 1.6, maxWidth: 340, margin: "0 auto" }}>
+                  <h3 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "#38322E", marginBottom: 8 }}>Describe your Campaign Goal</h3>
+                  <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#8A7F76", lineHeight: 1.6, maxWidth: 340, margin: "0 auto" }}>
                     "Promote Diwali discounts to loyal Mumbai users" or "Win back customers who haven't ordered in 60 days"
                   </p>
                 </div>
@@ -324,13 +324,13 @@ export default function AgentPage() {
                   ].map(c => {
                     const Icon = c.icon;
                     return (
-                      <div key={c.label} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid #1A2035", borderRadius: 10, padding: "14px", textAlign: "left", cursor: "pointer", transition: "all 0.15s" }}
-                        onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "#252D48"; }}
-                        onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "#1A2035"; }}
+                      <div key={c.label} style={{ background: "rgba(56, 50, 46,0.03)", border: "1px solid #E5DBC9", borderRadius: 10, padding: "14px", textAlign: "left", cursor: "pointer", transition: "all 0.15s" }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "#D8CCB6"; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "#E5DBC9"; }}
                       >
-                        <Icon style={{ width: 16, height: 16, color: "#c0c1ff", marginBottom: 8 }} />
-                        <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, color: "#EDF0FF", fontSize: "0.82rem", marginBottom: 4 }}>{c.label}</div>
-                        <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.7rem", color: "#7B82A0" }}>{c.desc}</div>
+                        <Icon style={{ width: 16, height: 16, color: "#2C6A7B", marginBottom: 8 }} />
+                        <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, color: "#38322E", fontSize: "0.82rem", marginBottom: 4 }}>{c.label}</div>
+                        <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.7rem", color: "#8A7F76" }}>{c.desc}</div>
                       </div>
                     );
                   })}
@@ -341,7 +341,7 @@ export default function AgentPage() {
             {messages.map((msg, i) => {
               if (msg.role === "user") return (
                 <div key={i} style={{ display: "flex", justifyContent: "center" }}>
-                  <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.85rem", color: "#c6c5d7", fontStyle: "italic" }}>
+                  <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.85rem", color: "#6E635D", fontStyle: "italic" }}>
                     {msg.text}
                   </div>
                 </div>
@@ -349,37 +349,37 @@ export default function AgentPage() {
 
               /* Agent trace message */
               return (
-                <div key={i} style={{ background: "rgba(255,255,255,0.02)", border: "1px solid #1A2035", borderRadius: 10, padding: "16px 18px" }}>
-                  <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#464555", marginBottom: 4 }}>
+                <div key={i} style={{ background: "rgba(56, 50, 46,0.02)", border: "1px solid #E5DBC9", borderRadius: 10, padding: "16px 18px" }}>
+                  <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#C9BFB0", marginBottom: 4 }}>
                     Agent Reasoning Trace
                   </div>
-                  <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#7B82A0", marginBottom: 14 }}>
+                  <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#8A7F76", marginBottom: 14 }}>
                     Real-time execution trace of the AutoReach AI Planner
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                     {msg.trace.map(step => (
                       <div key={step.id} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                        <div style={{ width: 28, height: 28, borderRadius: "50%", border: `1.5px solid ${step.status === "done" ? "#5b5fef" : step.status === "running" ? "#FFB547" : "#252D48"}`, background: step.status === "done" ? "rgba(91,95,239,0.15)" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-                          {step.status === "done" ? <Check style={{ width: 13, height: 13, color: "#c0c1ff" }} /> :
-                            step.status === "running" ? <Loader2 style={{ width: 12, height: 12, color: "#FFB547", animation: "spin 1s linear infinite" }} /> :
-                              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#252D48", display: "inline-block" }} />}
+                        <div style={{ width: 28, height: 28, borderRadius: "50%", border: `1.5px solid ${step.status === "done" ? "#3E8A9E" : step.status === "running" ? "#C9954E" : "#D8CCB6"}`, background: step.status === "done" ? "rgba(62, 138, 158,0.15)" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                          {step.status === "done" ? <Check style={{ width: 13, height: 13, color: "#2C6A7B" }} /> :
+                            step.status === "running" ? <Loader2 style={{ width: 12, height: 12, color: "#C9954E", animation: "spin 1s linear infinite" }} /> :
+                              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#D8CCB6", display: "inline-block" }} />}
                         </div>
                         <div>
                           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
-                            <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: "#464555" }}>STEP {step.id}</span>
-                            <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", fontWeight: 700, color: step.status === "done" ? "#7B82A0" : "#EDF0FF", textDecoration: step.status === "done" ? "line-through" : "none" }}>
+                            <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: "#C9BFB0" }}>STEP {step.id}</span>
+                            <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", fontWeight: 700, color: step.status === "done" ? "#8A7F76" : "#38322E", textDecoration: step.status === "done" ? "line-through" : "none" }}>
                               {step.label}
                             </span>
                           </div>
-                          <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#7B82A0" }}>{step.desc}</div>
+                          <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76" }}>{step.desc}</div>
                         </div>
                       </div>
                     ))}
                   </div>
                   {msg.isStreaming && (
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, paddingTop: 12, borderTop: "1px solid #1A2035" }}>
-                      <Loader2 style={{ width: 12, height: 12, color: "#d7baff", animation: "spin 1s linear infinite" }} />
-                      <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#7B82A0" }}>Groq llama-3.3-70b processing...</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, paddingTop: 12, borderTop: "1px solid #E5DBC9" }}>
+                      <Loader2 style={{ width: 12, height: 12, color: "#C98E83", animation: "spin 1s linear infinite" }} />
+                      <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#8A7F76" }}>Groq llama-3.3-70b processing...</span>
                     </div>
                   )}
                 </div>
@@ -390,7 +390,7 @@ export default function AgentPage() {
             {isStreaming && messages[messages.length - 1]?.role === "user" && (
               <div style={{ display: "flex", gap: 5, padding: "12px 0" }}>
                 {[0, 1, 2].map(i => (
-                  <div key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: "#d7baff", animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite` }} />
+                  <div key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: "#C98E83", animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite` }} />
                 ))}
               </div>
             )}
@@ -399,19 +399,19 @@ export default function AgentPage() {
           </div>
 
           {/* Input area */}
-          <div style={{ borderTop: "1px solid #1A2035", padding: "16px 20px", flexShrink: 0 }}>
+          <div style={{ borderTop: "1px solid #E5DBC9", padding: "16px 20px", flexShrink: 0 }}>
             {/* Suggested chips — only when no messages */}
             {messages.length === 0 && !isStreaming && (
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#464555", marginBottom: 8 }}>
+                <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C9BFB0", marginBottom: 8 }}>
                   Suggested Goals
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   {SUGGESTED.map(s => (
                     <button key={s} onClick={() => runAgent(s)} disabled={isStreaming}
-                      style={{ textAlign: "left", padding: "8px 14px", background: "rgba(255,255,255,0.03)", border: "1px solid #1A2035", borderRadius: 8, color: "#c6c5d7", fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", cursor: "pointer", transition: "all 0.15s" }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#252D48"; (e.currentTarget as HTMLButtonElement).style.color = "#EDF0FF"; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#1A2035"; (e.currentTarget as HTMLButtonElement).style.color = "#c6c5d7"; }}
+                      style={{ textAlign: "left", padding: "8px 14px", background: "rgba(56, 50, 46,0.03)", border: "1px solid #E5DBC9", borderRadius: 8, color: "#6E635D", fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", cursor: "pointer", transition: "all 0.15s" }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#D8CCB6"; (e.currentTarget as HTMLButtonElement).style.color = "#38322E"; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#E5DBC9"; (e.currentTarget as HTMLButtonElement).style.color = "#6E635D"; }}
                     >{s}</button>
                   ))}
                 </div>
@@ -419,7 +419,7 @@ export default function AgentPage() {
             )}
 
             {/* Text input */}
-            <div style={{ display: "flex", alignItems: "center", gap: 10, borderBottom: "1px solid #252D48", paddingBottom: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, borderBottom: "1px solid #D8CCB6", paddingBottom: 12 }}>
               <input
                 type="text"
                 value={input}
@@ -427,15 +427,15 @@ export default function AgentPage() {
                 onKeyDown={e => { if (e.key === "Enter" && !isStreaming) runAgent(input); }}
                 placeholder="Type a directive..."
                 disabled={isStreaming}
-                style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "DM Sans,sans-serif", fontSize: "0.85rem", color: "#EDF0FF" }}
+                style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "DM Sans,sans-serif", fontSize: "0.85rem", color: "#38322E" }}
               />
               <button
                 onClick={() => runAgent(input)}
                 disabled={isStreaming || !input.trim()}
-                style={{ width: 32, height: 32, borderRadius: "50%", background: isStreaming || !input.trim() ? "rgba(255,255,255,0.04)" : "#5b5fef", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: isStreaming || !input.trim() ? "not-allowed" : "pointer", transition: "all 0.15s" }}
+                style={{ width: 32, height: 32, borderRadius: "50%", background: isStreaming || !input.trim() ? "rgba(56, 50, 46,0.04)" : "#3E8A9E", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: isStreaming || !input.trim() ? "not-allowed" : "pointer", transition: "all 0.15s" }}
               >
                 {isStreaming
-                  ? <Loader2 style={{ width: 14, height: 14, color: "#7B82A0", animation: "spin 1s linear infinite" }} />
+                  ? <Loader2 style={{ width: 14, height: 14, color: "#8A7F76", animation: "spin 1s linear infinite" }} />
                   : <Send style={{ width: 14, height: 14, color: "#fff" }} />}
               </button>
             </div>
@@ -449,17 +449,17 @@ export default function AgentPage() {
             /* How it works */
             <div style={{ ...s.card, padding: "24px" }}>
               <div style={{ textAlign: "center", marginBottom: 24 }}>
-                <div style={{ width: 64, height: 64, borderRadius: 20, background: "rgba(215,186,255,0.08)", border: "1px solid rgba(215,186,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px" }}>
-                  <Sparkles style={{ width: 28, height: 28, color: "#d7baff" }} />
+                <div style={{ width: 64, height: 64, borderRadius: 20, background: "rgba(201, 142, 131,0.08)", border: "1px solid rgba(201, 142, 131,0.15)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px" }}>
+                  <Sparkles style={{ width: 28, height: 28, color: "#C98E83" }} />
                 </div>
-                <h3 style={{ fontFamily: "Syne,sans-serif", fontSize: "1rem", fontWeight: 700, color: "#EDF0FF", marginBottom: 8 }}>How AutoReach Works</h3>
-                <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#7B82A0", lineHeight: 1.6 }}>
+                <h3 style={{ fontFamily: "Syne,sans-serif", fontSize: "1rem", fontWeight: 700, color: "#38322E", marginBottom: 8 }}>How AutoReach Works</h3>
+                <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#8A7F76", lineHeight: 1.6 }}>
                   AutoReach leverages advanced analytics and AI models to design, target, and launch complete marketing campaigns.
                 </p>
                 {isStreaming && (
                   <div style={{ marginTop: 12, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                    <Loader2 style={{ width: 14, height: 14, color: "#d7baff", animation: "spin 1s linear infinite" }} />
-                    <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#d7baff" }}>Groq AI planning your campaign...</span>
+                    <Loader2 style={{ width: 14, height: 14, color: "#C98E83", animation: "spin 1s linear infinite" }} />
+                    <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#C98E83" }}>Groq AI planning your campaign...</span>
                   </div>
                 )}
               </div>
@@ -472,15 +472,15 @@ export default function AgentPage() {
                   const Icon = item.icon;
                   return (
                     <div key={item.n} style={{ display: "flex", gap: 14 }}>
-                      <div style={{ width: 32, height: 32, borderRadius: "50%", border: "1.5px solid #252D48", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.8rem", color: "#7B82A0" }}>
+                      <div style={{ width: 32, height: 32, borderRadius: "50%", border: "1.5px solid #D8CCB6", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.8rem", color: "#8A7F76" }}>
                         {item.n}
                       </div>
                       <div>
                         <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-                          <Icon style={{ width: 13, height: 13, color: "#c0c1ff" }} />
-                          <span style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, color: "#EDF0FF", fontSize: "0.82rem" }}>{item.label}</span>
+                          <Icon style={{ width: 13, height: 13, color: "#2C6A7B" }} />
+                          <span style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, color: "#38322E", fontSize: "0.82rem" }}>{item.label}</span>
                         </div>
-                        <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#7B82A0", lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
+                        <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
                       </div>
                     </div>
                   );
@@ -492,11 +492,11 @@ export default function AgentPage() {
               {/* ── Generated Campaign Plan ── */}
               <div style={{ ...s.card, padding: "16px 20px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
-                  <span style={{ padding: "3px 10px", borderRadius: 99, background: "rgba(215,186,255,0.12)", border: "1px solid rgba(215,186,255,0.2)", color: "#d7baff", fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.08em" }}>
+                  <span style={{ padding: "3px 10px", borderRadius: 99, background: "rgba(201, 142, 131,0.12)", border: "1px solid rgba(201, 142, 131,0.2)", color: "#C98E83", fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.08em" }}>
                     🤖 AI RECOMMENDED PLAN
                   </span>
                 </div>
-                <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#EDF0FF", margin: "0 0 4px 0", letterSpacing: "-0.02em" }}>
+                <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#38322E", margin: "0 0 4px 0", letterSpacing: "-0.02em" }}>
                   {activePlan.name || `AutoReach AI Campaign`}
                 </h2>
 
@@ -507,47 +507,47 @@ export default function AgentPage() {
                     { label: "Est. Response Rate", value: `${activePlan.expectedClickRate || 12.4}%` },
                     { label: "Confidence", value: `${Math.min(99, Math.round((activePlan.expectedClickRate || 12) * 6 + 20))}%` },
                   ].map(stat => (
-                    <div key={stat.label} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid #1A2035", borderRadius: 8, padding: "10px 10px", textAlign: "center" }}>
-                      <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.58rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#464555", marginBottom: 4 }}>{stat.label}</div>
-                      <div style={{ fontFamily: "Syne,sans-serif", fontSize: "1.1rem", fontWeight: 800, color: stat.label === "Confidence" ? "#d7baff" : "#EDF0FF" }}>{stat.value}</div>
+                    <div key={stat.label} style={{ background: "rgba(56, 50, 46,0.03)", border: "1px solid #E5DBC9", borderRadius: 8, padding: "10px 10px", textAlign: "center" }}>
+                      <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.58rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#C9BFB0", marginBottom: 4 }}>{stat.label}</div>
+                      <div style={{ fontFamily: "Syne,sans-serif", fontSize: "1.1rem", fontWeight: 800, color: stat.label === "Confidence" ? "#C98E83" : "#38322E" }}>{stat.value}</div>
                     </div>
                   ))}
                 </div>
 
-                <div style={{ height: 1, background: "#1A2035", marginBottom: 12 }} />
+                <div style={{ height: 1, background: "#E5DBC9", marginBottom: 12 }} />
 
                 {/* Target audience */}
                 <div style={{ marginBottom: 12 }}>
-                  <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#464555", marginBottom: 8 }}>Target Audience</div>
+                  <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C9BFB0", marginBottom: 8 }}>Target Audience</div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <Users style={{ width: 14, height: 14, color: "#7B82A0" }} />
-                      <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#EDF0FF" }}>
+                      <Users style={{ width: 14, height: 14, color: "#8A7F76" }} />
+                      <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem", color: "#38322E" }}>
                         {activePlan.newSegmentName || "AI Planned Audience"}
                       </span>
                     </div>
-                    <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.7rem", color: "#c0c1ff", background: "rgba(192,193,255,0.1)", padding: "2px 10px", borderRadius: 99 }}>
+                    <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.7rem", color: "#2C6A7B", background: "rgba(62, 138, 158,0.1)", padding: "2px 10px", borderRadius: 99 }}>
                       {(activePlan.estimatedReach || 169).toLocaleString()} customers
                     </span>
                   </div>
                 </div>
 
-                <div style={{ height: 1, background: "#1A2035", marginBottom: 12 }} />
+                <div style={{ height: 1, background: "#E5DBC9", marginBottom: 12 }} />
 
                 {/* Channel — dynamic */}
                 {(() => {
                   const ch = (activePlan.channel || "whatsapp").toLowerCase();
                   const chanMap: Record<string, { bg: string; border: string; color: string; label: string; icon: any }> = {
-                    whatsapp: { bg: "rgba(37,211,102,0.1)", border: "rgba(37,211,102,0.25)", color: "#25D366", label: "WhatsApp", icon: MessageSquare },
-                    email: { bg: "rgba(77,195,255,0.1)", border: "rgba(77,195,255,0.25)", color: "#4DC3FF", label: "Email", icon: Mail },
-                    sms: { bg: "rgba(123,130,160,0.1)", border: "#252D48", color: "#7B82A0", label: "SMS", icon: Smartphone },
-                    rcs: { bg: "rgba(255,77,106,0.1)", border: "rgba(255,77,106,0.25)", color: "#FF4D6A", label: "RCS", icon: Send },
+                    whatsapp: { bg: "rgba(47, 165, 111,0.1)", border: "rgba(47, 165, 111,0.25)", color: "#2FA56F", label: "WhatsApp", icon: MessageSquare },
+                    email: { bg: "rgba(77, 143, 168,0.1)", border: "rgba(77, 143, 168,0.25)", color: "#4D8FA8", label: "Email", icon: Mail },
+                    sms: { bg: "rgba(123,130,160,0.1)", border: "#D8CCB6", color: "#8A7F76", label: "SMS", icon: Smartphone },
+                    rcs: { bg: "rgba(204, 107, 107,0.1)", border: "rgba(204, 107, 107,0.25)", color: "#CC6B6B", label: "RCS", icon: Send },
                   };
                   const meta = chanMap[ch] || chanMap.whatsapp;
                   const Icon = meta.icon;
                   return (
                     <div style={{ marginBottom: 12 }}>
-                      <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#464555", marginBottom: 8 }}>
+                      <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C9BFB0", marginBottom: 8 }}>
                         Delivery Channel
                       </div>
                       <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 99, background: meta.bg, border: `1px solid ${meta.border}`, color: meta.color, fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", fontWeight: 700 }}>
@@ -558,71 +558,71 @@ export default function AgentPage() {
                   );
                 })()}
 
-                <div style={{ height: 1, background: "#1A2035", marginBottom: 12 }} />
+                <div style={{ height: 1, background: "#E5DBC9", marginBottom: 12 }} />
 
                 {/* Message template */}
                 <div style={{ marginBottom: 12 }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-                    <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#464555" }}>Message Template</div>
+                    <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C9BFB0" }}>Message Template</div>
                     <button onClick={() => setEditMsg(!editMsg)}
-                      style={{ background: "none", border: "none", color: "#7B82A0", cursor: "pointer", padding: 4, transition: "color 0.15s" }}
-                      onMouseEnter={e => (e.currentTarget.style.color = "#c0c1ff")}
-                      onMouseLeave={e => (e.currentTarget.style.color = "#7B82A0")}>
+                      style={{ background: "none", border: "none", color: "#8A7F76", cursor: "pointer", padding: 4, transition: "color 0.15s" }}
+                      onMouseEnter={e => (e.currentTarget.style.color = "#2C6A7B")}
+                      onMouseLeave={e => (e.currentTarget.style.color = "#8A7F76")}>
                       <Edit3 style={{ width: 13, height: 13 }} />
                     </button>
                   </div>
                   {editMsg ? (
                     <textarea value={editedMsg} onChange={e => setEditedMsg(e.target.value)} rows={5}
-                      style={{ width: "100%", background: "rgba(24,29,46,0.6)", border: "1px solid #5b5fef", borderRadius: 8, padding: "10px 12px", fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#EDF0FF", outline: "none", resize: "vertical", lineHeight: 1.6, boxSizing: "border-box" }} />
+                      style={{ width: "100%", background: "rgba(24,29,46,0.6)", border: "1px solid #3E8A9E", borderRadius: 8, padding: "10px 12px", fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#38322E", outline: "none", resize: "vertical", lineHeight: 1.6, boxSizing: "border-box" }} />
                   ) : (
-                    <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid #1A2035", borderRadius: 8, padding: "12px 14px", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#c6c5d7", lineHeight: 1.7 }}>
+                    <div style={{ background: "rgba(56, 50, 46,0.03)", border: "1px solid #E5DBC9", borderRadius: 8, padding: "12px 14px", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#6E635D", lineHeight: 1.7 }}>
                       <HighlightMessage text={editedMsg || activePlan.messageTemplate || ""} />
                     </div>
                   )}
                 </div>
 
-                <div style={{ height: 1, background: "#1A2035", marginBottom: 12 }} />
+                <div style={{ height: 1, background: "#E5DBC9", marginBottom: 12 }} />
 
                 {/* AI Reasoning */}
                 {activePlan.reasoning?.length > 0 && (
                   <>
                     <div style={{ marginBottom: 12 }}>
-                      <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#464555", marginBottom: 8 }}>AI Reasoning</div>
+                      <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C9BFB0", marginBottom: 8 }}>AI Reasoning</div>
                       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                         {activePlan.reasoning.slice(0, 3).map((r: string, i: number) => (
                           <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                            <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#5b5fef", flexShrink: 0, marginTop: 6 }} />
-                            <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#7B82A0", lineHeight: 1.5 }}>{r}</span>
+                            <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#3E8A9E", flexShrink: 0, marginTop: 6 }} />
+                            <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", lineHeight: 1.5 }}>{r}</span>
                           </div>
                         ))}
                       </div>
                     </div>
-                    <div style={{ height: 1, background: "#1A2035", marginBottom: 12 }} />
+                    <div style={{ height: 1, background: "#E5DBC9", marginBottom: 12 }} />
                   </>
                 )}
 
                 {/* Activity */}
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-                    <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#464555" }}>Activity</div>
-                    <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#464555" }}>Probability</div>
+                    <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C9BFB0" }}>Activity</div>
+                    <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C9BFB0" }}>Probability</div>
                   </div>
                   {ACTIVITIES.map((a, i) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: i < ACTIVITIES.length - 1 ? 12 : 0 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ width: 30, height: 30, borderRadius: 6, background: "rgba(255,255,255,0.04)", border: "1px solid #1A2035", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                          {i === 0 ? <AtSign style={{ width: 12, height: 12, color: "#4DC3FF" }} /> : i === 1 ? <Zap style={{ width: 12, height: 12, color: "#c0c1ff" }} /> : <MessageSquare style={{ width: 12, height: 12, color: "#7B82A0" }} />}
+                        <div style={{ width: 30, height: 30, borderRadius: 6, background: "rgba(56, 50, 46,0.04)", border: "1px solid #E5DBC9", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                          {i === 0 ? <AtSign style={{ width: 12, height: 12, color: "#4D8FA8" }} /> : i === 1 ? <Zap style={{ width: 12, height: 12, color: "#2C6A7B" }} /> : <MessageSquare style={{ width: 12, height: 12, color: "#8A7F76" }} />}
                         </div>
                         <div>
-                          <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 600, color: "#EDF0FF", fontSize: "0.78rem" }}>{a.label}</div>
-                          <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.65rem", color: "#7B82A0" }}>{a.sub}</div>
+                          <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 600, color: "#38322E", fontSize: "0.78rem" }}>{a.label}</div>
+                          <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.65rem", color: "#8A7F76" }}>{a.sub}</div>
                         </div>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
-                        <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.78rem", fontWeight: 700, color: a.up ? "#00e293" : "#7B82A0" }}>{a.prob.toFixed(2)}</span>
+                        <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.78rem", fontWeight: 700, color: a.up ? "#4E9B8A" : "#8A7F76" }}>{a.prob.toFixed(2)}</span>
                         {a.up
-                          ? <ChevronRight style={{ width: 12, height: 12, color: "#00e293", transform: "rotate(-90deg)" }} />
-                          : <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#464555" }}>—</span>}
+                          ? <ChevronRight style={{ width: 12, height: 12, color: "#4E9B8A", transform: "rotate(-90deg)" }} />
+                          : <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#C9BFB0" }}>—</span>}
                       </div>
                     </div>
                   ))}
@@ -633,17 +633,17 @@ export default function AgentPage() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                 <button
                   onClick={() => { setCurrentPlan(null); setMessages([]); setExecuted(false); setEditMsg(false); }}
-                  style={{ padding: "12px 0", background: "rgba(255,255,255,0.04)", border: "1px solid #1A2035", borderRadius: 8, color: "#EDF0FF", fontFamily: "DM Sans,sans-serif", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "all 0.15s" }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.07)")}
-                  onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)")}
+                  style={{ padding: "12px 0", background: "rgba(56, 50, 46,0.04)", border: "1px solid #E5DBC9", borderRadius: 8, color: "#38322E", fontFamily: "DM Sans,sans-serif", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "all 0.15s" }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(56, 50, 46,0.07)")}
+                  onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(56, 50, 46,0.04)")}
                 >
                   Discard Plan
                 </button>
                 <button
                   onClick={handleExecute}
                   disabled={isExecuting || executed}
-                  style={{ padding: "12px 0", background: executed ? "#00e293" : "#5b5fef", border: "none", borderRadius: 8, color: executed ? "#003921" : "#fff", fontFamily: "Syne,sans-serif", fontSize: "0.88rem", fontWeight: 700, cursor: isExecuting || executed ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "all 0.2s", opacity: isExecuting ? 0.8 : 1 }}
-                  onMouseEnter={e => { if (!isExecuting && !executed) (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 0 20px rgba(91,95,239,0.35)"; }}
+                  style={{ padding: "12px 0", background: executed ? "#4E9B8A" : "#3E8A9E", border: "none", borderRadius: 8, color: executed ? "#FFFFFF" : "#fff", fontFamily: "Syne,sans-serif", fontSize: "0.88rem", fontWeight: 700, cursor: isExecuting || executed ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "all 0.2s", opacity: isExecuting ? 0.8 : 1 }}
+                  onMouseEnter={e => { if (!isExecuting && !executed) (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 0 20px rgba(62, 138, 158,0.35)"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "none"; }}
                 >
                   {isExecuting

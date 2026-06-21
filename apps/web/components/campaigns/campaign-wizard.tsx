@@ -98,30 +98,30 @@ function PredictionPanel({
   return (
     <div style={{
       marginTop: 16, padding: "14px 16px",
-      background: "rgba(91,95,239,0.05)",
-      border: "1px solid rgba(91,95,239,0.2)",
+      background: "rgba(62, 138, 158,0.05)",
+      border: "1px solid rgba(62, 138, 158,0.2)",
       borderRadius: 12,
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-        <TrendingUp style={{ width: 14, height: 14, color: "#c0c1ff", flexShrink: 0 }} />
-        <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: "#c0c1ff", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+        <TrendingUp style={{ width: 14, height: 14, color: "#2C6A7B", flexShrink: 0 }} />
+        <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: "#2C6A7B", letterSpacing: "0.1em", textTransform: "uppercase" }}>
           AI Performance Prediction
         </span>
         {data?.historicalCampaignsUsed > 0 && (
-          <span style={{ marginLeft: "auto", fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#464555" }}>
+          <span style={{ marginLeft: "auto", fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#C9BFB0" }}>
             based on {data.historicalCampaignsUsed} past campaigns
           </span>
         )}
       </div>
 
       {loading && (
-        <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#7B82A0", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#8A7F76", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem" }}>
           <Loader2 style={{ width: 12, height: 12, animation: "pwiz-spin 1s linear infinite" }} /> Analysing historical data…
         </div>
       )}
 
       {error && (
-        <div style={{ color: "#FF4D6A", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem" }}>
+        <div style={{ color: "#CC6B6B", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem" }}>
           Prediction unavailable — will use channel defaults.
         </div>
       )}
@@ -130,15 +130,15 @@ function PredictionPanel({
         <>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: 12 }}>
             {[
-              { label: "Delivery", value: `${data.predictions.deliveryRate}%`, color: "#00e293" },
-              { label: "Open Rate", value: `${data.predictions.openRate}%`, color: "#5B5FEF" },
-              { label: "CTR", value: `${data.predictions.clickRate}%`, color: "#FFB547" },
+              { label: "Delivery", value: `${data.predictions.deliveryRate}%`, color: "#4E9B8A" },
+              { label: "Open Rate", value: `${data.predictions.openRate}%`, color: "#3E8A9E" },
+              { label: "CTR", value: `${data.predictions.clickRate}%`, color: "#C9954E" },
             ].map(m => (
               <div key={m.label} style={{ textAlign: "center" }}>
                 <div style={{ fontFamily: "Syne,sans-serif", fontSize: "1.3rem", fontWeight: 800, color: m.color, lineHeight: 1 }}>
                   {m.value}
                 </div>
-                <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#7B82A0", marginTop: 3 }}>
+                <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#8A7F76", marginTop: 3 }}>
                   {m.label}
                 </div>
               </div>
@@ -146,30 +146,30 @@ function PredictionPanel({
           </div>
 
           <div style={{ display: "flex", gap: 10, marginBottom: data.insight ? 10 : 0 }}>
-            <div style={{ flex: 1, padding: "8px 10px", background: "rgba(0,226,147,0.06)", border: "1px solid rgba(0,226,147,0.15)", borderRadius: 8 }}>
-              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#7B82A0", marginBottom: 2 }}>Est. reach</div>
-              <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.78rem", color: "#00e293", fontWeight: 700 }}>
+            <div style={{ flex: 1, padding: "8px 10px", background: "rgba(78, 155, 138,0.06)", border: "1px solid rgba(78, 155, 138,0.15)", borderRadius: 8 }}>
+              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#8A7F76", marginBottom: 2 }}>Est. reach</div>
+              <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.78rem", color: "#4E9B8A", fontWeight: 700 }}>
                 {data.predictions.estimatedDelivered.toLocaleString()}
               </div>
             </div>
-            <div style={{ flex: 1, padding: "8px 10px", background: "rgba(91,95,239,0.06)", border: "1px solid rgba(91,95,239,0.15)", borderRadius: 8 }}>
-              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#7B82A0", marginBottom: 2 }}>Est. revenue</div>
-              <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.78rem", color: "#c0c1ff", fontWeight: 700 }}>
+            <div style={{ flex: 1, padding: "8px 10px", background: "rgba(62, 138, 158,0.06)", border: "1px solid rgba(62, 138, 158,0.15)", borderRadius: 8 }}>
+              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#8A7F76", marginBottom: 2 }}>Est. revenue</div>
+              <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.78rem", color: "#2C6A7B", fontWeight: 700 }}>
                 ₹{(data.predictions.estimatedRevenueInr / 100000).toFixed(1)}L
               </div>
             </div>
-            <div style={{ flex: 1.5, padding: "8px 10px", background: "rgba(255,181,71,0.06)", border: "1px solid rgba(255,181,71,0.15)", borderRadius: 8 }}>
-              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#7B82A0", marginBottom: 2 }}>Best send time</div>
-              <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#FFB547", fontWeight: 700 }}>
+            <div style={{ flex: 1.5, padding: "8px 10px", background: "rgba(201, 149, 78,0.06)", border: "1px solid rgba(201, 149, 78,0.15)", borderRadius: 8 }}>
+              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.62rem", color: "#8A7F76", marginBottom: 2 }}>Best send time</div>
+              <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#C9954E", fontWeight: 700 }}>
                 {data.bestSendTime}
               </div>
             </div>
           </div>
 
           {data.insight && (
-            <div style={{ padding: "8px 12px", background: "rgba(255,255,255,0.02)", border: "1px solid #1A2035", borderRadius: 8 }}>
-              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#7B82A0", lineHeight: 1.5 }}>
-                <Sparkles style={{ width: 10, height: 10, display: "inline", marginRight: 4, color: "#c0c1ff" }} />
+            <div style={{ padding: "8px 12px", background: "rgba(56, 50, 46,0.02)", border: "1px solid #E5DBC9", borderRadius: 8 }}>
+              <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", lineHeight: 1.5 }}>
+                <Sparkles style={{ width: 10, height: 10, display: "inline", marginRight: 4, color: "#2C6A7B" }} />
                 {data.insight}
               </div>
             </div>
@@ -259,9 +259,9 @@ Write a challenger Variant B that:
 
   const inp: React.CSSProperties = {
     width: "100%", background: "rgba(24,29,46,0.6)",
-    border: "1px solid #252D48", borderRadius: 8,
+    border: "1px solid #D8CCB6", borderRadius: 8,
     padding: "8px 12px", fontFamily: "DM Sans,sans-serif",
-    fontSize: "0.8rem", color: "#EDF0FF", outline: "none",
+    fontSize: "0.8rem", color: "#38322E", outline: "none",
     boxSizing: "border-box", resize: "vertical" as any,
   };
 
@@ -274,16 +274,16 @@ Write a challenger Variant B that:
         style={{
           display: "flex", alignItems: "center", gap: 8,
           padding: "8px 14px",
-          background: enabled ? "rgba(91,95,239,0.12)" : "rgba(255,255,255,0.03)",
-          border: `1px solid ${enabled ? "rgba(91,95,239,0.35)" : "#252D48"}`,
+          background: enabled ? "rgba(62, 138, 158,0.12)" : "rgba(56, 50, 46,0.03)",
+          border: `1px solid ${enabled ? "rgba(62, 138, 158,0.35)" : "#D8CCB6"}`,
           borderRadius: 8, cursor: "pointer", transition: "all 0.15s",
           fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem",
-          color: enabled ? "#c0c1ff" : "#7B82A0", fontWeight: 600,
+          color: enabled ? "#2C6A7B" : "#8A7F76", fontWeight: 600,
         }}
       >
         <FlaskConical style={{ width: 14, height: 14 }} />
         {enabled ? "A/B Test enabled — split segment 50/50" : "Enable A/B Testing"}
-        <span style={{ marginLeft: "auto", fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: enabled ? "#c0c1ff" : "#464555" }}>
+        <span style={{ marginLeft: "auto", fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: enabled ? "#2C6A7B" : "#C9BFB0" }}>
           {enabled ? "ON" : "OFF"}
         </span>
       </button>
@@ -292,9 +292,9 @@ Write a challenger Variant B that:
         <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
 
           {/* Variant A */}
-          <div style={{ padding: 14, background: "rgba(0,226,147,0.04)", border: "1px solid rgba(0,226,147,0.15)", borderRadius: 10 }}>
+          <div style={{ padding: 14, background: "rgba(78, 155, 138,0.04)", border: "1px solid rgba(78, 155, 138,0.15)", borderRadius: 10 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
-              <span style={{ padding: "2px 8px", borderRadius: 99, background: "rgba(0,226,147,0.1)", border: "1px solid rgba(0,226,147,0.2)", color: "#00e293", fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", fontWeight: 700 }}>A</span>
+              <span style={{ padding: "2px 8px", borderRadius: 99, background: "rgba(78, 155, 138,0.1)", border: "1px solid rgba(78, 155, 138,0.2)", color: "#4E9B8A", fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", fontWeight: 700 }}>A</span>
               <input
                 value={nameA}
                 onChange={e => onChangeNameA(e.target.value)}
@@ -309,15 +309,15 @@ Write a challenger Variant B that:
               placeholder={`Message A — control${channel === Channel.SMS ? " (160 chars)" : ""}`}
               style={{ ...inp }}
             />
-            <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: messageA.length > 450 ? "#FF4D6A" : "#464555", marginTop: 4, textAlign: "right" }}>
+            <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: messageA.length > 450 ? "#CC6B6B" : "#C9BFB0", marginTop: 4, textAlign: "right" }}>
               {messageA.length}/500
             </div>
           </div>
 
           {/* Variant B */}
-          <div style={{ padding: 14, background: "rgba(91,95,239,0.04)", border: "1px solid rgba(91,95,239,0.15)", borderRadius: 10 }}>
+          <div style={{ padding: 14, background: "rgba(62, 138, 158,0.04)", border: "1px solid rgba(62, 138, 158,0.15)", borderRadius: 10 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
-              <span style={{ padding: "2px 8px", borderRadius: 99, background: "rgba(91,95,239,0.1)", border: "1px solid rgba(91,95,239,0.2)", color: "#c0c1ff", fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", fontWeight: 700 }}>B</span>
+              <span style={{ padding: "2px 8px", borderRadius: 99, background: "rgba(62, 138, 158,0.1)", border: "1px solid rgba(62, 138, 158,0.2)", color: "#2C6A7B", fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", fontWeight: 700 }}>B</span>
               <input
                 value={nameB}
                 onChange={e => onChangeNameB(e.target.value)}
@@ -333,15 +333,15 @@ Write a challenger Variant B that:
                 style={{
                   display: "flex", alignItems: "center", gap: 4,
                   padding: "4px 10px", borderRadius: 6, border: "none",
-                  background: generatingB ? "rgba(215,186,255,0.08)" : "rgba(215,186,255,0.15)",
-                  color: "#d7baff",
+                  background: generatingB ? "rgba(201, 142, 131,0.08)" : "rgba(201, 142, 131,0.15)",
+                  color: "#C98E83",
                   cursor: generatingB || !messageA.trim() ? "not-allowed" : "pointer",
                   fontFamily: "DM Sans,sans-serif", fontSize: "0.65rem", fontWeight: 700,
                   opacity: !messageA.trim() ? 0.4 : 1,
                   transition: "all 0.15s", whiteSpace: "nowrap", flexShrink: 0,
                 }}
-                onMouseEnter={e => { if (messageA.trim() && !generatingB) (e.currentTarget as HTMLButtonElement).style.background = "rgba(215,186,255,0.25)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = generatingB ? "rgba(215,186,255,0.08)" : "rgba(215,186,255,0.15)"; }}
+                onMouseEnter={e => { if (messageA.trim() && !generatingB) (e.currentTarget as HTMLButtonElement).style.background = "rgba(201, 142, 131,0.25)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = generatingB ? "rgba(201, 142, 131,0.08)" : "rgba(201, 142, 131,0.15)"; }}
               >
                 {generatingB
                   ? <><Loader2 style={{ width: 10, height: 10, animation: "pwiz-spin 1s linear infinite" }} /> Generating…</>
@@ -356,12 +356,12 @@ Write a challenger Variant B that:
               placeholder={`Message B — challenger${channel === Channel.SMS ? " (160 chars)" : ""}. Write manually or click AI Generate ↑`}
               style={{ ...inp }}
             />
-            <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: messageB.length > 450 ? "#FF4D6A" : "#464555", marginTop: 4, textAlign: "right" }}>
+            <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: messageB.length > 450 ? "#CC6B6B" : "#C9BFB0", marginTop: 4, textAlign: "right" }}>
               {messageB.length}/500
             </div>
           </div>
 
-          <div style={{ gridColumn: "1/-1", fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#7B82A0", padding: "8px 12px", background: "rgba(255,255,255,0.02)", borderRadius: 8, border: "1px solid #1A2035" }}>
+          <div style={{ gridColumn: "1/-1", fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", padding: "8px 12px", background: "rgba(56, 50, 46,0.02)", borderRadius: 8, border: "1px solid #E5DBC9" }}>
             ✦ Segment will be split 50/50. Both variants launch simultaneously. Performance compared in the campaign analytics view.
           </div>
         </div>
@@ -500,7 +500,7 @@ export function CampaignWizard({ onComplete, isSaving }: CampaignWizardProps) {
   };
 
   const CHANNELS_CONFIG = [
-    { type: Channel.WHATSAPP, label: "WhatsApp", icon: MessageSquare, color: "border-[#25D366] text-[#25D366] bg-[#25D366]/5", hint: "Best for high-engagement, media-rich promotional messages." },
+    { type: Channel.WHATSAPP, label: "WhatsApp", icon: MessageSquare, color: "border-[#2FA56F] text-[#2FA56F] bg-[#2FA56F]/5", hint: "Best for high-engagement, media-rich promotional messages." },
     { type: Channel.SMS, label: "SMS", icon: Smartphone, color: "border-[#6B7280] text-[#6B7280] bg-[#6B7280]/5", hint: "Best for urgent, direct alerts, and offline customers." },
     { type: Channel.EMAIL, label: "Email", icon: Mail, color: "border-[#2563EB] text-[#2563EB] bg-[#2563EB]/5", hint: "Best for detailed letters, newsletters, and image-rich newsletters." },
     { type: Channel.RCS, label: "RCS", icon: Send, color: "border-[#EA4335] text-[#EA4335] bg-[#EA4335]/5", hint: "Best for interactive rich communication messages with actions." },
@@ -723,7 +723,7 @@ export function CampaignWizard({ onComplete, isSaving }: CampaignWizardProps) {
 
             {/* A/B test reminder */}
             {abEnabled && (
-              <div style={{ padding: "10px 14px", background: "rgba(91,95,239,0.06)", border: "1px solid rgba(91,95,239,0.2)", borderRadius: 8, fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#c0c1ff" }}>
+              <div style={{ padding: "10px 14px", background: "rgba(62, 138, 158,0.06)", border: "1px solid rgba(62, 138, 158,0.2)", borderRadius: 8, fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#2C6A7B" }}>
                 ✦ A/B test active — both variants will launch simultaneously on schedule.
               </div>
             )}
