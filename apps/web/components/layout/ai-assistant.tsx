@@ -662,20 +662,20 @@ export function AIAssistant() {
             <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 100, display: "flex", alignItems: "center", gap: 10 }}>
                 {showLabel && (
                     <div style={{
-                        background: "rgba(13,16,23,0.9)", backdropFilter: "blur(8px)",
-                        border: "1px solid #E5DBC9", borderRadius: 10,
+                        background: "rgba(13,16,23,0.92)", backdropFilter: "blur(8px)",
+                        border: "1px solid rgba(62,138,158,0.35)", borderRadius: 10,
                         padding: "6px 10px 6px 12px",
-                        fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", fontWeight: 600, color: "#38322E",
+                        fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", fontWeight: 600, color: "#F4EEDF",
                         whiteSpace: "nowrap",
                         boxShadow: "0 4px 16px rgba(99, 86, 70,0.4)",
                         display: "flex", alignItems: "center", gap: 8,
                     }}>
-                        Hi! I&apos;m CoveAI
+                        Hi! I&apos;m Cove AI
                         <button
                             onClick={() => setShowLabel(false)}
-                            style={{ background: "none", border: "none", cursor: "pointer", color: "#8A7F76", padding: 0, display: "flex", alignItems: "center", transition: "color 0.15s", lineHeight: 1 }}
-                            onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = "#38322E")}
-                            onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = "#8A7F76")}
+                            style={{ background: "none", border: "none", cursor: "pointer", color: "#9CC3BB", padding: 0, display: "flex", alignItems: "center", transition: "color 0.15s", lineHeight: 1 }}
+                            onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = "#FFFFFF")}
+                            onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = "#9CC3BB")}
                         >
                             <X style={{ width: 12, height: 12 }} />
                         </button>

@@ -101,11 +101,11 @@ export function Topbar() {
             padding: "6px 12px",
             background: "rgba(56, 50, 46,0.04)",
             border: "1px solid #E5DBC9", borderRadius: 8,
-            cursor: "pointer", width: 220, minWidth: 160,
+            cursor: "pointer", width: 248, minWidth: 200,
           }}
         >
           <Search style={{ width: 14, height: 14, color: "#8A7F76", flexShrink: 0 }} />
-          <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#8A7F76", flex: 1, textAlign: "left" }}>
+          <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#8A7F76", flex: 1, textAlign: "left", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             Command Intelligence...
           </span>
           <kbd style={{

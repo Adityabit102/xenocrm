@@ -7,6 +7,7 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { SystemTicker } from "@/components/layout/system-ticker";
 import { AIAssistant } from "@/components/layout/ai-assistant";
+import { RouteLogoTransition } from "@/components/layout/page-transition";
 
 export default function DashboardLayout({
   children,
@@ -67,6 +68,7 @@ export default function DashboardLayout({
         </main>
       </div>
       <AIAssistant />
+      <RouteLogoTransition />
     </div>
   );
 }

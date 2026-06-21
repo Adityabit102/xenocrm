@@ -24,7 +24,7 @@ const C = {
   border: "#E5DBC9",
 };
 
-/* ---------- Animated ocean wave background (canvas) ---------- */
+/* ---------- Animated ocean wave background + drifting bubbles (canvas) ---------- */
 function WaveBackground() {
   const ref = React.useRef<HTMLCanvasElement>(null);
   React.useEffect(() => {
@@ -32,39 +32,86 @@ function WaveBackground() {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
+    let w = 0;
+    let h = 0;
+
     const layers = [
-      { amp: 26, len: 0.0042, speed: 0.018, y: 0.78, fill: "rgba(156,195,187,0.30)" },
-      { amp: 34, len: 0.0032, speed: 0.012, y: 0.86, fill: "rgba(62,138,158,0.22)" },
-      { amp: 44, len: 0.0024, speed: 0.009, y: 0.93, fill: "rgba(44,106,123,0.20)" },
+      { amp: 20, len: 0.0048, speed: 0.016, y: 0.7, fill: "rgba(156,195,187,0.18)" },
+      { amp: 26, len: 0.0042, speed: 0.018, y: 0.78, fill: "rgba(156,195,187,0.28)" },
+      { amp: 34, len: 0.0032, speed: 0.012, y: 0.86, fill: "rgba(62,138,158,0.20)" },
+      { amp: 44, len: 0.0024, speed: 0.009, y: 0.93, fill: "rgba(44,106,123,0.18)" },
     ];
+
+    type Bubble = { x: number; y: number; r: number; sp: number; ph: number; a: number };
+    let bubbles: Bubble[] = [];
+    const seedBubbles = () => {
+      const count = Math.min(46, Math.max(16, Math.round((w * h) / 95000)));
+      bubbles = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: 1.4 + Math.random() * 4.2,
+        sp: 0.12 + Math.random() * 0.5,
+        ph: Math.random() * Math.PI * 2,
+        a: 0.04 + Math.random() * 0.12,
+      }));
+    };
+
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      seedBubbles();
     };
     resize();
     window.addEventListener("resize", resize);
+
     const draw = (t: number) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, w, h);
+
+      // drifting bubbles (depth particles rising through the water)
+      bubbles.forEach((b) => {
+        b.y -= b.sp;
+        b.x += Math.sin(t * 0.001 + b.ph) * 0.32;
+        if (b.y < -12) {
+          b.y = h + 12;
+          b.x = Math.random() * w;
+        }
+        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r * 2.6);
+        grad.addColorStop(0, `rgba(120,178,190,${b.a})`);
+        grad.addColorStop(1, "rgba(120,178,190,0)");
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r * 2.6, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      });
+
+      // layered ocean swells
       layers.forEach((l, i) => {
         ctx.beginPath();
-        ctx.moveTo(0, canvas.height);
-        const baseY = canvas.height * l.y;
-        for (let x = 0; x <= canvas.width; x += 8) {
+        ctx.moveTo(0, h);
+        const baseY = h * l.y;
+        for (let x = 0; x <= w; x += 8) {
           const y =
             baseY +
             Math.sin(x * l.len + t * l.speed + i) * l.amp +
             Math.sin(x * l.len * 1.7 + t * l.speed * 1.3) * (l.amp * 0.35);
           ctx.lineTo(x, y);
         }
-        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(w, h);
         ctx.closePath();
         ctx.fillStyle = l.fill;
         ctx.fill();
       });
-      raf = requestAnimationFrame(draw);
+
+      if (!reduce) raf = requestAnimationFrame(draw);
     };
-    raf = requestAnimationFrame(draw);
+
+    if (reduce) draw(0);
+    else raf = requestAnimationFrame(draw);
+
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
@@ -167,17 +214,15 @@ function NodeGlobe({ size = 420 }: { size?: number }) {
   );
 }
 
-/* ---------- Floating 3D channel cards (CSS transforms + parallax) ---------- */
-function FloatingChannelCards() {
+/* ---------- 3D hero scene: parallax node-globe + floating channel cards ---------- */
+function HeroVisual() {
   const wrapRef = React.useRef<HTMLDivElement>(null);
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = wrapRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    el.style.setProperty("--px", `${px}`);
-    el.style.setProperty("--py", `${py}`);
+    el.style.setProperty("--px", `${(e.clientX - r.left) / r.width - 0.5}`);
+    el.style.setProperty("--py", `${(e.clientY - r.top) / r.height - 0.5}`);
   };
   const onLeave = () => {
     const el = wrapRef.current;
@@ -185,20 +230,40 @@ function FloatingChannelCards() {
     el.style.setProperty("--px", "0");
     el.style.setProperty("--py", "0");
   };
+  // cards positioned to frame the globe at four corners (depth via translateZ)
   const cards = [
-    { name: "WhatsApp", icon: "chat", stat: "47% open rate", color: C.sage, d: 40, top: "6%", left: "8%", delay: "0s" },
-    { name: "Email", icon: "mail", stat: "Rich HTML", color: C.teal, d: 24, top: "2%", left: "58%", delay: "-2s" },
-    { name: "SMS", icon: "sms", stat: "100% reach", color: C.mauve, d: 60, top: "54%", left: "0%", delay: "-4s" },
-    { name: "RCS", icon: "chat_bubble", stat: "800M devices", color: C.pink, d: 36, top: "60%", left: "62%", delay: "-1s" },
+    { name: "WhatsApp", icon: "chat", stat: "47% open rate", color: C.sage, d: 46, z: 70, top: "3%", left: "-4%", delay: "0s" },
+    { name: "Email", icon: "mail", stat: "Rich HTML", color: C.teal, d: 30, z: 44, top: "-1%", left: "63%", delay: "-2s" },
+    { name: "SMS", icon: "sms", stat: "100% reach", color: C.mauve, d: 62, z: 90, top: "63%", left: "-2%", delay: "-4s" },
+    { name: "RCS", icon: "chat_bubble", stat: "800M devices", color: C.pink, d: 38, z: 56, top: "67%", left: "64%", delay: "-1s" },
   ];
   return (
     <div
       ref={wrapRef}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className="relative w-full h-full"
-      style={{ perspective: "1200px", ["--px" as any]: 0, ["--py" as any]: 0 }}
+      className="relative h-[460px] hidden lg:block"
+      style={{ perspective: "1300px", transformStyle: "preserve-3d", ["--px" as any]: 0, ["--py" as any]: 0 }}
     >
+      {/* soft glow halo behind the globe */}
+      <div
+        className="absolute left-1/2 top-1/2 rounded-full pointer-events-none"
+        style={{
+          width: 360, height: 360, transform: "translate(-50%,-50%)",
+          background: "radial-gradient(circle, rgba(62,138,158,0.16), transparent 65%)",
+          filter: "blur(20px)",
+        }}
+      />
+      {/* node globe — drifts opposite to cards for depth */}
+      <div
+        className="absolute inset-0 flex items-center justify-center"
+        style={{
+          transform: "translate3d(calc(var(--px) * -16px), calc(var(--py) * -16px), 0)",
+          transition: "transform 0.25s ease-out",
+        }}
+      >
+        <NodeGlobe size={440} />
+      </div>
       {cards.map((c) => (
         <div
           key={c.name}
@@ -206,11 +271,11 @@ function FloatingChannelCards() {
           style={{
             top: c.top,
             left: c.left,
-            background: "rgba(255,255,255,0.86)",
+            background: "rgba(255,255,255,0.88)",
             border: `1px solid ${C.border}`,
             backdropFilter: "blur(8px)",
-            boxShadow: "0 18px 40px -18px rgba(99,86,70,0.45)",
-            transform: `translate3d(calc(var(--px) * ${c.d}px), calc(var(--py) * ${c.d}px), 0)`,
+            boxShadow: "0 22px 46px -18px rgba(99,86,70,0.5)",
+            transform: `translate3d(calc(var(--px) * ${c.d}px), calc(var(--py) * ${c.d}px), ${c.z}px) rotateX(calc(var(--py) * -7deg)) rotateY(calc(var(--px) * 7deg))`,
             transition: "transform 0.25s ease-out",
             animation: `cove-float 7s ease-in-out infinite`,
             animationDelay: c.delay,
@@ -235,7 +300,7 @@ function FloatingChannelCards() {
 }
 
 /* ---------- 3D tilt card ---------- */
-function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function TiltCard({ children, className = "", max = 7, style }: { children: React.ReactNode; className?: string; max?: number; style?: React.CSSProperties }) {
   const ref = React.useRef<HTMLDivElement>(null);
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
@@ -243,7 +308,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
     const r = el.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
-    el.style.transform = `perspective(900px) rotateX(${-py * 7}deg) rotateY(${px * 7}deg) translateY(-4px)`;
+    el.style.transform = `perspective(900px) rotateX(${-py * max}deg) rotateY(${px * max}deg) translateY(-4px)`;
   };
   const reset = () => {
     if (ref.current) ref.current.style.transform = "perspective(900px) rotateX(0) rotateY(0)";
@@ -254,7 +319,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
       onMouseMove={onMove}
       onMouseLeave={reset}
       className={className}
-      style={{ transition: "transform 0.25s ease-out", transformStyle: "preserve-3d" }}
+      style={{ transition: "transform 0.25s ease-out", transformStyle: "preserve-3d", ...style }}
     >
       {children}
     </div>
@@ -389,6 +454,7 @@ export default function LandingPage() {
         .reveal-trigger.reveal-active .staggered-item{animation:coveIn .8s cubic-bezier(.23,1,.32,1) forwards}
         @keyframes coveIn{to{opacity:1;transform:none}}
         @keyframes cove-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+        @keyframes cove-drift{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-24px)}66%{transform:translate(-22px,18px)}}
         @keyframes cove-marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
         .cove-marquee{animation:cove-marquee 38s linear infinite}
         .nav-underlink{position:relative}
@@ -400,8 +466,9 @@ export default function LandingPage() {
 
       {/* soft halo accents */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute rounded-full" style={{ width: 520, height: 520, top: "-12%", left: "-8%", background: C.sageSoft, filter: "blur(130px)", opacity: 0.4 }} />
-        <div className="absolute rounded-full" style={{ width: 460, height: 460, top: "30%", right: "-10%", background: C.pinkSoft, filter: "blur(140px)", opacity: 0.35 }} />
+        <div className="absolute rounded-full" style={{ width: 520, height: 520, top: "-12%", left: "-8%", background: C.sageSoft, filter: "blur(130px)", opacity: 0.4, animation: "cove-drift 22s ease-in-out infinite" }} />
+        <div className="absolute rounded-full" style={{ width: 460, height: 460, top: "30%", right: "-10%", background: C.pinkSoft, filter: "blur(140px)", opacity: 0.35, animation: "cove-drift 26s ease-in-out infinite", animationDelay: "-8s" }} />
+        <div className="absolute rounded-full" style={{ width: 380, height: 380, bottom: "-8%", left: "38%", background: C.teal, filter: "blur(150px)", opacity: 0.14, animation: "cove-drift 30s ease-in-out infinite", animationDelay: "-14s" }} />
       </div>
 
       {/* ── NAV ── */}
@@ -462,13 +529,8 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* hero visual: rotating node globe + floating channel cards */}
-          <div className="relative h-[440px] hidden lg:block">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <NodeGlobe size={440} />
-            </div>
-            <FloatingChannelCards />
-          </div>
+          {/* hero visual: 3D parallax node globe + floating channel cards */}
+          <HeroVisual />
         </div>
 
         {/* mobile globe */}
@@ -617,7 +679,7 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="max-w-[1000px] mx-auto rounded-3xl overflow-hidden" style={{ background: "#fff", border: `1px solid ${C.border}`, boxShadow: "0 30px 70px -40px rgba(99,86,70,0.5)" }}>
+          <TiltCard max={3} className="max-w-[1000px] mx-auto rounded-3xl overflow-hidden" style={{ background: "#fff", border: `1px solid ${C.border}`, boxShadow: "0 30px 70px -40px rgba(99,86,70,0.5)" }}>
             <div className="h-12 flex items-center px-4 justify-between" style={{ background: C.surface, borderBottom: `1px solid ${C.border}` }}>
               <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ background: C.pink }} />
@@ -749,7 +811,7 @@ export default function LandingPage() {
                 </div>
               )}
             </div>
-          </div>
+          </TiltCard>
         </div>
       </section>
 
