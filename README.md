@@ -1,4 +1,4 @@
-# XenoCRM — AI-Native Mini CRM
+# Cove — AI-Native Mini CRM
 
 An AI-native CRM for D2C brands to segment shoppers, generate personalised campaigns, and track communication performance across WhatsApp, SMS, Email, and RCS.
 
@@ -184,7 +184,7 @@ Runs at `http://localhost:3000` with channel service at `http://localhost:3001`.
 ## Repo Structure
 
 ```
-xenocrm/
+cove/
 ├── apps/
 │   ├── web/              # Next.js frontend + API routes
 │   │   ├── app/          # App Router pages and API
