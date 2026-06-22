@@ -450,7 +450,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-            <button onClick={() => router.push("/agent")} style={{ padding: "7px 14px", background: "transparent", border: "1px solid #4E9B8A", borderRadius: 8, color: "#4E9B8A", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
+            <button onClick={() => router.push("/team")} style={{ padding: "7px 14px", background: "transparent", border: "1px solid #4E9B8A", borderRadius: 8, color: "#4E9B8A", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
               Review Changes
             </button>
             {!aiRecLoading && (
@@ -538,7 +538,7 @@ export default function DashboardPage() {
             ))}
           </div>
           <button
-            onClick={() => router.push("/agent")}
+            onClick={() => router.push("/team")}
             style={{ marginTop: 28, width: "100%", padding: "10px 0", background: "transparent", border: "1px solid #E5DBC9", borderRadius: 8, color: "#8A7F76", fontFamily: "DM Sans,sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", cursor: "pointer", outline: "none", transition: "all 0.15s" }}
             onMouseEnter={e => { e.currentTarget.style.color = "#2C6A7B"; e.currentTarget.style.borderColor = "rgba(62,138,158,0.4)"; e.currentTarget.style.background = "rgba(62,138,158,0.04)"; }}
             onMouseLeave={e => { e.currentTarget.style.color = "#8A7F76"; e.currentTarget.style.borderColor = "#E5DBC9"; e.currentTarget.style.background = "transparent"; }}
