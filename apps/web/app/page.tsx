@@ -39,31 +39,36 @@ function WaveBackground() {
     let w = 0;
     let h = 0;
 
-    const layers = [
-      { amp: 24, len: 0.0048, speed: 0.016, y: 0.62, fill: "rgba(156,195,187,0.30)" },
-      { amp: 30, len: 0.0042, speed: 0.018, y: 0.72, fill: "rgba(120,178,190,0.36)" },
-      { amp: 38, len: 0.0032, speed: 0.012, y: 0.82, fill: "rgba(62,138,158,0.34)" },
-      { amp: 48, len: 0.0024, speed: 0.009, y: 0.92, fill: "rgba(44,106,123,0.32)" },
+    // gentle flowing currents spread across the whole viewport height —
+    // thin, low-opacity lines that fade out at the edges (calm, not heavy)
+    const bands = [
+      { y: 0.16, amp: 13, len: 0.0016, speed: 0.0048, col: "120,178,190", op: 0.055, lw: 1.3 },
+      { y: 0.31, amp: 19, len: 0.0013, speed: 0.0036, col: "156,195,187", op: 0.065, lw: 1.4 },
+      { y: 0.46, amp: 15, len: 0.0018, speed: 0.0042, col: "62,138,158", op: 0.045, lw: 1.3 },
+      { y: 0.61, amp: 21, len: 0.0011, speed: 0.0032, col: "156,195,187", op: 0.06, lw: 1.4 },
+      { y: 0.76, amp: 17, len: 0.0015, speed: 0.004, col: "120,178,190", op: 0.06, lw: 1.4 },
+      { y: 0.9, amp: 23, len: 0.001, speed: 0.0028, col: "62,138,158", op: 0.05, lw: 1.5 },
     ];
 
-    type Bubble = { x: number; y: number; r: number; sp: number; ph: number; a: number };
-    let bubbles: Bubble[] = [];
-    const seedBubbles = () => {
-      const count = Math.min(46, Math.max(16, Math.round((w * h) / 95000)));
-      bubbles = Array.from({ length: count }, () => ({
+    // a few slow, faint motes for a calm sense of depth
+    type Mote = { x: number; y: number; r: number; sp: number; ph: number; a: number };
+    let motes: Mote[] = [];
+    const seedMotes = () => {
+      const count = Math.min(20, Math.max(8, Math.round((w * h) / 200000)));
+      motes = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        r: 1.6 + Math.random() * 4.8,
-        sp: 0.14 + Math.random() * 0.55,
+        r: 1.3 + Math.random() * 2.6,
+        sp: 0.05 + Math.random() * 0.14,
         ph: Math.random() * Math.PI * 2,
-        a: 0.07 + Math.random() * 0.16,
+        a: 0.02 + Math.random() * 0.04,
       }));
     };
 
     const resize = () => {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
-      seedBubbles();
+      seedMotes();
     };
     resize();
     window.addEventListener("resize", resize);
@@ -71,39 +76,41 @@ function WaveBackground() {
     const draw = (t: number) => {
       ctx.clearRect(0, 0, w, h);
 
-      // drifting bubbles (depth particles rising through the water)
-      bubbles.forEach((b) => {
-        b.y -= b.sp;
-        b.x += Math.sin(t * 0.001 + b.ph) * 0.32;
-        if (b.y < -12) {
-          b.y = h + 12;
-          b.x = Math.random() * w;
+      // soft, slow drifting motes
+      motes.forEach((m) => {
+        m.y -= m.sp;
+        m.x += Math.sin(t * 0.0006 + m.ph) * 0.16;
+        if (m.y < -8) {
+          m.y = h + 8;
+          m.x = Math.random() * w;
         }
-        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r * 2.6);
-        grad.addColorStop(0, `rgba(120,178,190,${b.a})`);
-        grad.addColorStop(1, "rgba(120,178,190,0)");
+        const g = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.r * 3);
+        g.addColorStop(0, `rgba(120,178,190,${m.a})`);
+        g.addColorStop(1, "rgba(120,178,190,0)");
         ctx.beginPath();
-        ctx.arc(b.x, b.y, b.r * 2.6, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
+        ctx.arc(m.x, m.y, m.r * 3, 0, Math.PI * 2);
+        ctx.fillStyle = g;
         ctx.fill();
       });
 
-      // layered ocean swells
-      layers.forEach((l, i) => {
+      // gentle full-page currents
+      bands.forEach((b, i) => {
+        const baseY = h * b.y;
+        const grad = ctx.createLinearGradient(0, 0, w, 0);
+        grad.addColorStop(0, `rgba(${b.col},0)`);
+        grad.addColorStop(0.5, `rgba(${b.col},${b.op})`);
+        grad.addColorStop(1, `rgba(${b.col},0)`);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = b.lw;
         ctx.beginPath();
-        ctx.moveTo(0, h);
-        const baseY = h * l.y;
-        for (let x = 0; x <= w; x += 8) {
+        for (let x = 0; x <= w; x += 10) {
           const y =
             baseY +
-            Math.sin(x * l.len + t * l.speed + i) * l.amp +
-            Math.sin(x * l.len * 1.7 + t * l.speed * 1.3) * (l.amp * 0.35);
-          ctx.lineTo(x, y);
+            Math.sin(x * b.len + t * b.speed + i) * b.amp +
+            Math.sin(x * b.len * 1.8 + t * b.speed * 0.7) * (b.amp * 0.3);
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
         }
-        ctx.lineTo(w, h);
-        ctx.closePath();
-        ctx.fillStyle = l.fill;
-        ctx.fill();
+        ctx.stroke();
       });
 
       if (!reduce) raf = requestAnimationFrame(draw);
@@ -469,7 +476,7 @@ export default function LandingPage() {
       <div
         aria-hidden
         className="fixed inset-0 -z-20 pointer-events-none"
-        style={{ background: "linear-gradient(180deg,#F4EEDF 0%,#E6EFE9 52%,#D6E8E3 100%)" }}
+        style={{ background: "linear-gradient(180deg,#F4EEDF 0%,#EFF2EC 55%,#EAF1ED 100%)" }}
       />
       <WaveBackground />
 
