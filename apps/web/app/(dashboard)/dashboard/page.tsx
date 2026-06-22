@@ -46,8 +46,9 @@ function KPICard({ label, value, trend, trendColor, sparkData, sparkColor }: {
 
 // ── Autonomous Suggestions Panel ─────────────────────────────────────────────
 function SuggestionsPanel({ router }: { router: ReturnType<typeof useRouter> }) {
-  const [launching, setLaunching] = React.useState<number | null>(null);
-  const [dismissed, setDismissed] = React.useState<number[]>([]);
+  const keyOf = (s: any) => s?.title || s?.description || "";
+  const [launching, setLaunching] = React.useState<string | null>(null);
+  const [dismissed, setDismissed] = React.useState<string[]>([]);
 
   const { data, isLoading, isError, refetch, isRefetching } = useQuery<any>({
     queryKey: ["dashboard-suggestions"],
@@ -59,12 +60,14 @@ function SuggestionsPanel({ router }: { router: ReturnType<typeof useRouter> }) 
     staleTime: 1000 * 60 * 30, // 30 min cache
   });
 
-  const suggestions = (data?.suggestions || []).filter((_: any, i: number) => !dismissed.includes(i));
+  // filter by a stable signature so launched/dismissed cards stay aligned
+  const suggestions = (data?.suggestions || []).filter((s: any) => !dismissed.includes(keyOf(s)));
 
-  const [launched, setLaunched] = React.useState<Record<number, { name: string; id: string }>>({});
+  const [launched, setLaunched] = React.useState<Record<string, { name: string; id: string }>>({});
 
-  const handleLaunch = async (suggestion: any, idx: number) => {
-    setLaunching(idx);
+  const handleLaunch = async (suggestion: any) => {
+    const key = keyOf(suggestion);
+    setLaunching(key);
     try {
       // Step 1: Build segment rules from natural language
       const buildRes = await fetch("/api/segments/ai-build", {
@@ -119,8 +122,10 @@ function SuggestionsPanel({ router }: { router: ReturnType<typeof useRouter> }) 
       if (!campRes.ok) throw new Error("Campaign creation failed");
       const campaign = await campRes.json();
 
-      // Mark this suggestion as launched inline
-      setLaunched(prev => ({ ...prev, [idx]: { name: campaign.name, id: campaign.id } }));
+      // Show the launched confirmation briefly, then remove the suggestion
+      setLaunched(prev => ({ ...prev, [key]: { name: campaign.name, id: campaign.id } }));
+      toast.success("Campaign created from suggestion!");
+      setTimeout(() => setDismissed(prev => (prev.includes(key) ? prev : [...prev, key])), 2500);
     } catch (e) {
       console.error("Launch suggestion failed:", e);
       toast.error("Failed to create campaign. Try again.");
@@ -193,11 +198,12 @@ function SuggestionsPanel({ router }: { router: ReturnType<typeof useRouter> }) 
         <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(suggestions.length, 3)},1fr)` }}>
           {suggestions.map((s: any, i: number) => {
             const urg = urgencyStyle(s.urgency);
+            const k = keyOf(s);
             return (
-              <div key={i} style={{ padding: "18px 20px", borderRight: i < suggestions.length - 1 ? "1px solid #E5DBC9" : "none", display: "flex", flexDirection: "column", gap: 10, position: "relative" }}>
+              <div key={k} style={{ padding: "18px 20px", borderRight: i < suggestions.length - 1 ? "1px solid #E5DBC9" : "none", display: "flex", flexDirection: "column", gap: 10, position: "relative" }}>
                 {/* Dismiss */}
                 <button
-                  onClick={() => setDismissed(prev => [...prev, dismissed.indexOf(i) === -1 ? i : i])}
+                  onClick={() => setDismissed(prev => (prev.includes(k) ? prev : [...prev, k]))}
                   style={{ position: "absolute", top: 12, right: 12, background: "none", border: "none", color: "#C9BFB0", cursor: "pointer", padding: 2, fontSize: "0.75rem", lineHeight: 1 }}
                   onMouseEnter={e => (e.currentTarget.style.color = "#8A7F76")}
                   onMouseLeave={e => (e.currentTarget.style.color = "#C9BFB0")}
@@ -230,7 +236,7 @@ function SuggestionsPanel({ router }: { router: ReturnType<typeof useRouter> }) 
 
                 {/* Launch button */}
                 {/* Launch button */}
-                {launched[i] ? (
+                {launched[k] ? (
                   <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 8 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", background: "rgba(78, 155, 138,0.08)", border: "1px solid rgba(78, 155, 138,0.2)", borderRadius: 8 }}>
                       <CheckCircle2 style={{ width: 13, height: 13, color: "#4E9B8A", flexShrink: 0 }} />
@@ -239,7 +245,7 @@ function SuggestionsPanel({ router }: { router: ReturnType<typeof useRouter> }) 
                       </span>
                     </div>
                     <button
-                      onClick={() => router.push(`/campaigns/${launched[i].id}`)}
+                      onClick={() => router.push(`/campaigns/${launched[k].id}`)}
                       style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "6px 14px", background: "rgba(62, 138, 158,0.1)", border: "1px solid rgba(62, 138, 158,0.25)", borderRadius: 8, color: "#2C6A7B", fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", fontWeight: 600, cursor: "pointer", transition: "all 0.15s" }}
                       onMouseEnter={e => (e.currentTarget.style.background = "rgba(62, 138, 158,0.2)")}
                       onMouseLeave={e => (e.currentTarget.style.background = "rgba(62, 138, 158,0.1)")}
@@ -249,19 +255,19 @@ function SuggestionsPanel({ router }: { router: ReturnType<typeof useRouter> }) 
                   </div>
                 ) : (
                   <button
-                    onClick={() => handleLaunch(s, i)}
+                    onClick={() => handleLaunch(s)}
                     disabled={launching !== null}
                     style={{
                       marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                      padding: "8px 14px", background: launching === i ? "rgba(62, 138, 158,0.2)" : "#3E8A9E",
+                      padding: "8px 14px", background: launching === k ? "rgba(62, 138, 158,0.2)" : "#3E8A9E",
                       border: "none", borderRadius: 8, color: "#fff",
                       fontFamily: "Syne,sans-serif", fontSize: "0.78rem", fontWeight: 700,
                       cursor: launching !== null ? "not-allowed" : "pointer",
-                      opacity: launching !== null && launching !== i ? 0.5 : 1,
+                      opacity: launching !== null && launching !== k ? 0.5 : 1,
                       transition: "all 0.15s",
                     }}
                   >
-                    {launching === i
+                    {launching === k
                       ? <><Loader2 style={{ width: 12, height: 12, animation: "dspin 1s linear infinite" }} /> Building…</>
                       : <>Launch This Campaign <ArrowRight style={{ width: 12, height: 12 }} /></>
                     }
@@ -403,7 +409,7 @@ export default function DashboardPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#4E9B8A", display: "inline-block", flexShrink: 0 }} />
             <span style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.8rem", color: "#8A7F76" }}>
-              Autonomous agents running: {overview?.activeCampaigns || 12} Active Campaigns
+              {(() => { const n = overview?.activeCampaigns ?? 0; return n === 0 ? "No active campaigns" : `${n} active campaign${n === 1 ? "" : "s"} running`; })()}
             </span>
           </div>
         </div>

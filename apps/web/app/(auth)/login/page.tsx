@@ -52,7 +52,7 @@ export default function LoginPage() {
       if (res?.ok && !res?.error) {
         setStatus("success");
         setShowTransition(true);
-        setTimeout(() => router.push("/dashboard"), 3500);
+        setTimeout(() => router.push("/dashboard"), 2000);
       } else {
         setStatus("error");
         setErrMsg("Invalid credentials. Access denied.");
@@ -93,7 +93,7 @@ export default function LoginPage() {
       if (signInRes?.ok && !signInRes?.error) {
         setStatus("success");
         setShowTransition(true);
-        setTimeout(() => router.push("/dashboard"), 3500);
+        setTimeout(() => router.push("/dashboard"), 2000);
       } else {
         setStatus("success");
         setTimeout(() => switchMode("login"), 1500);
@@ -479,303 +479,28 @@ export default function LoginPage() {
         </footer>
         {showTransition && (
           <div style={{
-            position: "fixed", inset: 0, zIndex: 9999,
-            background: "#ECE3D0",
+            position: "fixed", inset: 0, zIndex: 9999, background: "#F4EEDF",
             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            animation: "transitionFadeIn 0.5s ease forwards",
-            overflow: "hidden",
+            animation: "coveFade 0.4s ease forwards",
           }}>
-
-            {/* ── Halo gradient layers (inspired by PlainBread animated backgrounds) ── */}
-            <div style={{
-              position: "absolute", inset: 0, zIndex: 0,
-              background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(62, 138, 158,0.25) 0%, transparent 65%)",
-              animation: "haloBreath 4s ease-in-out infinite alternate",
-            }} />
-            <div style={{
-              position: "absolute", inset: 0, zIndex: 0,
-              background: "radial-gradient(ellipse 50% 40% at 30% 60%, rgba(78, 155, 138,0.12) 0%, transparent 60%)",
-              animation: "haloBreath 5s ease-in-out 1s infinite alternate-reverse",
-            }} />
-            <div style={{
-              position: "absolute", inset: 0, zIndex: 0,
-              background: "radial-gradient(ellipse 40% 35% at 70% 40%, rgba(201, 142, 131,0.1) 0%, transparent 55%)",
-              animation: "haloBreath 6s ease-in-out 2s infinite alternate",
-            }} />
-            <div style={{
-              position: "absolute", inset: 0, zIndex: 0,
-              background: "radial-gradient(ellipse 30% 25% at 50% 50%, rgba(62, 138, 158,0.35) 0%, transparent 45%)",
-              animation: "haloPulse 3s ease-in-out infinite alternate",
-            }} />
-
-            {/* ── Moving halo orbs ── */}
-            <div style={{
-              position: "absolute", width: 600, height: 600, borderRadius: "50%", zIndex: 0,
-              background: "radial-gradient(circle, rgba(62, 138, 158,0.18) 0%, transparent 70%)",
-              filter: "blur(60px)",
-              animation: "orbMove1 8s ease-in-out infinite alternate",
-              top: "10%", left: "20%",
-            }} />
-            <div style={{
-              position: "absolute", width: 500, height: 500, borderRadius: "50%", zIndex: 0,
-              background: "radial-gradient(circle, rgba(78, 155, 138,0.12) 0%, transparent 70%)",
-              filter: "blur(80px)",
-              animation: "orbMove2 10s ease-in-out infinite alternate",
-              bottom: "10%", right: "15%",
-            }} />
-            <div style={{
-              position: "absolute", width: 400, height: 400, borderRadius: "50%", zIndex: 0,
-              background: "radial-gradient(circle, rgba(201, 142, 131,0.1) 0%, transparent 70%)",
-              filter: "blur(100px)",
-              animation: "orbMove3 12s ease-in-out infinite alternate",
-              top: "40%", right: "25%",
-            }} />
-
-            {/* ── Grid lines ── */}
-            <div style={{
-              position: "absolute", inset: 0, zIndex: 0, opacity: 0.04,
-              backgroundImage: "linear-gradient(rgba(62, 138, 158,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(62, 138, 158,0.8) 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-              animation: "gridReveal 1.5s ease forwards",
-            }} />
-
-            {/* ── Scan line ── */}
-            <div style={{
-              position: "absolute", left: 0, right: 0, height: 2, zIndex: 1,
-              background: "linear-gradient(90deg, transparent 0%, rgba(78, 155, 138,0.3) 20%, #4E9B8A 50%, rgba(62, 138, 158,0.8) 60%, #2C6A7B 70%, rgba(78, 155, 138,0.3) 80%, transparent 100%)",
-              boxShadow: "0 0 30px rgba(78, 155, 138,0.9), 0 0 80px rgba(78, 155, 138,0.4), 0 0 120px rgba(62, 138, 158,0.3)",
-              animation: "scanLine 2.5s ease-in-out forwards",
-              top: "-4px",
-            }} />
-
-            {/* ── Second scan line (delayed) ── */}
-            <div style={{
-              position: "absolute", left: 0, right: 0, height: 1, zIndex: 1,
-              background: "linear-gradient(90deg, transparent, rgba(62, 138, 158,0.4), transparent)",
-              boxShadow: "0 0 15px rgba(62, 138, 158,0.5)",
-              animation: "scanLine 2.5s ease-in-out 0.8s forwards",
-              top: "-4px",
-            }} />
-
-            {/* ── Corner brackets ── */}
-            {[
-              { top: 32, left: 32, borderTop: "2px solid rgba(62, 138, 158,0.8)", borderLeft: "2px solid rgba(62, 138, 158,0.8)" },
-              { top: 32, right: 32, borderTop: "2px solid rgba(62, 138, 158,0.8)", borderRight: "2px solid rgba(62, 138, 158,0.8)" },
-              { bottom: 32, left: 32, borderBottom: "2px solid rgba(62, 138, 158,0.8)", borderLeft: "2px solid rgba(62, 138, 158,0.8)" },
-              { bottom: 32, right: 32, borderBottom: "2px solid rgba(62, 138, 158,0.8)", borderRight: "2px solid rgba(62, 138, 158,0.8)" },
-            ].map((s, i) => (
-              <div key={i} style={{
-                position: "absolute", width: 36, height: 36, zIndex: 2,
-                animation: `cornerReveal 0.6s ease ${i * 0.1}s both`,
-                ...s,
-              }} />
-            ))}
-
-            {/* ── Horizontal accent lines ── */}
-            <div style={{
-              position: "absolute", left: 0, right: 0, height: 1, top: "25%", zIndex: 1,
-              background: "linear-gradient(90deg, transparent, rgba(62, 138, 158,0.15), rgba(62, 138, 158,0.3), rgba(62, 138, 158,0.15), transparent)",
-              animation: "lineReveal 1s ease 0.5s both",
-            }} />
-            <div style={{
-              position: "absolute", left: 0, right: 0, height: 1, bottom: "25%", zIndex: 1,
-              background: "linear-gradient(90deg, transparent, rgba(78, 155, 138,0.1), rgba(78, 155, 138,0.2), rgba(78, 155, 138,0.1), transparent)",
-              animation: "lineReveal 1s ease 0.7s both",
-            }} />
-
-            {/* ── Main content ── */}
-            <div style={{ position: "relative", zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
-
-              {/* Logo with orbital rings */}
-              <div style={{ position: "relative", width: 160, height: 160, marginBottom: 40, display: "flex", alignItems: "center", justifyContent: "center" }}>
-
-                {/* Outer halo glow */}
-                <div style={{
-                  position: "absolute", inset: -20, borderRadius: "50%",
-                  background: "radial-gradient(circle, rgba(62, 138, 158,0.2) 0%, transparent 70%)",
-                  animation: "outerHaloGlow 3s ease-in-out infinite alternate",
-                  filter: "blur(10px)",
-                }} />
-
-                {/* Ring 3 */}
-                <div style={{
-                  position: "absolute", inset: 0, borderRadius: "50%",
-                  border: "1px solid rgba(62, 138, 158,0.2)",
-                  animation: "spinSlow 10s linear infinite",
-                }}>
-                  <div style={{ position: "absolute", top: -4, left: "50%", transform: "translateX(-50%)", width: 8, height: 8, borderRadius: "50%", background: "#3E8A9E", boxShadow: "0 0 16px #3E8A9E, 0 0 30px rgba(62, 138, 158,0.5)" }} />
-                  <div style={{ position: "absolute", bottom: -4, left: "50%", transform: "translateX(-50%)", width: 4, height: 4, borderRadius: "50%", background: "rgba(62, 138, 158,0.4)" }} />
-                </div>
-
-                {/* Ring 2 */}
-                <div style={{
-                  position: "absolute", inset: 16, borderRadius: "50%",
-                  border: "1px solid rgba(78, 155, 138,0.25)",
-                  animation: "spinSlow 6s linear infinite reverse",
-                }}>
-                  <div style={{ position: "absolute", top: -3, left: "50%", transform: "translateX(-50%)", width: 6, height: 6, borderRadius: "50%", background: "#4E9B8A", boxShadow: "0 0 12px #4E9B8A, 0 0 24px rgba(78, 155, 138,0.4)" }} />
-                  <div style={{ position: "absolute", right: -3, top: "50%", transform: "translateY(-50%)", width: 3, height: 3, borderRadius: "50%", background: "rgba(78, 155, 138,0.3)" }} />
-                </div>
-
-                {/* Ring 1 */}
-                <div style={{
-                  position: "absolute", inset: 30, borderRadius: "50%",
-                  border: "1px solid rgba(62, 138, 158,0.35)",
-                  animation: "spinSlow 4s linear infinite",
-                }}>
-                  <div style={{ position: "absolute", top: -2.5, left: "50%", transform: "translateX(-50%)", width: 5, height: 5, borderRadius: "50%", background: "#2C6A7B", boxShadow: "0 0 8px #2C6A7B, 0 0 16px rgba(62, 138, 158,0.4)" }} />
-                </div>
-
-                {/* Center */}
-                <div style={{
-                  position: "absolute", inset: 44, borderRadius: "50%",
-                  background: "rgba(62, 138, 158,0.12)",
-                  border: "1px solid rgba(62, 138, 158,0.5)",
-                  boxShadow: "0 0 40px rgba(62, 138, 158,0.4), 0 0 80px rgba(62, 138, 158,0.2), inset 0 0 20px rgba(62, 138, 158,0.1)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  animation: "centerGlow 2s ease-in-out infinite alternate",
-                }}>
-                  <img src="/cove-logo.svg" alt="Cove" style={{ width: 36, height: 36, objectFit: "contain", animation: "logoReveal 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.3s both" }} />
-                </div>
-
-                {/* Pulse rings */}
-                {[0, 0.6, 1.2].map((delay, i) => (
-                  <div key={i} style={{
-                    position: "absolute", inset: 44, borderRadius: "50%",
-                    border: `1px solid rgba(${i % 2 === 0 ? "62, 138, 158" : "78, 155, 138"},0.5)`,
-                    animation: `pulseRing 2.4s ease-out ${delay}s infinite`,
-                  }} />
-                ))}
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 55% 45% at 50% 45%, rgba(62,138,158,0.07) 0%, transparent 70%)" }} />
+            <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 26, animation: "coveRise 0.6s ease both" }}>
+                <img src="/cove-logo.svg" alt="Cove" style={{ width: 44, height: 44 }} />
+                <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: "2rem", color: "#38322E", letterSpacing: "-0.01em" }}>Cove</span>
               </div>
-
-              {/* ACCESS GRANTED */}
-              <div style={{
-                fontFamily: "Syne,sans-serif", fontSize: "2.25rem", fontWeight: 800,
-                color: "#38322E", letterSpacing: "0.1em", textTransform: "uppercase",
-                marginBottom: 10, textAlign: "center",
-                animation: "textReveal 0.7s ease 0.5s both",
-                textShadow: "0 0 60px rgba(62, 138, 158,0.4), 0 0 120px rgba(62, 138, 158,0.2)",
-              }}>
-                Access Granted
+              <div style={{ width: 200, height: 3, borderRadius: 99, background: "rgba(56,50,46,0.08)", overflow: "hidden" }}>
+                <div style={{ height: "100%", borderRadius: 99, background: "#3E8A9E", animation: "coveBar 1.9s cubic-bezier(0.4,0,0.2,1) forwards" }} />
               </div>
-
-              {/* Subtitle */}
-              <div style={{
-                fontFamily: "JetBrains Mono,monospace", fontSize: "0.68rem",
-                color: "#4E9B8A", letterSpacing: "0.3em", textTransform: "uppercase",
-                marginBottom: 40, textAlign: "center",
-                animation: "textReveal 0.7s ease 0.7s both",
-              }}>
-                Initializing Cove Intelligence
-              </div>
-
-              {/* Progress bar */}
-              <div style={{ width: 320, marginBottom: 12 }}>
-                <div style={{ height: 2, background: "rgba(56, 50, 46,0.06)", borderRadius: 99, overflow: "hidden", position: "relative" }}>
-                  <div style={{
-                    height: "100%", borderRadius: 99,
-                    background: "linear-gradient(90deg, #3E8A9E 0%, #4E9B8A 40%, #2C6A7B 70%, #4E9B8A 100%)",
-                    backgroundSize: "200% 100%",
-                    boxShadow: "0 0 20px rgba(78, 155, 138,0.6), 0 0 40px rgba(62, 138, 158,0.3)",
-                    animation: "progressFill 2.8s cubic-bezier(0.4,0,0.2,1) 0.4s both, progressShimmer 1.5s ease 0.4s infinite",
-                  }} />
-                </div>
-                <div style={{
-                  display: "flex", justifyContent: "space-between", marginTop: 6,
-                  fontFamily: "JetBrains Mono,monospace", fontSize: "0.58rem",
-                  color: "#C9BFB0", letterSpacing: "0.08em",
-                  animation: "textReveal 0.4s ease 0.9s both",
-                }}>
-                  <span>AUTHENTICATING SESSION</span>
-                  <span style={{ color: "#4E9B8A" }}>100%</span>
-                </div>
-              </div>
-
-              {/* Status chips */}
-              <div style={{
-                display: "flex", gap: 10, marginTop: 8,
-                animation: "textReveal 0.6s ease 1.1s both",
-              }}>
-                {[
-                  { label: "AUTH VERIFIED", color: "#4E9B8A", rgb: "78, 155, 138" },
-                  { label: "SESSION ACTIVE", color: "#2C6A7B", rgb: "62, 138, 158" },
-                  { label: "AGENTS READY", color: "#4E9B8A", rgb: "78, 155, 138" },
-                ].map((chip, i) => (
-                  <div key={chip.label} style={{
-                    display: "flex", alignItems: "center", gap: 5, padding: "4px 12px",
-                    borderRadius: 99,
-                    background: `rgba(${chip.rgb},0.08)`,
-                    border: `1px solid rgba(${chip.rgb},0.2)`,
-                    fontFamily: "JetBrains Mono,monospace", fontSize: "0.58rem",
-                    color: chip.color, letterSpacing: "0.1em",
-                    animation: `textReveal 0.4s ease ${1.2 + i * 0.12}s both`,
-                    boxShadow: `0 0 12px rgba(${chip.rgb},0.1)`,
-                  }}>
-                    <span style={{ width: 4, height: 4, borderRadius: "50%", background: chip.color, display: "inline-block", animation: "blink 1.2s ease infinite", boxShadow: `0 0 6px ${chip.color}` }} />
-                    {chip.label}
-                  </div>
-                ))}
+              <div style={{ marginTop: 14, fontFamily: "DM Sans,sans-serif", fontSize: "0.8rem", color: "#8A7F76", animation: "coveRise 0.6s ease 0.15s both" }}>
+                Preparing your workspace…
               </div>
             </div>
-
-            {/* ── Floating particles ── */}
-            {[...Array(16)].map((_, i) => (
-              <div key={i} style={{
-                position: "absolute", zIndex: 1,
-                width: i % 4 === 0 ? 4 : i % 3 === 0 ? 3 : 2,
-                height: i % 4 === 0 ? 4 : i % 3 === 0 ? 3 : 2,
-                borderRadius: "50%",
-                background: i % 3 === 0 ? "#3E8A9E" : i % 3 === 1 ? "#4E9B8A" : "#2C6A7B",
-                boxShadow: `0 0 8px ${i % 3 === 0 ? "#3E8A9E" : i % 3 === 1 ? "#4E9B8A" : "#2C6A7B"}`,
-                left: `${5 + i * 6}%`,
-                top: `${10 + (i % 6) * 14}%`,
-                animation: `particle ${2 + (i % 4) * 0.5}s ease-in-out ${i * 0.12}s infinite alternate`,
-                opacity: 0.4 + (i % 3) * 0.15,
-              }} />
-            ))}
-
-            {/* ── Bottom status bar ── */}
-            <div style={{
-              position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 3,
-              height: 44, background: "rgba(251,247,236,0.9)", backdropFilter: "blur(12px)",
-              borderTop: "1px solid #E5DBC9",
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 32,
-              animation: "textReveal 0.6s ease 1.4s both",
-            }}>
-              {["SYSTEM: NOMINAL", "LATENCY: 14MS", "AUTH_AGENTS: ACTIVE (12)", "API_THROUGHPUT: 1.2M REQ/SEC"].map(item => (
-                <div key={item} style={{
-                  display: "flex", alignItems: "center", gap: 6,
-                  fontFamily: "JetBrains Mono,monospace", fontSize: "0.58rem",
-                  color: "#8A7F76", letterSpacing: "0.08em", textTransform: "uppercase",
-                }}>
-                  <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#4E9B8A", display: "inline-block", boxShadow: "0 0 6px #4E9B8A", flexShrink: 0 }} />
-                  {item}
-                </div>
-              ))}
-            </div>
-
             <style>{`
-      @keyframes transitionFadeIn  { from{opacity:0} to{opacity:1} }
-      @keyframes haloBreath        { from{opacity:0.6;transform:scale(0.9)} to{opacity:1;transform:scale(1.1)} }
-      @keyframes haloPulse         { from{opacity:0.4;transform:scale(0.8)} to{opacity:0.8;transform:scale(1.2)} }
-      @keyframes orbMove1          { from{transform:translate(0,0) scale(1)} to{transform:translate(80px,-60px) scale(1.2)} }
-      @keyframes orbMove2          { from{transform:translate(0,0) scale(1)} to{transform:translate(-60px,40px) scale(0.9)} }
-      @keyframes orbMove3          { from{transform:translate(0,0) scale(1)} to{transform:translate(40px,60px) scale(1.1)} }
-      @keyframes gridReveal        { from{opacity:0} to{opacity:0.04} }
-      @keyframes scanLine          { 0%{top:-4px;opacity:0} 5%{opacity:1} 95%{opacity:0.6} 100%{top:calc(100% + 4px);opacity:0} }
-      @keyframes lineReveal        { from{opacity:0;scaleX:0} to{opacity:1;scaleX:1} }
-      @keyframes cornerReveal      { from{opacity:0;transform:scale(0.3)} to{opacity:1;transform:scale(1)} }
-      @keyframes spinSlow          { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-      @keyframes outerHaloGlow     { from{opacity:0.3;transform:scale(0.8)} to{opacity:0.7;transform:scale(1.2)} }
-      @keyframes centerGlow        { from{box-shadow:0 0 20px rgba(62, 138, 158,0.3),0 0 40px rgba(62, 138, 158,0.1),inset 0 0 10px rgba(62, 138, 158,0.05)} to{box-shadow:0 0 60px rgba(62, 138, 158,0.6),0 0 120px rgba(62, 138, 158,0.3),inset 0 0 30px rgba(62, 138, 158,0.15)} }
-      @keyframes pulseRing         { 0%{transform:scale(1);opacity:0.8} 100%{transform:scale(3);opacity:0} }
-      @keyframes logoReveal        { from{opacity:0;transform:scale(0.3) rotate(-30deg)} to{opacity:1;transform:scale(1) rotate(0deg)} }
-      @keyframes textReveal        { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-      @keyframes progressFill      { from{width:0%} to{width:100%} }
-      @keyframes progressShimmer   { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-      @keyframes blink             { 0%,100%{opacity:1} 50%{opacity:0.2} }
-      @keyframes particle          { from{transform:translateY(0) scale(1) rotate(0deg)} to{transform:translateY(-40px) scale(1.8) rotate(180deg)} }
-    `}</style>
+              @keyframes coveFade { from{opacity:0} to{opacity:1} }
+              @keyframes coveRise { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+              @keyframes coveBar  { from{width:0%} to{width:100%} }
+            `}</style>
           </div>
         )}
       </div>

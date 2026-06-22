@@ -33,7 +33,9 @@ export async function GET() {
                 const intersection = [...setA].filter((id) => setB.has(id));
 
                 if (intersection.length > 0) {
-                    const smaller = Math.min(setA.size, setB.size);
+                    // Jaccard similarity (shared / combined) — a meaningful overlap
+                    // that isn't always 100% when one segment is a subset of another.
+                    const union = setA.size + setB.size - intersection.length;
                     overlaps.push({
                         segA: segments[i].id,
                         segAName: segments[i].name,
@@ -42,7 +44,7 @@ export async function GET() {
                         segBName: segments[j].name,
                         sizeB: setB.size,
                         overlap: intersection.length,
-                        overlapPct: smaller > 0 ? parseFloat(((intersection.length / smaller) * 100).toFixed(1)) : 0,
+                        overlapPct: union > 0 ? parseFloat(((intersection.length / union) * 100).toFixed(1)) : 0,
                         customerIds: intersection.slice(0, 10), // sample only
                     });
                 }

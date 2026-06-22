@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     }
 
     
-    const [totalCampaigns, overallStats] = await Promise.all([
+    const [totalCampaigns, overallStats, activeCampaigns] = await Promise.all([
       db.campaign.count({ where: campaignWhere }),
       db.campaignStats.aggregate({
         where,
@@ -49,7 +49,8 @@ export async function GET(request: Request) {
           totalOrdersAttributed: true,
           attributedRevenueInr: true
         }
-      })
+      }),
+      db.campaign.count({ where: { ...campaignWhere, status: { in: ["in_progress", "scheduled"] } } })
     ]);
 
     const sumSent = overallStats._sum.totalSent || 0;
@@ -180,6 +181,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       totalCampaigns,
+      activeCampaigns,
       totalMessagesSent: sumSent,
       overallDeliveryRate,
       overallOpenRate,
