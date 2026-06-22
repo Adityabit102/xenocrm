@@ -28,20 +28,20 @@ export function Providers({ children }: { children: React.ReactNode }) {
           toastOptions={{
             duration: 4000,
             style: {
-              background: "var(--color-bg-surface)",
-              color: "var(--color-text-primary)",
-              border: "1px solid var(--color-border)",
+              background: "#FFFFFF",
+              color: "#38322E",
+              border: "1px solid #E5DBC9",
               borderRadius: "8px",
               fontSize: "13px",
             },
             success: {
               style: {
-                borderLeft: "4px solid var(--color-success)",
+                borderLeft: "4px solid #4E9B8A",
               },
             },
             error: {
               style: {
-                borderLeft: "4px solid var(--color-error)",
+                borderLeft: "4px solid #CC6B6B",
               },
             },
           }}

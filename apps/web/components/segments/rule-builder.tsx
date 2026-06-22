@@ -47,7 +47,7 @@ const TIER_OPTIONS = [
 ];
 
 const inputStyle: React.CSSProperties = {
-  background: "rgba(24,29,46,0.6)", border: "1px solid #D8CCB6", borderRadius: 7,
+  background: "#FBF7EC", border: "1px solid #D8CCB6", borderRadius: 7,
   padding: "7px 10px", fontFamily: "DM Sans,sans-serif", fontSize: "0.82rem",
   color: "#38322E", outline: "none", transition: "border-color 0.15s", boxSizing: "border-box" as const,
 };

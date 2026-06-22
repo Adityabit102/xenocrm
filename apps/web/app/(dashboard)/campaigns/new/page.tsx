@@ -28,7 +28,7 @@ const CHANNELS = [
 ];
 
 const inputStyle: React.CSSProperties = {
-  width: "100%", background: "rgba(24,29,46,0.6)", border: "1px solid #D8CCB6",
+  width: "100%", background: "#FBF7EC", border: "1px solid #D8CCB6",
   borderRadius: 8, padding: "12px 14px", fontFamily: "DM Sans,sans-serif",
   fontSize: "0.85rem", color: "#38322E", outline: "none", boxSizing: "border-box",
   transition: "border-color 0.2s",
@@ -379,7 +379,7 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
                 </div>
               ) : segments.map((seg: any) => (
                 <div key={seg.id} onClick={() => { setSegmentId(seg.id); setAiSegmentName(seg.name); }}
-                  style={{ padding: "14px 16px", borderRadius: 10, border: segmentId === seg.id ? "1px solid #3E8A9E" : "1px solid #D8CCB6", background: segmentId === seg.id ? "rgba(62, 138, 158,0.08)" : "rgba(24,29,46,0.4)", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                  style={{ padding: "14px 16px", borderRadius: 10, border: segmentId === seg.id ? "1px solid #3E8A9E" : "1px solid #D8CCB6", background: segmentId === seg.id ? "rgba(62, 138, 158,0.08)" : "rgba(56,50,46,0.02)", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "space-between" }}
                   onMouseEnter={e => { if (segmentId !== seg.id) (e.currentTarget as HTMLDivElement).style.borderColor = "#C9BFB0"; }}
                   onMouseLeave={e => { if (segmentId !== seg.id) (e.currentTarget as HTMLDivElement).style.borderColor = "#D8CCB6"; }}
                 >
@@ -413,7 +413,7 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
                 const sel = channel === ch.id;
                 return (
                   <div key={ch.id} onClick={() => setChannel(ch.id)}
-                    style={{ padding: "20px", borderRadius: 10, border: sel ? `1px solid ${ch.color}` : "1px solid #D8CCB6", background: sel ? `rgba(${ch.color.slice(1).match(/.{2}/g)?.map(h => parseInt(h, 16)).join(",")},0.08)` : "rgba(24,29,46,0.4)", cursor: "pointer", transition: "all 0.15s" }}
+                    style={{ padding: "20px", borderRadius: 10, border: sel ? `1px solid ${ch.color}` : "1px solid #D8CCB6", background: sel ? `rgba(${ch.color.slice(1).match(/.{2}/g)?.map(h => parseInt(h, 16)).join(",")},0.08)` : "rgba(56,50,46,0.02)", cursor: "pointer", transition: "all 0.15s" }}
                     onMouseEnter={e => { if (!sel) (e.currentTarget as HTMLDivElement).style.borderColor = "#C9BFB0"; }}
                     onMouseLeave={e => { if (!sel) (e.currentTarget as HTMLDivElement).style.borderColor = "#D8CCB6"; }}
                   >
@@ -530,7 +530,7 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
 
               {/* Send Now */}
               <div onClick={() => setScheduleMode("now")}
-                style={{ padding: "18px 16px", borderRadius: 10, border: scheduleMode === "now" ? "1px solid #3E8A9E" : "1px solid #D8CCB6", background: scheduleMode === "now" ? "rgba(62, 138, 158,0.08)" : "rgba(24,29,46,0.4)", cursor: "pointer", transition: "all 0.15s" }}>
+                style={{ padding: "18px 16px", borderRadius: 10, border: scheduleMode === "now" ? "1px solid #3E8A9E" : "1px solid #D8CCB6", background: scheduleMode === "now" ? "rgba(62, 138, 158,0.08)" : "rgba(56,50,46,0.02)", cursor: "pointer", transition: "all 0.15s" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
                   <Zap style={{ width: 16, height: 16, color: scheduleMode === "now" ? "#2C6A7B" : "#C9BFB0" }} />
                   <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.85rem", color: scheduleMode === "now" ? "#38322E" : "#8A7F76" }}>Send Now</span>
@@ -541,7 +541,7 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
 
               {/* Schedule Later */}
               <div onClick={() => setScheduleMode("later")}
-                style={{ padding: "18px 16px", borderRadius: 10, border: scheduleMode === "later" ? "1px solid #3E8A9E" : "1px solid #D8CCB6", background: scheduleMode === "later" ? "rgba(62, 138, 158,0.08)" : "rgba(24,29,46,0.4)", cursor: "pointer", transition: "all 0.15s" }}>
+                style={{ padding: "18px 16px", borderRadius: 10, border: scheduleMode === "later" ? "1px solid #3E8A9E" : "1px solid #D8CCB6", background: scheduleMode === "later" ? "rgba(62, 138, 158,0.08)" : "rgba(56,50,46,0.02)", cursor: "pointer", transition: "all 0.15s" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: scheduleMode === "later" ? 10 : 6 }}>
                   <Calendar style={{ width: 16, height: 16, color: scheduleMode === "later" ? "#2C6A7B" : "#C9BFB0" }} />
                   <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.85rem", color: scheduleMode === "later" ? "#38322E" : "#8A7F76" }}>Schedule Later</span>
@@ -558,7 +558,7 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
 
               {/* AI Best Time */}
               <div onClick={() => setScheduleMode("ai")}
-                style={{ padding: "18px 16px", borderRadius: 10, border: scheduleMode === "ai" ? "1px solid #C98E83" : "1px solid #D8CCB6", background: scheduleMode === "ai" ? "rgba(180,127,255,0.08)" : "rgba(24,29,46,0.4)", cursor: "pointer", transition: "all 0.15s" }}>
+                style={{ padding: "18px 16px", borderRadius: 10, border: scheduleMode === "ai" ? "1px solid #C98E83" : "1px solid #D8CCB6", background: scheduleMode === "ai" ? "rgba(180,127,255,0.08)" : "rgba(56,50,46,0.02)", cursor: "pointer", transition: "all 0.15s" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
                   <Sparkles style={{ width: 16, height: 16, color: scheduleMode === "ai" ? "#C98E83" : "#C9BFB0" }} />
                   <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.85rem", color: scheduleMode === "ai" ? "#C98E83" : "#8A7F76" }}>AI Best Time</span>

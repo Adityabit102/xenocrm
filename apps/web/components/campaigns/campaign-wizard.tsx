@@ -258,7 +258,7 @@ Write a challenger Variant B that:
   };
 
   const inp: React.CSSProperties = {
-    width: "100%", background: "rgba(24,29,46,0.6)",
+    width: "100%", background: "#FBF7EC",
     border: "1px solid #D8CCB6", borderRadius: 8,
     padding: "8px 12px", fontFamily: "DM Sans,sans-serif",
     fontSize: "0.8rem", color: "#38322E", outline: "none",

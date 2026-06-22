@@ -12,7 +12,7 @@ import { toast } from "@/components/ui/toast";
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
-  background: "rgba(24,29,46,0.6)",
+  background: "#FBF7EC",
   border: "1px solid #D8CCB6",
   borderRadius: 8,
   padding: "10px 14px",

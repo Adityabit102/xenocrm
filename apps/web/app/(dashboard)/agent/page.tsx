@@ -573,7 +573,7 @@ export default function AgentPage() {
                   </div>
                   {editMsg ? (
                     <textarea value={editedMsg} onChange={e => setEditedMsg(e.target.value)} rows={5}
-                      style={{ width: "100%", background: "rgba(24,29,46,0.6)", border: "1px solid #3E8A9E", borderRadius: 8, padding: "10px 12px", fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#38322E", outline: "none", resize: "vertical", lineHeight: 1.6, boxSizing: "border-box" }} />
+                      style={{ width: "100%", background: "#FBF7EC", border: "1px solid #3E8A9E", borderRadius: 8, padding: "10px 12px", fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#38322E", outline: "none", resize: "vertical", lineHeight: 1.6, boxSizing: "border-box" }} />
                   ) : (
                     <div style={{ background: "rgba(56, 50, 46,0.03)", border: "1px solid #E5DBC9", borderRadius: 8, padding: "12px 14px", fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", color: "#6E635D", lineHeight: 1.7 }}>
                       <HighlightMessage text={editedMsg || activePlan.messageTemplate || ""} />

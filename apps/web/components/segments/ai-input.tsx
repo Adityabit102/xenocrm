@@ -57,7 +57,7 @@ export function AiInput({ onRulesGenerated }: AiInputProps) {
             ? "rgba(204, 107, 107,0.05)"
             : isPending
               ? "rgba(201, 142, 131,0.06)"
-              : "rgba(24,29,46,0.6)",
+              : "#FBF7EC",
           transition: "border-color 0.2s, background 0.2s",
           boxSizing: "border-box" as const,
         }}>
