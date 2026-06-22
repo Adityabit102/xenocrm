@@ -117,6 +117,7 @@ model Campaign {
   messageTemplate     String
   status              String             @default("draft")
   scheduledAt         DateTime?
+  holdoutPct          Int                @default(0) // % of audience withheld as control
   createdByAgent      Boolean            @default(false)
   agentReasoningTrace Json?
   createdAt           DateTime           @default(now())
@@ -163,5 +164,23 @@ model User {
   name      String
   email     String   @unique
   password  String
+  role      String   @default("admin") // admin | marketer | viewer
   createdAt DateTime @default(now())
+}
+
+model MessageTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  channel   String // whatsapp | sms | email | rcs
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorEmail String
+  action     String
+  detail     String?
+  createdAt  DateTime @default(now())
 }
