@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { campaignCost, campaignRoi } from "@/lib/utils/channel-cost";
 
 
 
@@ -68,6 +69,9 @@ export async function GET(request: Request) {
         ? parseFloat(((stats.totalClicked / stats.totalRead) * 100).toFixed(1)) 
         : (stats.totalOpened > 0 ? parseFloat(((stats.totalClicked / stats.totalOpened) * 100).toFixed(1)) : 0.0);
 
+      const cost = campaignCost(camp.channel, stats.totalSent);
+      const roi = campaignRoi(stats.attributedRevenueInr, cost);
+
       return {
         id: camp.id,
         name: camp.name,
@@ -82,12 +86,17 @@ export async function GET(request: Request) {
         openRate,
         clickRate,
         attributedRevenue: stats.attributedRevenueInr,
+        cost,
+        roi,
+        netRevenue: Math.round((stats.attributedRevenueInr - cost) * 100) / 100,
         createdAt: camp.createdAt
       };
     });
 
     
-    if (sortBy === "revenue") {
+    if (sortBy === "roi") {
+      mappedCampaigns.sort((a, b) => (b.roi ?? -1) - (a.roi ?? -1));
+    } else if (sortBy === "revenue") {
       mappedCampaigns.sort((a, b) => b.attributedRevenue - a.attributedRevenue);
     } else if (sortBy === "clickRate") {
       mappedCampaigns.sort((a, b) => b.clickRate - a.clickRate);

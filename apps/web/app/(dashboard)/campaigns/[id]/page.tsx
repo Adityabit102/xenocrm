@@ -10,9 +10,10 @@ import {
   Smartphone, Send, Loader2, AlertCircle,
   ChevronLeft, ChevronRight, TrendingUp, Inbox,
   RefreshCw, Check, Eye, MousePointerClick,
-  BarChart2, Users,
+  BarChart2, Users, Wallet,
 } from "lucide-react";
 import { CampaignStatusBadge, MessageStatusBadge } from "@/components/campaigns/status-badge";
+import { campaignCost, campaignRoi } from "@/lib/utils/channel-cost";
 import { LiveStatsPanel } from "@/components/campaigns/live-stats-panel";
 import { DeliveryFunnel } from "@/components/campaigns/delivery-funnel";
 import { useCampaign, useCampaignStats, useCampaignMessages, useDispatchCampaign } from "@/hooks/use-campaigns";
@@ -176,6 +177,8 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
   const totalClicked = s.totalClicked || 0;
   const totalOrders = s.totalOrdersAttributed || 0;
   const revenue = s.attributedRevenueInr || 0;
+  const cost = campaignCost(campaign.channel, totalSent);
+  const roi = campaignRoi(revenue, cost);
 
   const delivPct = totalSent > 0 ? (totalDel / totalSent) * 100 : 0;
   const failPct = totalSent > 0 ? (totalFailed / totalSent) * 100 : 0;
@@ -264,6 +267,8 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
         <StatCard label="Opened (%)" value={`${openPct.toFixed(1)}%`} iconBg="rgba(77, 143, 168,0.12)" iconColor="#4D8FA8" icon={Eye} />
         <StatCard label="Clicked (%)" value={`${clickPct.toFixed(1)}%`} iconBg="rgba(201, 142, 131,0.12)" iconColor="#C98E83" icon={MousePointerClick} />
         <StatCard label="Revenue Attributed" value={fmtCur(revenue)} iconBg="rgba(78, 155, 138,0.12)" iconColor="#4E9B8A" icon={TrendingUp} />
+        <StatCard label="Send Cost" value={fmtCur(cost)} iconBg="rgba(138, 127, 118,0.12)" iconColor="#8A7F76" icon={Wallet} />
+        <StatCard label="ROI (ROAS)" value={roi != null ? `${roi.toFixed(1)}×` : "—"} iconBg="rgba(201, 149, 78,0.12)" iconColor="#C9954E" icon={BarChart2} />
       </div>
 
       {}
