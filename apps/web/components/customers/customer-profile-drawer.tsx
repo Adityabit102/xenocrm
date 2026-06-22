@@ -325,36 +325,74 @@ export function CustomerProfileDrawer({ customerId, isOpen, onClose }: CustomerP
                           </TabsContent>
 
                           <TabsContent value="comms" className="mt-0">
-                            {(!customer.communications || customer.communications.length === 0) ? (
-                              <div style={{ padding: "48px 0", textAlign: "center" }}>
-                                <Send style={{ width: 32, height: 32, color: "#C9BFB0", margin: "0 auto 10px" }} />
-                                <h5 style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, color: "#38322E", marginBottom: 4 }}>No message timeline</h5>
-                                <p style={{ fontSize: "0.75rem", color: "#8A7F76" }}>No campaigns sent to this contact yet.</p>
-                              </div>
-                            ) : (
-                              <div style={{ position: "relative", paddingLeft: 16, borderLeft: "1px solid #E5DBC9", marginLeft: 10, paddingTop: 8, paddingBottom: 8, display: "flex", flexDirection: "column", gap: 24 }}>
-                                {customer.communications.map((log: any, idx: number) => (
-                                  <div key={log.id || idx} style={{ position: "relative" }}>
-                                    <div style={{ position: "absolute", left: -22, top: 4, width: 12, height: 12, borderRadius: "50%", background: "#3E8A9E", border: "2px solid #F4EEDF" }} />
-                                    <div>
-                                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap" }}>
-                                        <span style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.78rem", color: "#38322E", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 180 }}>
-                                          {log.campaignName || "Campaign Outreach"}
-                                        </span>
-                                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                                          {renderChannelBadge(log.channel)}
-                                          {renderStatusBadge(log.status)}
+                            {(() => {
+                              // Unified Customer 360 activity feed: orders + message
+                              // events interleaved in one chronological timeline.
+                              const events = [
+                                ...(customer.orders || []).map((o: any) => ({
+                                  kind: "order" as const, date: o.orderDate, data: o,
+                                })),
+                                ...(customer.communications || []).map((c: any) => ({
+                                  kind: "message" as const, date: c.queuedAt, data: c,
+                                })),
+                              ]
+                                .filter((e) => e.date)
+                                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+                              if (events.length === 0) {
+                                return (
+                                  <div style={{ padding: "48px 0", textAlign: "center" }}>
+                                    <Clock style={{ width: 32, height: 32, color: "#C9BFB0", margin: "0 auto 10px" }} />
+                                    <h5 style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, color: "#38322E", marginBottom: 4 }}>No activity yet</h5>
+                                    <p style={{ fontSize: "0.75rem", color: "#8A7F76" }}>Orders and messages for this contact will appear here.</p>
+                                  </div>
+                                );
+                              }
+
+                              return (
+                                <div style={{ position: "relative", paddingLeft: 16, borderLeft: "1px solid #E5DBC9", marginLeft: 10, paddingTop: 8, paddingBottom: 8, display: "flex", flexDirection: "column", gap: 24 }}>
+                                  {events.map((ev, idx) => ev.kind === "order" ? (
+                                    <div key={`o-${ev.data.id || idx}`} style={{ position: "relative" }}>
+                                      <div style={{ position: "absolute", left: -22, top: 4, width: 12, height: 12, borderRadius: "50%", background: "#4E9B8A", border: "2px solid #F4EEDF" }} />
+                                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                                        <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                                          <ShoppingBag style={{ width: 13, height: 13, color: "#4E9B8A", flexShrink: 0 }} />
+                                          <span style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.78rem", color: "#38322E", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                            Order · {ev.data.category || "General Store"}
+                                          </span>
                                         </div>
+                                        <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: "0.8rem", color: "#4E9B8A", flexShrink: 0 }}>
+                                          {formatCurrency(ev.data.amountInr)}
+                                        </span>
                                       </div>
                                       <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#C9BFB0", marginTop: 3 }}>
-                                        {formatDateTime(log.queuedAt)}
+                                        {formatDateTime(ev.data.orderDate)}
                                       </p>
-                                      {log.renderedMessage && <TimelineMessage message={log.renderedMessage} />}
                                     </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
+                                  ) : (
+                                    <div key={`m-${ev.data.id || idx}`} style={{ position: "relative" }}>
+                                      <div style={{ position: "absolute", left: -22, top: 4, width: 12, height: 12, borderRadius: "50%", background: "#3E8A9E", border: "2px solid #F4EEDF" }} />
+                                      <div>
+                                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap" }}>
+                                          <span style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.78rem", color: "#38322E", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 180 }}>
+                                            <MessageSquare style={{ width: 13, height: 13, color: "#3E8A9E", flexShrink: 0 }} />
+                                            {ev.data.campaignName || "Campaign Outreach"}
+                                          </span>
+                                          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                                            {renderChannelBadge(ev.data.channel)}
+                                            {renderStatusBadge(ev.data.status)}
+                                          </div>
+                                        </div>
+                                        <p style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#C9BFB0", marginTop: 3 }}>
+                                          {formatDateTime(ev.data.queuedAt)}
+                                        </p>
+                                        {ev.data.renderedMessage && <TimelineMessage message={ev.data.renderedMessage} />}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              );
+                            })()}
                           </TabsContent>
                         </div>
                       </Tabs>

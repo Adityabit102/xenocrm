@@ -27,7 +27,7 @@ export async function GET(
           },
           communications: {
             orderBy: { queuedAt: "desc" },
-            take: 10,
+            take: 30,
             include: {
               campaign: {
                 select: {

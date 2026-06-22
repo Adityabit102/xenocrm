@@ -49,11 +49,28 @@ export default function CustomersPage() {
     setPage(1);
   };
   const [selectedCustomer, setSelectedCustomer] = React.useState<any>(null);
+  const [customerDetail, setCustomerDetail] = React.useState<any>(null);
+  const [detailLoading, setDetailLoading] = React.useState(false);
 
   React.useEffect(() => {
     const t = setTimeout(() => { setDebouncedSearch(searchVal); setPage(1); }, 300);
     return () => clearTimeout(t);
   }, [searchVal]);
+
+  // Customer 360 — load full profile (orders + message history) on select
+  React.useEffect(() => {
+    const id = selectedCustomer?.id;
+    if (!id) { setCustomerDetail(null); return; }
+    let cancelled = false;
+    setDetailLoading(true);
+    setCustomerDetail(null);
+    fetch(`/api/customers/${id}`)
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => { if (!cancelled) setCustomerDetail(d); })
+      .catch(() => { if (!cancelled) setCustomerDetail(null); })
+      .finally(() => { if (!cancelled) setDetailLoading(false); });
+    return () => { cancelled = true; };
+  }, [selectedCustomer?.id]);
 
   const { data: customersData, isLoading } = useCustomers({ page, limit: 15, search: debouncedSearch, rfmTier: rfmTierFilter });
   const { data: stats, isLoading: statsLoading } = useCustomerStats();
@@ -447,6 +464,44 @@ export default function CustomersPage() {
                   </div>
                 ))}
               </div>
+
+              {/* Customer 360 — unified activity feed (orders + messages) */}
+              <h3 style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A7F76", margin: "26px 0 14px 0" }}>Recent Activity</h3>
+              {detailLoading ? (
+                <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.68rem", color: "#C9BFB0" }}>Loading activity…</div>
+              ) : (() => {
+                const events = [
+                  ...((customerDetail?.orders || []).map((o: any) => ({ kind: "order" as const, date: o.orderDate, data: o }))),
+                  ...((customerDetail?.communications || []).map((c: any) => ({ kind: "message" as const, date: c.queuedAt, data: c }))),
+                ].filter(e => e.date).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 25);
+
+                if (events.length === 0) {
+                  return <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.68rem", color: "#C9BFB0" }}>No orders or messages yet.</div>;
+                }
+                const dt = (d: any) => new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "2-digit" });
+                return (
+                  <div style={{ position: "relative", paddingLeft: 16, borderLeft: "1px solid #E5DBC9", marginLeft: 4, display: "flex", flexDirection: "column", gap: 18 }}>
+                    {events.map((ev, i) => (
+                      <div key={i} style={{ position: "relative" }}>
+                        <div style={{ position: "absolute", left: -21, top: 3, width: 10, height: 10, borderRadius: "50%", background: ev.kind === "order" ? "#4E9B8A" : "#3E8A9E", border: "2px solid #F4EEDF" }} />
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                          <span style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "#38322E", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 190 }}>
+                            {ev.kind === "order"
+                              ? `Order · ${ev.data.category || "Store"}`
+                              : (ev.data.campaignName || "Campaign") + ` · ${(ev.data.channel || "").toUpperCase()}`}
+                          </span>
+                          {ev.kind === "order"
+                            ? <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: "0.78rem", color: "#4E9B8A", flexShrink: 0 }}>{fmt(ev.data.amountInr)}</span>
+                            : <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.58rem", color: "#8A7F76", textTransform: "uppercase", flexShrink: 0 }}>{ev.data.status}</span>}
+                        </div>
+                        <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: "#C9BFB0", marginTop: 2 }}>
+                          {dt(ev.date)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Footer actions */}
