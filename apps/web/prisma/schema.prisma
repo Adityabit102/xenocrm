@@ -26,6 +26,48 @@ model Customer {
   orders             Order[]
   communications     CommunicationLog[]
   segmentMemberships SegmentMembership[]
+  journeyEnrollments JourneyEnrollment[]
+}
+
+model Journey {
+  id          String              @id @default(cuid())
+  name        String
+  description String?
+  status      String              @default("draft") // draft | active | paused
+  triggerType String              @default("manual") // manual | segment | event
+  segmentId   String? // enrollment source for manual/segment triggers
+  eventType   String? // cart_abandoned | first_purchase | churn_risk (event trigger)
+  sentCount   Int                 @default(0)
+  steps       JourneyStep[]
+  enrollments JourneyEnrollment[]
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+model JourneyStep {
+  id        String  @id @default(cuid())
+  journeyId String
+  journey   Journey @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  order     Int
+  type      String // message | wait
+  channel   String? // message: whatsapp | sms | email | rcs
+  template  String? // message body
+  waitHours Int? // wait: delay before next step
+}
+
+model JourneyEnrollment {
+  id          String    @id @default(cuid())
+  journeyId   String
+  journey     Journey   @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  currentStep Int       @default(0)
+  status      String    @default("active") // active | completed | exited
+  nextRunAt   DateTime?
+  enrolledAt  DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([journeyId, customerId])
 }
 
 model Order {

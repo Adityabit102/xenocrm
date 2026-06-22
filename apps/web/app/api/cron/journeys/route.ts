@@ -1,0 +1,24 @@
+import { NextResponse } from "next/server";
+import { processJourneyTick } from "@/lib/journeys/engine";
+
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
+// Scheduler tick — advance all active journeys. Wire to a cron in prod;
+// also callable on demand ("Run now") from the journey UI.
+async function tick() {
+  try {
+    const result = await processJourneyTick();
+    return NextResponse.json({ ok: true, ...result });
+  } catch (error: any) {
+    console.error("cron/journeys error:", error);
+    return NextResponse.json({ ok: false, error: "Journey tick failed" }, { status: 500 });
+  }
+}
+
+export async function POST() {
+  return tick();
+}
+export async function GET() {
+  return tick();
+}
