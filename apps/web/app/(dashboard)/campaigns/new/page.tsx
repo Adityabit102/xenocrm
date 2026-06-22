@@ -68,6 +68,7 @@ export default function NewCampaignPage() {
   // ── Schedule state — "now" | "later" | "ai" ──────────────────────────────────
   const [scheduleMode, setScheduleMode] = React.useState<"now" | "later" | "ai">("now");
   const [scheduledAt, setScheduledAt] = React.useState("");
+  const [holdoutPct, setHoldoutPct] = React.useState(0);
 
   // ── AI Segment Builder state ──────────────────────────────────────────────────
   const [aiSegQuery, setAiSegQuery] = React.useState("");
@@ -211,7 +212,7 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
     try {
       await createCampaign?.mutateAsync({
         name, segmentId, channel, messageTemplate: messageBody,
-        scheduledAt: resolvedScheduledAt,
+        scheduledAt: resolvedScheduledAt, holdoutPct,
         ...(scheduleMode !== "now" && resolvedScheduledAt ? { status: "scheduled" } : {}),
       });
       toast.success(scheduleMode === "now" ? "Campaign created!" : "Campaign scheduled!");
@@ -567,6 +568,29 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
                     ? <span style={{ color: "#C98E83", fontWeight: 600 }}>Sending {AI_BEST_TIME[channel.toLowerCase()] ?? "tomorrow at 7PM"}</span>
                     : "AI picks the best time based on past engagement."}
                 </p>
+              </div>
+            </div>
+
+            {/* Holdout control group */}
+            <div style={{ marginTop: 16, padding: 16, borderRadius: 10, border: "1px solid #D8CCB6", background: "rgba(56,50,46,0.02)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C9954E" }} />
+                <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.85rem", color: "#38322E" }}>Holdout control group</span>
+                <span style={{ marginLeft: "auto", fontFamily: "JetBrains Mono,monospace", fontWeight: 700, color: "#2C6A7B" }}>{holdoutPct}%</span>
+              </div>
+              <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", margin: "0 0 10px" }}>
+                Withhold a random slice as an untouched control to measure true incremental lift.
+              </p>
+              <div style={{ display: "flex", gap: 8 }}>
+                {[0, 5, 10, 20].map(p => (
+                  <button key={p} onClick={() => setHoldoutPct(p)}
+                    style={{ flex: 1, padding: "8px 0", borderRadius: 8, cursor: "pointer", fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.76rem",
+                      border: `1px solid ${holdoutPct === p ? "#3E8A9E" : "#D8CCB6"}`,
+                      background: holdoutPct === p ? "rgba(62,138,158,0.1)" : "transparent",
+                      color: holdoutPct === p ? "#2C6A7B" : "#8A7F76" }}>
+                    {p === 0 ? "None" : p + "%"}
+                  </button>
+                ))}
               </div>
             </div>
           </>

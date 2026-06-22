@@ -85,7 +85,16 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
 
   const dispatchMutation = useDispatchCampaign();
 
-  
+  const { data: lift } = useQuery({
+    queryKey: ["campaign-lift", id, (campaign as any)?.holdoutPct, (stats as any)?.totalSent],
+    queryFn: async () => {
+      const r = await fetch(`/api/campaigns/${id}/lift`);
+      return r.ok ? r.json() : null;
+    },
+    enabled: !!campaign && (((campaign as any)?.holdoutPct ?? 0) > 0),
+  });
+
+
   const { isConnected: isSocketConnected } = useCampaignSocket(
     id,
     React.useCallback((updatedStats: any) => {
@@ -270,6 +279,37 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
         <StatCard label="Send Cost" value={fmtCur(cost)} iconBg="rgba(138, 127, 118,0.12)" iconColor="#8A7F76" icon={Wallet} />
         <StatCard label="ROI (ROAS)" value={roi != null ? `${roi.toFixed(1)}×` : "—"} iconBg="rgba(201, 149, 78,0.12)" iconColor="#C9954E" icon={BarChart2} />
       </div>
+
+      {/* Holdout & incremental lift */}
+      {((campaign as any).holdoutPct ?? 0) > 0 && (
+        <div style={{ marginBottom: 20, padding: 18, borderRadius: 12, background: "#fff", border: "1px solid #E5DBC9" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C9954E" }} />
+            <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.95rem", color: "#38322E" }}>Holdout & Incremental Lift</span>
+            <span style={{ marginLeft: "auto", fontFamily: "JetBrains Mono,monospace", fontSize: "0.65rem", color: "#8A7F76" }}>{(campaign as any).holdoutPct}% control</span>
+          </div>
+          {!lift ? (
+            <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem", color: "#C9BFB0" }}>Computing lift…</div>
+          ) : !lift.hasControl ? (
+            <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#8A7F76" }}>Control group forms on dispatch — lift appears once the campaign sends.</div>
+          ) : (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }}>
+              {[
+                { label: "Treatment conv.", val: `${lift.treatment.rate}%`, sub: `${lift.treatment.converters}/${lift.treatment.size}`, col: "#2C6A7B" },
+                { label: "Control conv.", val: `${lift.control.rate}%`, sub: `${lift.control.converters}/${lift.control.size}`, col: "#8A7F76" },
+                { label: "Incremental lift", val: `${lift.liftPct > 0 ? "+" : ""}${lift.liftPct}%`, sub: "vs control", col: lift.liftPct >= 0 ? "#4E9B8A" : "#CC6B6B" },
+                { label: "Incr. revenue", val: fmtCur(lift.incrementalRevenue), sub: "attributable", col: "#4E9B8A" },
+              ].map((m) => (
+                <div key={m.label} style={{ background: "rgba(56,50,46,0.02)", border: "1px solid #E5DBC9", borderRadius: 10, padding: "12px 10px", textAlign: "center" }}>
+                  <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: "1.2rem", color: m.col }}>{m.val}</div>
+                  <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.7rem", color: "#38322E", fontWeight: 600, marginTop: 2 }}>{m.label}</div>
+                  <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.58rem", color: "#8A7F76", marginTop: 1 }}>{m.sub}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {}
       <div style={{ background: "#FFFFFF", border: "1px solid #E5DBC9", borderRadius: 12, padding: "20px 22px", marginBottom: 20 }}>

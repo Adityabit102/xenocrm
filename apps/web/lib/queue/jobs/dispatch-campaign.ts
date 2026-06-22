@@ -41,7 +41,29 @@ export async function processCampaignDispatch(campaignId: string): Promise<void>
       await filterEligibleCustomerIds(rawMatchedIds);
     console.log(`[CampaignDispatch] ${rawMatchedIds.length} matched; suppressed ${suppressedOptOut} opt-out + ${suppressedFrequency} frequency-capped; ${matchedCustomerIds.length} eligible for campaign ${campaignId}`);
 
-    if (matchedCustomerIds.length === 0) {
+    // Holdout / control group — randomly withhold a % as an untouched control
+    // so true incremental lift can be measured later.
+    let treatmentIds = matchedCustomerIds;
+    if (campaign.holdoutPct && campaign.holdoutPct > 0 && matchedCustomerIds.length > 0) {
+      const shuffled = [...matchedCustomerIds].sort(() => Math.random() - 0.5);
+      const holdoutCount = Math.floor(shuffled.length * (campaign.holdoutPct / 100));
+      const controlIds = shuffled.slice(0, holdoutCount);
+      treatmentIds = shuffled.slice(holdoutCount);
+      if (controlIds.length > 0) {
+        await db.communicationLog.createMany({
+          data: controlIds.map((cid) => ({
+            campaignId,
+            customerId: cid,
+            channel: campaign.channel,
+            renderedMessage: "",
+            status: "holdout",
+          })),
+        });
+      }
+      console.log(`[CampaignDispatch] Holdout ${campaign.holdoutPct}% → ${controlIds.length} control, ${treatmentIds.length} treatment`);
+    }
+
+    if (treatmentIds.length === 0) {
       console.log(`[CampaignDispatch] Segment is empty. Marking campaign as completed.`);
       await db.campaign.update({
         where: { id: campaignId },
@@ -70,7 +92,7 @@ export async function processCampaignDispatch(campaignId: string): Promise<void>
 
     
     const customers = await db.customer.findMany({
-      where: { id: { in: matchedCustomerIds } },
+      where: { id: { in: treatmentIds } },
       include: { orders: true }
     });
 

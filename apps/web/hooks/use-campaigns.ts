@@ -16,6 +16,7 @@ export interface CreateCampaignPayload {
   messageTemplate: string;
   scheduledAt?: string | null;
   status?: "draft" | "scheduled";
+  holdoutPct?: number;
   createdByAgent?: boolean;
   agentReasoningTrace?: any;
 }

@@ -16,6 +16,7 @@ const createCampaignSchema = z.object({
     z.string().datetime().optional().nullable()
   ),
   status: z.enum(["draft", "scheduled"]).optional().default("draft"),  // ← add this line
+  holdoutPct: z.number().int().min(0).max(50).optional().default(0),
   createdByAgent: z.boolean().optional().default(false),
   agentReasoningTrace: z.any().optional().nullable()
 });
@@ -111,6 +112,7 @@ export async function POST(request: Request) {
           messageTemplate: data.messageTemplate,
           status: data.status || "draft",
           scheduledAt: data.scheduledAt ? new Date(data.scheduledAt) : null,
+          holdoutPct: data.holdoutPct || 0,
           createdByAgent: data.createdByAgent || false,
           agentReasoningTrace: data.agentReasoningTrace || null
         }
