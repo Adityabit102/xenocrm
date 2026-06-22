@@ -96,7 +96,22 @@ function detectActionIntent(text: string): "create_segment" | "create_campaign" 
     if (createSegment.some(k => lower.includes(k))) return "create_segment";
     if (createCampaign.some(k => lower.includes(k))) return "create_campaign";
     if (previewSegment.some(k => lower.includes(k))) return "preview_segment";
+    // regex fallback: any launch/create verb paired with "campaign" or a channel word
+    const launchish = /\b(launch|start|run|send|dispatch|fire|blast|go\s*live|kick\s*off|create|make|build|set\s*up)\b/.test(lower);
+    const campaignish = /\bcampaign(s)?\b/.test(lower) || /\b(whatsapp|sms|email|rcs)\b/.test(lower);
+    if (launchish && campaignish) return "create_campaign";
     return null;
+}
+
+// true when the user wants the campaign sent now (not just created/drafted)
+function isLaunchVerb(text: string): boolean {
+    return /\b(launch|start|run|send|dispatch|fire|blast|go\s*live|kick\s*off)\b/.test(text.toLowerCase());
+}
+
+// heuristic: does the message describe an audience (→ build new) vs. name an
+// existing campaign (→ just dispatch it)?
+function mentionsAudience(text: string): boolean {
+    return /\b(for|who|whose|that|with|customers|shoppers|buyers|users|segment|lapsed|inactive|churn|spent|vip|repeat|new|first[- ]time|mumbai|delhi|bangalore|women|men)\b/.test(text.toLowerCase());
 }
 
 function parseHour(text: string): number {
@@ -251,7 +266,13 @@ export function AIAssistant() {
             }
 
             if (actionIntent === "create_campaign") {
-                await handleCampaignAction(query);
+                const launchNow = isLaunchVerb(query);
+                // "launch the <name> campaign" with no audience → dispatch an existing one
+                if (launchNow && !mentionsAudience(query)) {
+                    const handled = await handleLaunchExisting(query);
+                    if (handled) return;
+                }
+                await handleCampaignAction(query, launchNow);
                 return;
             }
 
@@ -342,7 +363,64 @@ export function AIAssistant() {
         }
     };
 
-    const handleCampaignAction = async (query: string) => {
+    const handleLaunchExisting = async (query: string): Promise<boolean> => {
+        try {
+            const res = await fetch("/api/campaigns?limit=100");
+            if (!res.ok) return false;
+            const data = await res.json();
+            const campaigns: Array<{ id: string; name: string; status: string; channel: string }> = data.campaigns || [];
+            if (!campaigns.length) return false;
+
+            const cand = query
+                .toLowerCase()
+                .replace(/\b(launch|start|run|send|dispatch|fire|off|blast|go|live|kick|the|a|an|my|please|now|campaign|this|that|called|named)\b/g, " ")
+                .replace(/[^a-z0-9\s]/g, " ")
+                .replace(/\s+/g, " ")
+                .trim();
+
+            const lc = (s: string) => s.toLowerCase();
+            let match = cand
+                ? campaigns.find(c => lc(c.name).includes(cand)) ||
+                  campaigns.find(c => cand.includes(lc(c.name))) ||
+                  campaigns.find(c => {
+                      const words = cand.split(" ").filter(w => w.length > 2);
+                      return words.length > 0 && words.every(w => lc(c.name).includes(w));
+                  })
+                : undefined;
+
+            // no name given but exactly one launchable campaign → use it
+            if (!match) {
+                const launchable = campaigns.filter(c => c.status === "draft" || c.status === "scheduled");
+                if (!cand && launchable.length === 1) match = launchable[0];
+            }
+            if (!match) return false;
+
+            if (match.status === "in_progress" || match.status === "completed") {
+                setMessages(prev => [...prev, {
+                    role: "assistant",
+                    text: `"${match!.name}" is already ${match!.status === "completed" ? "completed" : "sending"}, so there's nothing to launch.`,
+                    action: { type: "campaign_created", campaignId: match!.id, campaignName: match!.name },
+                }]);
+                setLoading(false);
+                return true;
+            }
+
+            const disp = await fetch(`/api/campaigns/${match.id}/dispatch`, { method: "POST" });
+            if (!disp.ok) throw new Error("dispatch failed");
+
+            setMessages(prev => [...prev, {
+                role: "assistant",
+                text: `Launched! "${match!.name}" is now sending over ${match!.channel.toUpperCase()}. Delivery stats will populate on the campaign page.`,
+                action: { type: "campaign_created", campaignId: match!.id, campaignName: match!.name },
+            }]);
+            setLoading(false);
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
+    const handleCampaignAction = async (query: string, launchNow = false) => {
         try {
             const lower = query.toLowerCase();
             const channel = lower.includes("whatsapp") ? "whatsapp"
@@ -394,9 +472,22 @@ export function AIAssistant() {
             if (!campRes.ok) throw new Error("Campaign creation failed");
             const campaign = await campRes.json();
 
+            const audienceCount = (segment.customerCount ?? customerCount)?.toLocaleString();
+
+            // actually launch it when the user asked to launch/send/run (not just "create")
+            let launched = false;
+            if (launchNow) {
+                const disp = await fetch(`/api/campaigns/${campaign.id}/dispatch`, { method: "POST" });
+                launched = disp.ok;
+            }
+
             setMessages(prev => [...prev, {
                 role: "assistant",
-                text: `Campaign created! I built a segment of ${(segment.customerCount ?? customerCount)?.toLocaleString()} customers and queued a ${channel.toUpperCase()} campaign for them.`,
+                text: launched
+                    ? `Launched! I built a segment of ${audienceCount} customers and the ${channel.toUpperCase()} campaign is sending to them now. Delivery stats will populate on the campaign page.`
+                    : launchNow
+                        ? `I created the ${channel.toUpperCase()} campaign for ${audienceCount} customers, but couldn't start the send automatically — open it and hit Dispatch to launch.`
+                        : `Campaign created! I built a segment of ${audienceCount} customers and queued a ${channel.toUpperCase()} campaign for them.`,
                 action: {
                     type: "campaign_created",
                     campaignId: campaign.id,
