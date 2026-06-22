@@ -537,7 +537,12 @@ export default function DashboardPage() {
               </div>
             ))}
           </div>
-          <button style={{ marginTop: 28, width: "100%", padding: "8px 0", background: "transparent", border: "none", color: "#C9BFB0", fontFamily: "DM Sans,sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", cursor: "pointer" }}>
+          <button
+            onClick={() => router.push("/agent")}
+            style={{ marginTop: 28, width: "100%", padding: "10px 0", background: "transparent", border: "1px solid #E5DBC9", borderRadius: 8, color: "#8A7F76", fontFamily: "DM Sans,sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", cursor: "pointer", outline: "none", transition: "all 0.15s" }}
+            onMouseEnter={e => { e.currentTarget.style.color = "#2C6A7B"; e.currentTarget.style.borderColor = "rgba(62,138,158,0.4)"; e.currentTarget.style.background = "rgba(62,138,158,0.04)"; }}
+            onMouseLeave={e => { e.currentTarget.style.color = "#8A7F76"; e.currentTarget.style.borderColor = "#E5DBC9"; e.currentTarget.style.background = "transparent"; }}
+          >
             VIEW AGENT LOGS
           </button>
         </div>
