@@ -476,6 +476,26 @@ export default function CustomersPage() {
                 ))}
               </div>
 
+              {/* Predicted LTV + churn risk */}
+              {customerDetail && (customerDetail.clvScore != null || customerDetail.churnScore != null) && (
+                <div style={{ marginTop: 22, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  <div style={{ background: "rgba(78,155,138,0.06)", border: "1px solid rgba(78,155,138,0.22)", borderRadius: 10, padding: "12px 14px" }}>
+                    <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.56rem", color: "#8A7F76", textTransform: "uppercase", letterSpacing: "0.06em" }}>Predicted LTV</div>
+                    <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: "1.15rem", color: "#4E9B8A", marginTop: 3 }}>{fmt(customerDetail.clvScore || 0)}</div>
+                  </div>
+                  {(() => {
+                    const ch = Math.round(customerDetail.churnScore || 0);
+                    const col = ch >= 60 ? "#CC6B6B" : ch >= 30 ? "#C9954E" : "#4E9B8A";
+                    return (
+                      <div style={{ background: `${col}10`, border: `1px solid ${col}3a`, borderRadius: 10, padding: "12px 14px" }}>
+                        <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.56rem", color: "#8A7F76", textTransform: "uppercase", letterSpacing: "0.06em" }}>Churn risk</div>
+                        <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: "1.15rem", color: col, marginTop: 3 }}>{ch}%</div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
+
               {/* Marketing consent control */}
               {customerDetail && (
                 <div style={{ marginTop: 22, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "10px 12px", borderRadius: 10,

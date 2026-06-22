@@ -14,7 +14,7 @@ export type EligibilityResult = {
  * drops opted-out contacts and anyone who has already hit the weekly
  * frequency cap. Used as a guard before any campaign/journey send.
  */
-export async function filterEligibleCustomerIds(customerIds: string[]): Promise<EligibilityResult> {
+export async function filterEligibleCustomerIds(customerIds: string[], cap: number = FREQUENCY_CAP_PER_WEEK): Promise<EligibilityResult> {
   if (!customerIds.length) return { eligible: [], suppressedOptOut: 0, suppressedFrequency: 0 };
 
   const optedOut = await db.customer.findMany({
@@ -30,7 +30,7 @@ export async function filterEligibleCustomerIds(customerIds: string[]): Promise<
     _count: { _all: true },
   });
   const cappedSet = new Set(
-    recent.filter((r) => r._count._all >= FREQUENCY_CAP_PER_WEEK).map((r) => r.customerId)
+    recent.filter((r) => r._count._all >= cap).map((r) => r.customerId)
   );
 
   let suppressedFrequency = 0;

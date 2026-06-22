@@ -33,6 +33,18 @@ export function Topbar() {
   const [isNotifOpen, setIsNotifOpen] = React.useState(false);
   const [notifications, setNotifications] = React.useState(INITIAL_NOTIFICATIONS);
 
+  // Live anomaly alerts → bell
+  React.useEffect(() => {
+    fetch("/api/alerts")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((alerts: any[]) => {
+        if (Array.isArray(alerts) && alerts.length > 0) {
+          setNotifications(alerts.map((a, i) => ({ id: i + 1, title: a.title, body: a.body, time: "now", read: false })));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const profileRef = React.useRef<HTMLDivElement>(null);
   const notifRef = React.useRef<HTMLDivElement>(null);
 

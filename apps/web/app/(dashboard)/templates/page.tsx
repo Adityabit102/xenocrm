@@ -3,7 +3,7 @@
 import * as React from "react";
 import { FileText, Plus, Trash2, X, Copy, Check } from "lucide-react";
 
-type Template = { id: string; name: string; channel: string; body: string; updatedAt: string };
+type Template = { id: string; name: string; channel: string; body: string; updatedAt: string; perf?: { uses: number; sent: number; openRate: number; clickRate: number; revenue: number } };
 
 const CHANNELS = ["whatsapp", "sms", "email", "rcs"];
 const C = { ink: "#38322E", muted: "#8A7F76", teal: "#2C6A7B", sage: "#4E9B8A", border: "#E5DBC9" };
@@ -71,7 +71,16 @@ export default function TemplatesPage() {
                 <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.92rem", color: C.ink, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{t.name}</div>
                 <span style={{ padding: "2px 8px", borderRadius: 20, fontFamily: "JetBrains Mono,monospace", fontSize: "0.58rem", fontWeight: 700, textTransform: "uppercase", color: channelColor[t.channel] || C.muted, background: `${channelColor[t.channel] || C.muted}1a`, flexShrink: 0 }}>{t.channel}</span>
               </div>
-              <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.8rem", color: "#6E635D", lineHeight: 1.5, margin: 0, whiteSpace: "pre-wrap", maxHeight: 110, overflow: "hidden" }}>{t.body}</p>
+              <p style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.8rem", color: "#6E635D", lineHeight: 1.5, margin: 0, whiteSpace: "pre-wrap", maxHeight: 90, overflow: "hidden" }}>{t.body}</p>
+              {t.perf && t.perf.uses > 0 ? (
+                <div style={{ display: "flex", gap: 12, padding: "8px 0", borderTop: `1px solid ${C.border}`, fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: C.muted }}>
+                  <span><b style={{ color: C.ink }}>{t.perf.uses}×</b> used</span>
+                  <span><b style={{ color: C.teal }}>{t.perf.openRate}%</b> open</span>
+                  <span><b style={{ color: C.sage }}>{t.perf.clickRate}%</b> click</span>
+                </div>
+              ) : (
+                <div style={{ padding: "8px 0", borderTop: `1px solid ${C.border}`, fontFamily: "JetBrains Mono,monospace", fontSize: "0.6rem", color: "#C9BFB0" }}>Not used in a campaign yet</div>
+              )}
               <div style={{ display: "flex", gap: 8, marginTop: "auto" }}>
                 <button onClick={() => copy(t)} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "7px 0", borderRadius: 8, background: "rgba(56,50,46,0.04)", border: `1px solid ${C.border}`, color: C.ink, fontFamily: "DM Sans,sans-serif", fontWeight: 600, fontSize: "0.74rem", cursor: "pointer" }}>
                   {copied === t.id ? <><Check style={{ width: 12, height: 12, color: C.sage }} /> Copied</> : <><Copy style={{ width: 12, height: 12 }} /> Copy</>}

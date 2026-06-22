@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { processCampaignDispatch } from "@/lib/queue/jobs/dispatch-campaign";
+import { getMessagingSettings, inQuietHours } from "@/lib/settings";
 
 export async function POST(
   request: Request,
@@ -24,6 +25,10 @@ export async function POST(
     }
     if (campaign.status === "in_progress" || campaign.status === "completed") {
       return NextResponse.json({ error: "Campaign already dispatched or completed" }, { status: 409 });
+    }
+    const messaging = await getMessagingSettings();
+    if (inQuietHours(messaging)) {
+      return NextResponse.json({ error: `Within quiet hours (${messaging.quietHoursStart}:00–${messaging.quietHoursEnd}:00). Sending is paused.` }, { status: 423 });
     }
     if (campaign.status !== "draft" && campaign.status !== "scheduled") {
       return NextResponse.json({ error: `Cannot dispatch campaign in status '${campaign.status}'` }, { status: 400 });

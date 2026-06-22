@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { calculateRFM } from "@/lib/rfm/scorer";
+import { computeScores } from "@/lib/scores";
 
 export const dynamic = "force-dynamic";
 
@@ -21,10 +22,15 @@ function authorized(req: Request): boolean {
 async function recomputeRfm(customerId: string) {
   const orders = await db.order.findMany({ where: { customerId }, select: { orderDate: true, amountInr: true } });
   if (!orders.length) return;
-  const rfm = calculateRFM(orders as any, new Date());
+  const now = new Date();
+  const rfm = calculateRFM(orders as any, now);
+  const { clv, churn } = computeScores(orders as any, now);
   await db.customer.update({
     where: { id: customerId },
-    data: { rfmRecency: rfm.recency, rfmFrequency: rfm.frequency, rfmMonetary: rfm.monetary, rfmTier: rfm.rfmTier },
+    data: {
+      rfmRecency: rfm.recency, rfmFrequency: rfm.frequency, rfmMonetary: rfm.monetary, rfmTier: rfm.rfmTier,
+      clvScore: clv, churnScore: churn,
+    },
   });
 }
 

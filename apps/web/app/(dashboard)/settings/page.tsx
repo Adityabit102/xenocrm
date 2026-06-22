@@ -85,6 +85,10 @@ export default function SettingsPage() {
                 </p>
             </div>
 
+            <div style={{ marginBottom: 16 }}>
+                <MessagingControls />
+            </div>
+
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {SETTINGS_SECTIONS.map(({ icon: Icon, title, description, items }) => (
                     <div key={title} style={{
@@ -177,6 +181,68 @@ export default function SettingsPage() {
                     </div>
                 ))}
             </div>
+        </div>
+    );
+}
+
+function MessagingControls() {
+    const [s, setS] = React.useState<any>(null);
+    const [saved, setSaved] = React.useState(false);
+    React.useEffect(() => { fetch("/api/settings/messaging").then(r => r.ok ? r.json() : null).then(setS); }, []);
+    const save = async (patch: any) => {
+        const next = { ...s, ...patch };
+        setS(next);
+        await fetch("/api/settings/messaging", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(patch) });
+        setSaved(true); setTimeout(() => setSaved(false), 1500);
+    };
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    const sel: React.CSSProperties = { padding: "6px 10px", borderRadius: 8, border: "1px solid #D8CCB6", background: "#FBF7EC", color: "#38322E", fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", cursor: "pointer" };
+    return (
+        <div style={{ background: "#fff", border: "1px solid #E5DBC9", borderRadius: 14, padding: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.95rem", color: "#38322E" }}>Messaging controls</div>
+                {saved && <span style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: "#4E9B8A" }}>SAVED</span>}
+            </div>
+            {!s ? <div style={{ color: "#8A7F76", fontFamily: "JetBrains Mono,monospace", fontSize: "0.72rem" }}>Loading…</div> : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    {/* quiet hours */}
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                        <div>
+                            <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.82rem", color: "#38322E" }}>Quiet hours</div>
+                            <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", marginTop: 2 }}>Pause all sending during this window.</div>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            {s.quietHoursEnabled && (
+                                <>
+                                    <select value={s.quietHoursStart} onChange={e => save({ quietHoursStart: Number(e.target.value) })} style={sel}>{hours.map(h => <option key={h} value={h}>{String(h).padStart(2, "0")}:00</option>)}</select>
+                                    <span style={{ color: "#8A7F76", fontSize: "0.75rem" }}>to</span>
+                                    <select value={s.quietHoursEnd} onChange={e => save({ quietHoursEnd: Number(e.target.value) })} style={sel}>{hours.map(h => <option key={h} value={h}>{String(h).padStart(2, "0")}:00</option>)}</select>
+                                </>
+                            )}
+                            <Toggle on={s.quietHoursEnabled} onClick={() => save({ quietHoursEnabled: !s.quietHoursEnabled })} />
+                        </div>
+                    </div>
+                    <div style={{ height: 1, background: "#E5DBC9" }} />
+                    {/* frequency cap */}
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                        <div>
+                            <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.82rem", color: "#38322E" }}>Frequency cap</div>
+                            <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", marginTop: 2 }}>Max marketing messages per customer per week.</div>
+                        </div>
+                        <select value={s.frequencyCap} onChange={e => save({ frequencyCap: Number(e.target.value) })} style={sel}>
+                            {[2, 3, 5, 7, 10, 15].map(n => <option key={n} value={n}>{n} / week</option>)}
+                        </select>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
+    return (
+        <div onClick={onClick} style={{ width: 38, height: 22, borderRadius: 20, background: on ? "#3E8A9E" : "#D8CCB6", position: "relative", cursor: "pointer", flexShrink: 0, transition: "background 0.15s" }}>
+            <div style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff", position: "absolute", top: 2, left: on ? 18 : 2, transition: "left 0.15s" }} />
         </div>
     );
 }

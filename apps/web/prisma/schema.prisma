@@ -24,12 +24,35 @@ model Customer {
   rfmTier            String?
   marketingConsent   Boolean             @default(true)
   optOutAt           DateTime?
+  clvScore           Float? // predicted lifetime value (INR)
+  churnScore         Float? // 0..100 churn propensity
   createdAt          DateTime            @default(now())
   orders             Order[]
   communications     CommunicationLog[]
   segmentMemberships SegmentMembership[]
   journeyEnrollments JourneyEnrollment[]
   events             Event[]
+  inboundMessages    InboundMessage[]
+}
+
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model InboundMessage {
+  id          String    @id @default(cuid())
+  customerId  String?
+  customer    Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  channel     String // whatsapp | sms | email | rcs
+  fromAddress String? // phone or email the reply came from
+  body        String
+  handled     Boolean   @default(false)
+  isStop      Boolean   @default(false) // recognised opt-out (STOP/UNSUBSCRIBE)
+  createdAt   DateTime  @default(now())
+
+  @@index([createdAt])
 }
 
 model Event {

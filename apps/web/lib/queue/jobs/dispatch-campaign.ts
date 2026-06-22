@@ -3,6 +3,7 @@ import { db } from "../../db";
 import { getSegmentCustomerIds } from "../../segment-engine/executor";
 import { personaliseMessage } from "../../utils/personalise";
 import { filterEligibleCustomerIds } from "../../utils/suppression";
+import { getMessagingSettings } from "../../settings";
 
 
 
@@ -37,8 +38,9 @@ export async function processCampaignDispatch(campaignId: string): Promise<void>
     const rawMatchedIds = await getSegmentCustomerIds(campaign.segment.filterRules);
 
     // Consent & frequency guard — never message opted-out or over-capped contacts
+    const messaging = await getMessagingSettings();
     const { eligible: matchedCustomerIds, suppressedOptOut, suppressedFrequency } =
-      await filterEligibleCustomerIds(rawMatchedIds);
+      await filterEligibleCustomerIds(rawMatchedIds, messaging.frequencyCap);
     console.log(`[CampaignDispatch] ${rawMatchedIds.length} matched; suppressed ${suppressedOptOut} opt-out + ${suppressedFrequency} frequency-capped; ${matchedCustomerIds.length} eligible for campaign ${campaignId}`);
 
     // Holdout / control group — randomly withhold a % as an untouched control

@@ -62,6 +62,7 @@ export default function NewCampaignPage() {
   const [isAiGen, setIsAiGen] = React.useState(false);
   const [aiGoal, setAiGoal] = React.useState("");
   const [isGenLoading, setIsGenLoading] = React.useState(false);
+  const [aiLanguage, setAiLanguage] = React.useState("English");
   const [variants, setVariants] = React.useState<{ label: string; body: string }[]>([]);
   const [selectedVar, setSelectedVar] = React.useState(0);
 
@@ -143,10 +144,10 @@ export default function NewCampaignPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          query: `Write 3 different short ${channel.toUpperCase()} marketing messages for this goal: "${aiGoal}".
+          query: `Write 3 different short ${channel.toUpperCase()} marketing messages in ${aiLanguage} for this goal: "${aiGoal}".
 Each variant should have a different emotional angle (urgency, curiosity, exclusivity).
 Format your response as exactly 3 messages separated by "---".
-Each message under 160 characters. Plain text only. No labels, no numbering, no markdown.`,
+Each message under 160 characters. Plain text only. No labels, no numbering, no markdown.${aiLanguage !== "English" ? ` Write the messages in ${aiLanguage}.` : ""}`,
           history: [],
         }),
       });
@@ -454,6 +455,10 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
                   style={{ ...inputStyle, flex: 1 }}
                   onFocus={e => (e.target.style.borderColor = "#C98E83")}
                   onBlur={e => (e.target.style.borderColor = "#D8CCB6")} />
+                <select value={aiLanguage} onChange={e => setAiLanguage(e.target.value)} title="Message language"
+                  style={{ ...inputStyle, width: 130, flex: "none", cursor: "pointer" }}>
+                  {["English", "Hindi", "Hinglish", "Tamil", "Telugu", "Bengali", "Marathi", "Kannada"].map(l => <option key={l} value={l}>{l}</option>)}
+                </select>
                 <button onClick={handleGenerateMessage} disabled={isGenLoading || !aiGoal.trim()}
                   style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", background: isGenLoading || !aiGoal.trim() ? "#E5DBC9" : "rgba(201, 142, 131,0.15)", border: `1px solid ${isGenLoading || !aiGoal.trim() ? "#D8CCB6" : "rgba(201, 142, 131,0.3)"}`, borderRadius: 8, color: isGenLoading || !aiGoal.trim() ? "#C9BFB0" : "#C98E83", fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", fontWeight: 600, cursor: isGenLoading || !aiGoal.trim() ? "not-allowed" : "pointer", whiteSpace: "nowrap", transition: "all 0.2s" }}>
                   {isGenLoading ? <Loader2 style={{ width: 13, height: 13, animation: "spin 1s linear infinite" }} /> : <RefreshCw style={{ width: 13, height: 13 }} />}
