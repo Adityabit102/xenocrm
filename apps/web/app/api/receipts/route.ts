@@ -43,7 +43,8 @@ export async function POST(request: Request) {
     if (eventType === "opened") updateData.openedAt = now;
     if (eventType === "read") updateData.readAt = now;
     if (eventType === "clicked") updateData.clickedAt = now;
-    if (eventType === "failed") updateData.failedAt = now;
+    if (eventType === "order_placed") updateData.orderPlacedAt = now;
+    if (eventType === "failed") updateData.failureReason = metadata?.reason || "Delivery failed";
 
     await db.communicationLog.update({ where: { id: messageId }, data: updateData });
 
