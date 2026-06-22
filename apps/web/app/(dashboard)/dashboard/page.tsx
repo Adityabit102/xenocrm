@@ -515,13 +515,8 @@ export default function DashboardPage() {
                 <XAxis dataKey="month" stroke="#C9BFB0" fontSize={10} tickLine={false} axisLine={false} />
                 <YAxis stroke="#C9BFB0" fontSize={10} tickLine={false} axisLine={false} tickFormatter={v => `${(v / 1000).toFixed(0)}k`} />
                 <Tooltip contentStyle={{ background: "#FFFFFF", border: "1px solid #E5DBC9", borderRadius: 8, fontFamily: "JetBrains Mono,monospace", fontSize: "0.68rem", color: "#38322E" }} cursor={{ fill: "rgba(56, 50, 46,0.02)" }} />
-                <Bar dataKey="messages" fill="#2d3168" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="clicks" fill="#2d3168" radius={[3, 3, 0, 0]}
-                  shape={(props: any) => {
-                    const { x, y, width, height } = props;
-                    return (<g><rect x={x} y={y} width={width} height={height} fill="#2d3168" rx={3} /><rect x={x} y={y + height - 3} width={width} height={3} fill="#4E9B8A" rx={2} /></g>);
-                  }}
-                />
+                <Bar dataKey="messages" fill="#3E8A9E" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="clicks" fill="#4E9B8A" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
