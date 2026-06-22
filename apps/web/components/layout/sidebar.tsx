@@ -198,6 +198,18 @@ export function Sidebar({ isCollapsed, onToggle, isMounted }: SidebarProps) {
             </button>
           )}
 
+          <Link href="/team" style={{ textDecoration: "none" }}>
+            <div
+              className="sidebar-nav-hover"
+              style={{ display: "flex", alignItems: "center", gap: 10, padding: collapsed ? "9px 0" : "9px 12px", justifyContent: collapsed ? "center" : "flex-start", borderRadius: 8, cursor: "pointer", marginBottom: 2, transition: "background 0.15s" }}
+              onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "rgba(56, 50, 46,0.04)")}
+              onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.background = "transparent")}
+            >
+              <Users style={{ width: 17, height: 17, color: "#8A7F76", flexShrink: 0 }} />
+              {!collapsed && <span className="sidebar-settings-text" style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.875rem", color: "#8A7F76" }}>Team</span>}
+            </div>
+          </Link>
+
           <Link href="/settings" style={{ textDecoration: "none" }}>
             <div
               className="sidebar-nav-hover"

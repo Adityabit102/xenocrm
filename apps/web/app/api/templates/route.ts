@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { logAudit } from "@/lib/audit";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "name, channel and body are required" }, { status: 400 });
     }
     const template = await db.messageTemplate.create({ data: { name, channel, body } });
+    await logAudit("demo@cove.io", "template.created", `${name} (${channel})`);
     return NextResponse.json(template, { status: 201 });
   } catch (error: any) {
     console.error("POST /api/templates error:", error);

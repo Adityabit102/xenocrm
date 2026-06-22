@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { enrollCustomers, resolveTriggerCustomerIds } from "@/lib/journeys/engine";
 import { getSegmentCustomerIds } from "@/lib/segment-engine/executor";
+import { logAudit } from "@/lib/audit";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -24,6 +25,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     }
 
     const enrolled = await enrollCustomers(id, customerIds);
+    await logAudit("demo@cove.io", "journey.activated", `${journey.name} · ${enrolled} enrolled`);
     return NextResponse.json({ status: "active", enrolled });
   } catch (error: any) {
     console.error("POST /api/journeys/[id]/activate error:", error);

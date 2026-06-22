@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { Channel } from "@/types";
+import { logAudit } from "@/lib/audit";
 
 
 const createCampaignSchema = z.object({
@@ -146,6 +147,7 @@ export async function POST(request: Request) {
       });
     });
 
+    await logAudit("demo@cove.io", "campaign.created", `${data.name} (${data.channel})`);
     return NextResponse.json(createdCampaign, { status: 201 });
   } catch (error: any) {
     console.error("POST /api/campaigns error:", error);
