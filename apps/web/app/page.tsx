@@ -42,12 +42,12 @@ function WaveBackground() {
     // gentle flowing currents spread across the whole viewport height —
     // thin, low-opacity lines that fade out at the edges (calm, not heavy)
     const bands = [
-      { y: 0.16, amp: 13, len: 0.0016, speed: 0.0048, col: "120,178,190", op: 0.055, lw: 1.3 },
-      { y: 0.31, amp: 19, len: 0.0013, speed: 0.0036, col: "156,195,187", op: 0.065, lw: 1.4 },
-      { y: 0.46, amp: 15, len: 0.0018, speed: 0.0042, col: "62,138,158", op: 0.045, lw: 1.3 },
-      { y: 0.61, amp: 21, len: 0.0011, speed: 0.0032, col: "156,195,187", op: 0.06, lw: 1.4 },
-      { y: 0.76, amp: 17, len: 0.0015, speed: 0.004, col: "120,178,190", op: 0.06, lw: 1.4 },
-      { y: 0.9, amp: 23, len: 0.001, speed: 0.0028, col: "62,138,158", op: 0.05, lw: 1.5 },
+      { y: 0.16, amp: 14, len: 0.0016, speed: 0.0048, col: "62,138,158", op: 0.2, lw: 1.9 },
+      { y: 0.31, amp: 20, len: 0.0013, speed: 0.0036, col: "78,155,138", op: 0.22, lw: 2.0 },
+      { y: 0.46, amp: 16, len: 0.0018, speed: 0.0042, col: "44,106,123", op: 0.18, lw: 1.8 },
+      { y: 0.61, amp: 22, len: 0.0011, speed: 0.0032, col: "78,155,138", op: 0.22, lw: 2.0 },
+      { y: 0.76, amp: 18, len: 0.0015, speed: 0.004, col: "62,138,158", op: 0.22, lw: 2.0 },
+      { y: 0.9, amp: 24, len: 0.001, speed: 0.0028, col: "44,106,123", op: 0.2, lw: 2.1 },
     ];
 
     // a few slow, faint motes for a calm sense of depth
@@ -58,10 +58,10 @@ function WaveBackground() {
       motes = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        r: 1.3 + Math.random() * 2.6,
+        r: 1.4 + Math.random() * 2.8,
         sp: 0.05 + Math.random() * 0.14,
         ph: Math.random() * Math.PI * 2,
-        a: 0.02 + Math.random() * 0.04,
+        a: 0.05 + Math.random() * 0.08,
       }));
     };
 
@@ -538,9 +538,6 @@ export default function LandingPage() {
       <main className="relative pt-32 md:pt-40 pb-16 px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
           <div className="reveal-trigger reveal-active text-center lg:text-left">
-            <div className="staggered-item inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6 text-[11px] font-bold uppercase tracking-widest" style={{ background: "rgba(78,155,138,0.14)", color: C.sage, fontFamily: "'JetBrains Mono',monospace" }}>
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.sage }} /> AI-native retention CRM
-            </div>
             <h1 className="hero-h1 font-extrabold tracking-tight leading-[0.95] mb-6" style={{ fontFamily: "Syne,sans-serif", fontSize: "clamp(2.8rem,6vw,5rem)", color: C.ink }}>
               <span className="staggered-item block">Reach your shoppers</span>
               <span className="staggered-item block italic" style={{ color: C.teal, animationDelay: ".08s" }}>
