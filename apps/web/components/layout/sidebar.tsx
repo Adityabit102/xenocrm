@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import {
   LayoutDashboard, Users, Filter, Send, Sparkles,
   Settings, ChevronLeft, ChevronRight, Zap, Menu, X, HelpCircle,
-  CalendarClock, GitBranch, FileText,
+  CalendarClock, GitBranch, FileText, FileBarChart,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -41,6 +41,7 @@ export function Sidebar({ isCollapsed, onToggle, isMounted }: SidebarProps) {
     { name: "Journeys", href: "/journeys", icon: GitBranch },
     { name: "Templates", href: "/templates", icon: FileText },
     { name: "Scheduler", href: "/scheduler", icon: CalendarClock },
+    { name: "Reports", href: "/reports", icon: FileBarChart },
   ];
   const aiItems = [{ name: "AutoReach Agent", href: "/agent", icon: Sparkles }];
 
