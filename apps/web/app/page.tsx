@@ -40,10 +40,10 @@ function WaveBackground() {
     let h = 0;
 
     const layers = [
-      { amp: 20, len: 0.0048, speed: 0.016, y: 0.7, fill: "rgba(156,195,187,0.18)" },
-      { amp: 26, len: 0.0042, speed: 0.018, y: 0.78, fill: "rgba(156,195,187,0.28)" },
-      { amp: 34, len: 0.0032, speed: 0.012, y: 0.86, fill: "rgba(62,138,158,0.20)" },
-      { amp: 44, len: 0.0024, speed: 0.009, y: 0.93, fill: "rgba(44,106,123,0.18)" },
+      { amp: 24, len: 0.0048, speed: 0.016, y: 0.62, fill: "rgba(156,195,187,0.30)" },
+      { amp: 30, len: 0.0042, speed: 0.018, y: 0.72, fill: "rgba(120,178,190,0.36)" },
+      { amp: 38, len: 0.0032, speed: 0.012, y: 0.82, fill: "rgba(62,138,158,0.34)" },
+      { amp: 48, len: 0.0024, speed: 0.009, y: 0.92, fill: "rgba(44,106,123,0.32)" },
     ];
 
     type Bubble = { x: number; y: number; r: number; sp: number; ph: number; a: number };
@@ -53,10 +53,10 @@ function WaveBackground() {
       bubbles = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        r: 1.4 + Math.random() * 4.2,
-        sp: 0.12 + Math.random() * 0.5,
+        r: 1.6 + Math.random() * 4.8,
+        sp: 0.14 + Math.random() * 0.55,
         ph: Math.random() * Math.PI * 2,
-        a: 0.04 + Math.random() * 0.12,
+        a: 0.07 + Math.random() * 0.16,
       }));
     };
 
@@ -140,8 +140,10 @@ function NodeGlobe({ size = 420 }: { size?: number }) {
     canvas.height = size * dpr;
     ctx.scale(dpr, dpr);
 
-    const N = 150;
-    const R = size * 0.36;
+    // even point distribution on a unit sphere (Fibonacci lattice)
+    const N = 190;
+    const R = size * 0.34;
+    const cam = R * 3.2; // camera distance → perspective
     const pts: { x: number; y: number; z: number }[] = [];
     for (let i = 0; i < N; i++) {
       const phi = Math.acos(1 - (2 * (i + 0.5)) / N);
@@ -152,52 +154,72 @@ function NodeGlobe({ size = 420 }: { size?: number }) {
         z: R * Math.cos(phi),
       });
     }
+    // precompute a stable neighbour graph in 3D so the lattice reads
+    // as one coherent sphere instead of a flickering 2D blob
+    const edges: [number, number][] = [];
+    const thresh = R * 0.46;
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
+        const dx = pts[i].x - pts[j].x;
+        const dy = pts[i].y - pts[j].y;
+        const dz = pts[i].z - pts[j].z;
+        if (dx * dx + dy * dy + dz * dz < thresh * thresh) edges.push([i, j]);
+      }
+    }
+
     let raf = 0;
     const cx = size / 2;
     const cy = size / 2;
+    const tilt = 0.5;
+    const cosT = Math.cos(tilt);
+    const sinT = Math.sin(tilt);
+
     const draw = (t: number) => {
       ctx.clearRect(0, 0, size, size);
-      const a = t * 0.00022;
+      const a = t * 0.0002;
       const cosA = Math.cos(a);
       const sinA = Math.sin(a);
-      const tilt = 0.42;
+
       const proj = pts.map((p) => {
-        const x = p.x * cosA - p.z * sinA;
-        const z = p.x * sinA + p.z * cosA;
-        const y = p.y * Math.cos(tilt) - z * Math.sin(tilt);
-        const z2 = p.y * Math.sin(tilt) + z * Math.cos(tilt);
-        const scale = (z2 + R * 2) / (R * 3);
-        return { sx: cx + x, sy: cy + y, depth: scale };
+        // rotate around vertical axis
+        const rx = p.x * cosA - p.z * sinA;
+        const rz = p.x * sinA + p.z * cosA;
+        // fixed tilt around horizontal axis
+        const ry = p.y * cosT - rz * sinT;
+        const rz2 = p.y * sinT + rz * cosT;
+        // perspective projection (uniform on both axes → round sphere)
+        const persp = cam / (cam - rz2);
+        return {
+          sx: cx + rx * persp,
+          sy: cy + ry * persp,
+          depth: (rz2 + R) / (2 * R), // 0 (back) → 1 (front)
+          persp,
+        };
       });
-      // connections
-      for (let i = 0; i < proj.length; i++) {
-        for (let j = i + 1; j < proj.length; j++) {
-          const dx = proj[i].sx - proj[j].sx;
-          const dy = proj[i].sy - proj[j].sy;
-          const d = Math.hypot(dx, dy);
-          if (d < 56) {
-            const o = (1 - d / 56) * 0.22 * proj[i].depth;
-            ctx.strokeStyle = `rgba(62,138,158,${o})`;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(proj[i].sx, proj[i].sy);
-            ctx.lineTo(proj[j].sx, proj[j].sy);
-            ctx.stroke();
-          }
-        }
-      }
-      // nodes
+
+      // lattice connections
+      ctx.lineWidth = 0.6;
+      edges.forEach(([i, j]) => {
+        const o = (0.06 + ((proj[i].depth + proj[j].depth) / 2) * 0.2);
+        ctx.strokeStyle = `rgba(62,138,158,${o})`;
+        ctx.beginPath();
+        ctx.moveTo(proj[i].sx, proj[i].sy);
+        ctx.lineTo(proj[j].sx, proj[j].sy);
+        ctx.stroke();
+      });
+
+      // nodes — painter's algorithm, back to front
       proj
         .map((p, i) => ({ p, i }))
         .sort((u, v) => u.p.depth - v.p.depth)
         .forEach(({ p, i }) => {
-          const r = 1.4 + p.depth * 2.8;
-          const accent = i % 7 === 0;
+          const r = (1 + p.depth * 2.4) * p.persp;
+          const accent = i % 6 === 0;
           ctx.beginPath();
           ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
           ctx.fillStyle = accent
-            ? `rgba(201,142,131,${0.45 + p.depth * 0.5})`
-            : `rgba(44,106,123,${0.3 + p.depth * 0.55})`;
+            ? `rgba(201,142,131,${0.4 + p.depth * 0.5})`
+            : `rgba(44,106,123,${0.28 + p.depth * 0.55})`;
           ctx.fill();
         });
       raf = requestAnimationFrame(draw);
@@ -442,7 +464,13 @@ export default function LandingPage() {
   };
 
   return (
-    <div style={{ background: "linear-gradient(180deg,#F4EEDF 0%,#EAF0EC 55%,#F4EEDF 100%)", color: C.ink }}>
+    <div style={{ color: C.ink }}>
+      {/* fixed ocean gradient base (sits behind the animated wave canvas) */}
+      <div
+        aria-hidden
+        className="fixed inset-0 -z-20 pointer-events-none"
+        style={{ background: "linear-gradient(180deg,#F4EEDF 0%,#E6EFE9 52%,#D6E8E3 100%)" }}
+      />
       <WaveBackground />
 
       <style>{`
@@ -501,7 +529,7 @@ export default function LandingPage() {
 
       {/* ── HERO ── */}
       <main className="relative pt-32 md:pt-40 pb-16 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.05fr,0.95fr] gap-10 items-center">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
           <div className="reveal-trigger reveal-active text-center lg:text-left">
             <div className="staggered-item inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6 text-[11px] font-bold uppercase tracking-widest" style={{ background: "rgba(78,155,138,0.14)", color: C.sage, fontFamily: "'JetBrains Mono',monospace" }}>
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.sage }} /> AI-native retention CRM
@@ -694,7 +722,7 @@ export default function LandingPage() {
 
             <div className="min-h-[460px] p-7 md:p-8" style={{ background: C.surface }}>
               {demoTab === "segment" && (
-                <div className="grid lg:grid-cols-[1.5fr,1fr] gap-7">
+                <div className="grid lg:grid-cols-[1.5fr_1fr] gap-7">
                   <div className="space-y-5">
                     <div className="p-6 rounded-xl" style={{ background: "#fff", border: `1px solid ${C.border}` }}>
                       <p className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: C.sage, fontFamily: "'JetBrains Mono',monospace" }}>
@@ -829,7 +857,7 @@ export default function LandingPage() {
               Adjust the sliders to see what Cove would recover based on your actual numbers.
             </p>
           </div>
-          <div className="rounded-[28px] p-8 md:p-10 grid lg:grid-cols-[1.2fr,1fr] gap-10" style={{ background: "#fff", border: `1px solid ${C.border}`, boxShadow: "0 30px 70px -45px rgba(99,86,70,0.5)" }}>
+          <div className="rounded-[28px] p-8 md:p-10 grid lg:grid-cols-[1.2fr_1fr] gap-10" style={{ background: "#fff", border: `1px solid ${C.border}`, boxShadow: "0 30px 70px -45px rgba(99,86,70,0.5)" }}>
             <div className="space-y-9 staggered-item">
               {[
                 { label: "Monthly active customers", min: 500, max: 50000, step: 500, val: roiShoppers, set: setRoiShoppers, fmt: (v: number) => v.toLocaleString() },

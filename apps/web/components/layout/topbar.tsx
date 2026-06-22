@@ -86,7 +86,7 @@ export function Topbar() {
     <>
       <header className="topbar-root" style={{
         position: "sticky", top: 0, zIndex: 40, height: 64,
-        background: "rgba(13,16,23,0.9)", backdropFilter: "blur(12px)",
+        background: "rgba(251,247,236,0.88)", backdropFilter: "blur(12px)",
         borderBottom: "1px solid #E5DBC9",
         display: "flex", alignItems: "center",
         padding: "0 24px", gap: 16,

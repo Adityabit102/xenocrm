@@ -662,20 +662,20 @@ export function AIAssistant() {
             <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 100, display: "flex", alignItems: "center", gap: 10 }}>
                 {showLabel && (
                     <div style={{
-                        background: "rgba(13,16,23,0.92)", backdropFilter: "blur(8px)",
-                        border: "1px solid rgba(62,138,158,0.35)", borderRadius: 10,
+                        background: "rgba(251,247,236,0.96)", backdropFilter: "blur(8px)",
+                        border: "1px solid #E5DBC9", borderRadius: 10,
                         padding: "6px 10px 6px 12px",
-                        fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", fontWeight: 600, color: "#F4EEDF",
+                        fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", fontWeight: 600, color: "#38322E",
                         whiteSpace: "nowrap",
-                        boxShadow: "0 4px 16px rgba(99, 86, 70,0.4)",
+                        boxShadow: "0 6px 20px rgba(99, 86, 70,0.18)",
                         display: "flex", alignItems: "center", gap: 8,
                     }}>
                         Hi! I&apos;m Cove AI
                         <button
                             onClick={() => setShowLabel(false)}
-                            style={{ background: "none", border: "none", cursor: "pointer", color: "#9CC3BB", padding: 0, display: "flex", alignItems: "center", transition: "color 0.15s", lineHeight: 1 }}
-                            onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = "#FFFFFF")}
-                            onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = "#9CC3BB")}
+                            style={{ background: "none", border: "none", cursor: "pointer", color: "#8A7F76", padding: 0, display: "flex", alignItems: "center", transition: "color 0.15s", lineHeight: 1 }}
+                            onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = "#38322E")}
+                            onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = "#8A7F76")}
                         >
                             <X style={{ width: 12, height: 12 }} />
                         </button>
@@ -844,7 +844,7 @@ export function AIAssistant() {
                                 onChange={e => setInput(e.target.value)}
                                 onKeyDown={e => { if (e.key === "Enter" && !loading) send(); }}
                                 placeholder="Create, schedule, or ask anything…"
-                                style={{ flex: 1, background: "rgba(24,29,46,0.6)", border: "1px solid #D8CCB6", borderRadius: 8, padding: "8px 12px", fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#38322E", outline: "none", transition: "border-color 0.15s" }}
+                                style={{ flex: 1, background: "#FBF7EC", border: "1px solid #D8CCB6", borderRadius: 8, padding: "8px 12px", fontFamily: "DM Sans,sans-serif", fontSize: "0.78rem", color: "#38322E", outline: "none", transition: "border-color 0.15s" }}
                                 onFocus={e => (e.target.style.borderColor = "#3E8A9E")}
                                 onBlur={e => (e.target.style.borderColor = "#D8CCB6")}
                             />
