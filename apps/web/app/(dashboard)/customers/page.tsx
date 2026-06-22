@@ -72,6 +72,17 @@ export default function CustomersPage() {
     return () => { cancelled = true; };
   }, [selectedCustomer?.id]);
 
+  const toggleConsent = async () => {
+    if (!customerDetail) return;
+    const next = customerDetail.marketingConsent === false; // currently opted out → opt back in
+    setCustomerDetail((d: any) => ({ ...d, marketingConsent: next }));
+    await fetch(`/api/customers/${customerDetail.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ marketingConsent: next }),
+    }).catch(() => setCustomerDetail((d: any) => ({ ...d, marketingConsent: !next })));
+  };
+
   const { data: customersData, isLoading } = useCustomers({ page, limit: 15, search: debouncedSearch, rfmTier: rfmTierFilter });
   const { data: stats, isLoading: statsLoading } = useCustomerStats();
   const importCustomersMutation = useImportCustomers();
@@ -465,8 +476,28 @@ export default function CustomersPage() {
                 ))}
               </div>
 
+              {/* Marketing consent control */}
+              {customerDetail && (
+                <div style={{ marginTop: 22, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "10px 12px", borderRadius: 10,
+                  background: customerDetail.marketingConsent === false ? "rgba(204,107,107,0.06)" : "rgba(78,155,138,0.06)",
+                  border: `1px solid ${customerDetail.marketingConsent === false ? "rgba(204,107,107,0.25)" : "rgba(78,155,138,0.25)"}` }}>
+                  <div>
+                    <div style={{ fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.78rem", color: "#38322E" }}>Marketing consent</div>
+                    <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: "#8A7F76", marginTop: 2 }}>
+                      {customerDetail.marketingConsent === false ? "Opted out — excluded from all sends" : "Opted in"}
+                    </div>
+                  </div>
+                  <button onClick={toggleConsent} style={{ padding: "6px 12px", borderRadius: 20, cursor: "pointer", fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.72rem",
+                    border: `1px solid ${customerDetail.marketingConsent === false ? "rgba(78,155,138,0.4)" : "rgba(204,107,107,0.3)"}`,
+                    background: customerDetail.marketingConsent === false ? "rgba(78,155,138,0.12)" : "transparent",
+                    color: customerDetail.marketingConsent === false ? "#4E9B8A" : "#CC6B6B" }}>
+                    {customerDetail.marketingConsent === false ? "Opt back in" : "Opt out"}
+                  </button>
+                </div>
+              )}
+
               {/* Customer 360 — unified activity feed (orders + messages) */}
-              <h3 style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A7F76", margin: "26px 0 14px 0" }}>Recent Activity</h3>
+              <h3 style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A7F76", margin: "22px 0 14px 0" }}>Recent Activity</h3>
               {detailLoading ? (
                 <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.68rem", color: "#C9BFB0" }}>Loading activity…</div>
               ) : (() => {

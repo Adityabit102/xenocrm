@@ -22,6 +22,8 @@ model Customer {
   rfmFrequency       Float?
   rfmMonetary        Float?
   rfmTier            String?
+  marketingConsent   Boolean             @default(true)
+  optOutAt           DateTime?
   createdAt          DateTime            @default(now())
   orders             Order[]
   communications     CommunicationLog[]

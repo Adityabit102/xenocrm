@@ -118,3 +118,24 @@ export async function GET(
     return NextResponse.json({ error: "Failed to fetch customer profile details" }, { status: 500 });
   }
 }
+
+// Toggle marketing consent (opt-out / opt back in)
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const body = await request.json();
+    const data: any = {};
+    if (typeof body.marketingConsent === "boolean") {
+      data.marketingConsent = body.marketingConsent;
+      data.optOutAt = body.marketingConsent ? null : new Date();
+    }
+    const customer = await db.customer.update({ where: { id }, data });
+    return NextResponse.json({ id: customer.id, marketingConsent: customer.marketingConsent, optOutAt: customer.optOutAt });
+  } catch (error: any) {
+    console.error("PATCH /api/customers/[id] error:", error);
+    return NextResponse.json({ error: "Failed to update consent" }, { status: 500 });
+  }
+}

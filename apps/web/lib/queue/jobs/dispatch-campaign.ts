@@ -2,6 +2,7 @@ import axios from "axios";
 import { db } from "../../db";
 import { getSegmentCustomerIds } from "../../segment-engine/executor";
 import { personaliseMessage } from "../../utils/personalise";
+import { filterEligibleCustomerIds } from "../../utils/suppression";
 
 
 
@@ -33,8 +34,12 @@ export async function processCampaignDispatch(campaignId: string): Promise<void>
     });
 
     
-    const matchedCustomerIds = await getSegmentCustomerIds(campaign.segment.filterRules);
-    console.log(`[CampaignDispatch] Segment matching yielded ${matchedCustomerIds.length} customer records for campaign ${campaignId}`);
+    const rawMatchedIds = await getSegmentCustomerIds(campaign.segment.filterRules);
+
+    // Consent & frequency guard — never message opted-out or over-capped contacts
+    const { eligible: matchedCustomerIds, suppressedOptOut, suppressedFrequency } =
+      await filterEligibleCustomerIds(rawMatchedIds);
+    console.log(`[CampaignDispatch] ${rawMatchedIds.length} matched; suppressed ${suppressedOptOut} opt-out + ${suppressedFrequency} frequency-capped; ${matchedCustomerIds.length} eligible for campaign ${campaignId}`);
 
     if (matchedCustomerIds.length === 0) {
       console.log(`[CampaignDispatch] Segment is empty. Marking campaign as completed.`);

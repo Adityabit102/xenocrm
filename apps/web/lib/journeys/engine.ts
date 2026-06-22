@@ -137,8 +137,11 @@ export async function processJourneyTick(): Promise<{ enrolled: number; advanced
       while (step < journey.steps.length) {
         const s = journey.steps[step];
         if (s.type === "message") {
-          await sendJourneyMessage(journey.id, s, e.customer);
-          journeySent++;
+          // respect marketing consent — opted-out customers are skipped
+          if ((e.customer as any).marketingConsent !== false) {
+            await sendJourneyMessage(journey.id, s, e.customer);
+            journeySent++;
+          }
           step++;
         } else if (s.type === "wait") {
           const next = new Date(now.getTime() + (s.waitHours || 0) * 3_600_000);
