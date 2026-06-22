@@ -42,12 +42,12 @@ function WaveBackground() {
     // gentle flowing currents spread across the whole viewport height —
     // thin, low-opacity lines that fade out at the edges (calm, not heavy)
     const bands = [
-      { y: 0.16, amp: 14, len: 0.0016, speed: 0.0048, col: "62,138,158", op: 0.2, lw: 1.9 },
-      { y: 0.31, amp: 20, len: 0.0013, speed: 0.0036, col: "78,155,138", op: 0.22, lw: 2.0 },
-      { y: 0.46, amp: 16, len: 0.0018, speed: 0.0042, col: "44,106,123", op: 0.18, lw: 1.8 },
-      { y: 0.61, amp: 22, len: 0.0011, speed: 0.0032, col: "78,155,138", op: 0.22, lw: 2.0 },
-      { y: 0.76, amp: 18, len: 0.0015, speed: 0.004, col: "62,138,158", op: 0.22, lw: 2.0 },
-      { y: 0.9, amp: 24, len: 0.001, speed: 0.0028, col: "44,106,123", op: 0.2, lw: 2.1 },
+      { y: 0.18, amp: 18, len: 0.0015, speed: 0.004, col: "120,178,190", op: 0.13 },
+      { y: 0.34, amp: 24, len: 0.0012, speed: 0.003, col: "156,195,187", op: 0.14 },
+      { y: 0.5, amp: 20, len: 0.0017, speed: 0.0034, col: "78,155,138", op: 0.11 },
+      { y: 0.66, amp: 26, len: 0.0011, speed: 0.0027, col: "120,178,190", op: 0.13 },
+      { y: 0.82, amp: 22, len: 0.0014, speed: 0.0031, col: "62,138,158", op: 0.13 },
+      { y: 0.97, amp: 28, len: 0.001, speed: 0.0024, col: "78,155,138", op: 0.12 },
     ];
 
     // a few slow, faint motes for a calm sense of depth
@@ -93,24 +93,28 @@ function WaveBackground() {
         ctx.fill();
       });
 
-      // gentle full-page currents
+      // gentle wave swells spread across the page — soft filled bands with
+      // a wavy crest that fades downward, layered like slow ocean water
+      const bandH = h * 0.24;
       bands.forEach((b, i) => {
         const baseY = h * b.y;
-        const grad = ctx.createLinearGradient(0, 0, w, 0);
-        grad.addColorStop(0, `rgba(${b.col},0)`);
-        grad.addColorStop(0.5, `rgba(${b.col},${b.op})`);
+        const grad = ctx.createLinearGradient(0, baseY - b.amp, 0, baseY + bandH);
+        grad.addColorStop(0, `rgba(${b.col},${b.op})`);
         grad.addColorStop(1, `rgba(${b.col},0)`);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = b.lw;
+        ctx.fillStyle = grad;
         ctx.beginPath();
+        ctx.moveTo(0, baseY);
         for (let x = 0; x <= w; x += 10) {
           const y =
             baseY +
             Math.sin(x * b.len + t * b.speed + i) * b.amp +
             Math.sin(x * b.len * 1.8 + t * b.speed * 0.7) * (b.amp * 0.3);
-          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          ctx.lineTo(x, y);
         }
-        ctx.stroke();
+        ctx.lineTo(w, baseY + bandH);
+        ctx.lineTo(0, baseY + bandH);
+        ctx.closePath();
+        ctx.fill();
       });
 
       if (!reduce) raf = requestAnimationFrame(draw);
