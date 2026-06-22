@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { processJourneyTick } from "@/lib/journeys/engine";
+import { checkCronSecret, unauthorized } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -16,9 +17,13 @@ async function tick() {
   }
 }
 
+// POST — invoked by the in-app "Run scheduler now" button (session-gated UI).
 export async function POST() {
   return tick();
 }
-export async function GET() {
+
+// GET — Vercel Cron entry point, guarded by the cron secret.
+export async function GET(request: Request) {
+  if (!checkCronSecret(request)) return unauthorized();
   return tick();
 }

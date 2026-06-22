@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { checkWebhookSecret, unauthorized } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,7 @@ const STOP_RE = /\b(stop|unsubscribe|cancel|opt\s?-?out|quit|end|remove)\b/i;
    opt-out keywords and auto-suppresses the contact (closes the STOP loop). */
 export async function POST(request: Request) {
   try {
+    if (!checkWebhookSecret(request)) return unauthorized();
     const body = await request.json();
     const channel = String(body.channel || "whatsapp");
     const from = body.from ? String(body.from) : null;

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { calculateRFM } from "@/lib/rfm/scorer";
 import { computeScores } from "@/lib/scores";
+import { checkWebhookSecret, unauthorized } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -12,12 +13,6 @@ export const dynamic = "force-dynamic";
    recomputes RFM for affected customers — no CSV needed.
    Set SHOPIFY_WEBHOOK_SECRET to require x-cove-webhook-secret.
    ============================================================ */
-
-function authorized(req: Request): boolean {
-  const secret = process.env.SHOPIFY_WEBHOOK_SECRET;
-  if (!secret) return true; // open in dev
-  return req.headers.get("x-cove-webhook-secret") === secret;
-}
 
 async function recomputeRfm(customerId: string) {
   const orders = await db.order.findMany({ where: { customerId }, select: { orderDate: true, amountInr: true } });
@@ -36,7 +31,7 @@ async function recomputeRfm(customerId: string) {
 
 export async function POST(req: Request) {
   try {
-    if (!authorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!checkWebhookSecret(req)) return unauthorized();
 
     const topic = (req.headers.get("x-shopify-topic") || "").toLowerCase();
     const body = await req.json();

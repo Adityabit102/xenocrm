@@ -65,7 +65,7 @@ export function RfmDonut({ className = "" }: RfmDonutProps) {
   }, [chartData]);
 
   const getColor = (key: string) => {
-    if (key === "placeholder") return "var(--color-border)";
+    if (key === "placeholder") return "#E5DBC9";
     return RFM_COLORS[key] || "#6B7280";
   };
 
@@ -139,7 +139,7 @@ export function RfmDonut({ className = "" }: RfmDonutProps) {
                 <Cell
                   key={`cell-${index}`}
                   fill={getColor(entry.key)}
-                  stroke="var(--color-bg-surface)"
+                  stroke="#FFFFFF"
                   strokeWidth={1}
                 />
               ))}

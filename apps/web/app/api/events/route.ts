@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { checkWebhookSecret, unauthorized } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,7 @@ const EVENT_TYPES = ["product_viewed", "cart_created", "cart_updated", "checkout
    ============================================================ */
 export async function POST(request: Request) {
   try {
+    if (!checkWebhookSecret(request)) return unauthorized();
     const body = await request.json();
     const type = String(body.type || "");
     if (!EVENT_TYPES.includes(type)) {
