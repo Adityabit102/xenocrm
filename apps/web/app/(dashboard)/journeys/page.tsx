@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import {
   GitBranch, Plus, Play, Pause, Trash2, Zap, MessageSquare, Clock,
-  X, RotateCw, Users, CheckCircle2, Send,
+  X, RotateCw, Users, CheckCircle2, Send, BarChart2,
 } from "lucide-react";
 
 type Step =
@@ -128,7 +129,9 @@ export default function JourneysPage() {
             <div key={j.id} style={{ background: "#fff", border: `1px solid ${C.border}`, borderRadius: 14, padding: 18, display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "1rem", color: C.ink, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{j.name}</div>
+                  <Link href={`/journeys/${j.id}`} style={{ textDecoration: "none" }}>
+                    <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "1rem", color: C.ink, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", cursor: "pointer" }}>{j.name}</div>
+                  </Link>
                   <div style={{ fontFamily: "JetBrains Mono,monospace", fontSize: "0.62rem", color: C.muted, marginTop: 3, textTransform: "uppercase", letterSpacing: "0.06em" }}>
                     {j.triggerType === "event" ? `Trigger · ${j.eventType}` : j.triggerType === "segment" || j.segmentId ? "Trigger · segment" : "Trigger · manual"}
                   </div>
@@ -175,6 +178,9 @@ export default function JourneysPage() {
                     <Pause style={{ width: 13, height: 13 }} /> Pause
                   </button>
                 )}
+                <Link href={`/journeys/${j.id}`} title="Analytics" style={{ width: 38, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8, background: "rgba(62,138,158,0.08)", border: "1px solid rgba(62,138,158,0.2)", color: C.teal }}>
+                  <BarChart2 style={{ width: 13, height: 13 }} />
+                </Link>
                 <button onClick={() => remove(j.id)} disabled={busy === j.id} title="Delete"
                   style={{ width: 38, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8, background: "rgba(204,107,107,0.08)", border: "1px solid rgba(204,107,107,0.2)", color: "#CC6B6B", cursor: "pointer" }}>
                   <Trash2 style={{ width: 13, height: 13 }} />
