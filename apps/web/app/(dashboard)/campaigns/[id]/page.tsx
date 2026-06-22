@@ -269,6 +269,30 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
         </div>
       </div>
 
+      {/* Approval workflow banner */}
+      {((campaign as any).approvalStatus === "pending" || (campaign as any).approvalStatus === "rejected") && (
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", borderRadius: 12, marginBottom: 16,
+          background: (campaign as any).approvalStatus === "rejected" ? "rgba(204,107,107,0.07)" : "rgba(201,149,78,0.08)",
+          border: `1px solid ${(campaign as any).approvalStatus === "rejected" ? "rgba(204,107,107,0.3)" : "rgba(201,149,78,0.35)"}` }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.85rem", color: "#38322E" }}>
+              {(campaign as any).approvalStatus === "rejected" ? "Rejected" : "Awaiting approval"}
+            </div>
+            <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.74rem", color: "#8A7F76", marginTop: 2 }}>
+              {(campaign as any).approvalStatus === "rejected" ? "This campaign was rejected and can't be sent." : "An admin must approve this before it can be dispatched."}
+            </div>
+          </div>
+          {(campaign as any).approvalStatus === "pending" && (
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={async () => { await fetch(`/api/campaigns/${campaign.id}/approval`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "reject" }) }); refetchCampaign(); }}
+                style={{ padding: "8px 14px", borderRadius: 8, background: "transparent", border: "1px solid rgba(204,107,107,0.4)", color: "#CC6B6B", fontFamily: "DM Sans,sans-serif", fontWeight: 700, fontSize: "0.76rem", cursor: "pointer" }}>Reject</button>
+              <button onClick={async () => { await fetch(`/api/campaigns/${campaign.id}/approval`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "approve" }) }); refetchCampaign(); }}
+                style={{ padding: "8px 16px", borderRadius: 8, background: "#4E9B8A", border: "none", color: "#fff", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.78rem", cursor: "pointer" }}>Approve</button>
+            </div>
+          )}
+        </div>
+      )}
+
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 20 }}>
         <StatCard label="Total Sent" value={totalSent.toLocaleString("en-IN")} iconBg="rgba(62, 138, 158,0.12)" iconColor="#2C6A7B" icon={Send} />
         <StatCard label="Delivered (%)" value={`${delivPct.toFixed(1)}%`} iconBg="rgba(78, 155, 138,0.12)" iconColor="#4E9B8A" icon={Check} />

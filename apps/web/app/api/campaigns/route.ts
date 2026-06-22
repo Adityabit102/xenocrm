@@ -18,6 +18,7 @@ const createCampaignSchema = z.object({
   ),
   status: z.enum(["draft", "scheduled"]).optional().default("draft"),  // ← add this line
   holdoutPct: z.number().int().min(0).max(50).optional().default(0),
+  requireApproval: z.boolean().optional().default(false),
   createdByAgent: z.boolean().optional().default(false),
   agentReasoningTrace: z.any().optional().nullable()
 });
@@ -114,6 +115,7 @@ export async function POST(request: Request) {
           status: data.status || "draft",
           scheduledAt: data.scheduledAt ? new Date(data.scheduledAt) : null,
           holdoutPct: data.holdoutPct || 0,
+          approvalStatus: data.requireApproval ? "pending" : "approved",
           createdByAgent: data.createdByAgent || false,
           agentReasoningTrace: data.agentReasoningTrace || null
         }

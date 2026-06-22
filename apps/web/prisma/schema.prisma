@@ -29,6 +29,21 @@ model Customer {
   communications     CommunicationLog[]
   segmentMemberships SegmentMembership[]
   journeyEnrollments JourneyEnrollment[]
+  events             Event[]
+}
+
+model Event {
+  id         String    @id @default(cuid())
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  externalId String? // storefront/customer id when not yet resolved
+  type       String // product_viewed | cart_created | cart_updated | checkout_started | cart_abandoned
+  value      Float? // cart / product value
+  metadata   Json?
+  createdAt  DateTime  @default(now())
+
+  @@index([type, createdAt])
+  @@index([customerId])
 }
 
 model Journey {
@@ -118,6 +133,9 @@ model Campaign {
   status              String             @default("draft")
   scheduledAt         DateTime?
   holdoutPct          Int                @default(0) // % of audience withheld as control
+  approvalStatus      String             @default("approved") // approved | pending | rejected
+  approvedBy          String?
+  approvedAt          DateTime?
   createdByAgent      Boolean            @default(false)
   agentReasoningTrace Json?
   createdAt           DateTime           @default(now())

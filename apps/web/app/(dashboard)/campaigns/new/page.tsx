@@ -69,6 +69,7 @@ export default function NewCampaignPage() {
   const [scheduleMode, setScheduleMode] = React.useState<"now" | "later" | "ai">("now");
   const [scheduledAt, setScheduledAt] = React.useState("");
   const [holdoutPct, setHoldoutPct] = React.useState(0);
+  const [requireApproval, setRequireApproval] = React.useState(false);
 
   // ── AI Segment Builder state ──────────────────────────────────────────────────
   const [aiSegQuery, setAiSegQuery] = React.useState("");
@@ -212,10 +213,10 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
     try {
       await createCampaign?.mutateAsync({
         name, segmentId, channel, messageTemplate: messageBody,
-        scheduledAt: resolvedScheduledAt, holdoutPct,
+        scheduledAt: resolvedScheduledAt, holdoutPct, requireApproval,
         ...(scheduleMode !== "now" && resolvedScheduledAt ? { status: "scheduled" } : {}),
       });
-      toast.success(scheduleMode === "now" ? "Campaign created!" : "Campaign scheduled!");
+      toast.success(requireApproval ? "Campaign submitted for approval!" : scheduleMode === "now" ? "Campaign created!" : "Campaign scheduled!");
       router.push(scheduleMode === "now" ? "/campaigns" : "/scheduler");
     } catch (e: any) {
       toast.error(e.message || "Failed to create campaign.");
@@ -591,6 +592,19 @@ Each message under 160 characters. Plain text only. No labels, no numbering, no 
                     {p === 0 ? "None" : p + "%"}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Require approval */}
+            <div onClick={() => setRequireApproval(v => !v)}
+              style={{ marginTop: 16, padding: 16, borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", gap: 12,
+                border: `1px solid ${requireApproval ? "#3E8A9E" : "#D8CCB6"}`, background: requireApproval ? "rgba(62,138,158,0.06)" : "rgba(56,50,46,0.02)" }}>
+              <div style={{ width: 38, height: 22, borderRadius: 20, background: requireApproval ? "#3E8A9E" : "#D8CCB6", position: "relative", flexShrink: 0, transition: "background 0.15s" }}>
+                <div style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff", position: "absolute", top: 2, left: requireApproval ? 18 : 2, transition: "left 0.15s" }} />
+              </div>
+              <div>
+                <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: "0.85rem", color: "#38322E" }}>Require approval before sending</div>
+                <div style={{ fontFamily: "DM Sans,sans-serif", fontSize: "0.72rem", color: "#8A7F76", marginTop: 2 }}>Campaign is created as pending and can't dispatch until an admin approves it.</div>
               </div>
             </div>
           </>

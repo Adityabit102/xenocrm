@@ -16,6 +16,12 @@ export async function POST(
     if (!campaign.segmentId || !campaign.messageTemplate) {
       return NextResponse.json({ error: "Campaign missing segment or message" }, { status: 400 });
     }
+    if (campaign.approvalStatus === "pending") {
+      return NextResponse.json({ error: "Campaign is awaiting approval" }, { status: 403 });
+    }
+    if (campaign.approvalStatus === "rejected") {
+      return NextResponse.json({ error: "Campaign was rejected and cannot be sent" }, { status: 403 });
+    }
     if (campaign.status === "in_progress" || campaign.status === "completed") {
       return NextResponse.json({ error: "Campaign already dispatched or completed" }, { status: 409 });
     }

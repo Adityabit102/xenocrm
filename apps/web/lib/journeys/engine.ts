@@ -55,13 +55,36 @@ async function resolveEventCustomerIds(eventType: string): Promise<string[]> {
     return grouped.filter((g) => g._count._all === 1).map((g) => g.customerId);
   }
   if (eventType === "cart_abandoned") {
-    // Proxy until a cart model exists: recently-engaged buyers who may have lapsed mid-funnel.
-    const rows = await db.customer.findMany({
-      where: { rfmTier: { in: ["Promising", "At Risk"] } },
-      select: { id: true },
-      take: 1000,
+    // Real behaviour: customers with a cart/checkout event in the last 72h who
+    // have NOT placed an order since that event.
+    const since = new Date(Date.now() - 72 * 3600 * 1000);
+    const events = await db.event.findMany({
+      where: {
+        type: { in: ["cart_abandoned", "checkout_started", "cart_updated"] },
+        createdAt: { gte: since },
+        customerId: { not: null },
+      },
+      select: { customerId: true, createdAt: true },
+      orderBy: { createdAt: "desc" },
     });
-    return rows.map((r) => r.id);
+    // dedupe to latest event per customer
+    const latest = new Map<string, Date>();
+    for (const e of events) {
+      if (e.customerId && !latest.has(e.customerId)) latest.set(e.customerId, e.createdAt);
+    }
+    if (latest.size === 0) return [];
+    const ids = [...latest.keys()];
+    const ordersSince = await db.order.findMany({
+      where: { customerId: { in: ids }, orderDate: { gte: since } },
+      select: { customerId: true, orderDate: true },
+    });
+    const ordered = new Set(
+      ordersSince.filter((o) => {
+        const ev = latest.get(o.customerId);
+        return ev != null && new Date(o.orderDate).getTime() >= ev.getTime();
+      }).map((o) => o.customerId)
+    );
+    return ids.filter((id) => !ordered.has(id));
   }
   return [];
 }
