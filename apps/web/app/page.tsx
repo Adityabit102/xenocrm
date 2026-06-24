@@ -706,7 +706,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ── HERO ── */}
-      <main className="relative pt-32 md:pt-40 pb-16 px-6 overflow-hidden">
+      <main className="relative pt-24 md:pt-28 pb-16 px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
           <div className="reveal-trigger reveal-active text-center lg:text-left">
             <h1 className="hero-h1 font-extrabold tracking-tight leading-[0.95] mb-6" style={{ fontFamily: "Syne,sans-serif", fontSize: "clamp(2.8rem,6vw,5rem)", color: C.ink }}>
