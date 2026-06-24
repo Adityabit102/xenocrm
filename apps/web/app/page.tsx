@@ -220,12 +220,29 @@ function NodeGlobe({ size = 420 }: { size?: number }) {
     const sinT = Math.sin(TILT);
     let raf = 0;
 
+    // directional light (upper-left, toward viewer) for a lit planet
+    const LL = Math.hypot(-0.5, 0.62, 0.6);
+    const lx = -0.5 / LL, ly = 0.62 / LL, lz = 0.6 / LL;
+
+    // connection hubs (lat,lng) → unit vectors, with animated "reach" arcs
+    const HUBS: [number, number][] = [
+      [40.7, -74], [51.5, -0.1], [6.5, 3.4], [19, 72.8], [1.3, 103.8],
+      [35.7, 139.7], [-23.5, -46.6], [-33.9, 151.2], [25.2, 55.3], [34, -118.2],
+    ];
+    const hubVec = HUBS.map(([lat, lng]) => {
+      const la = (lat * Math.PI) / 180;
+      const lo = (lng * Math.PI) / 180;
+      return { x: Math.cos(la) * Math.sin(lo), y: Math.sin(la), z: Math.cos(la) * Math.cos(lo) };
+    });
+    const ARCS: [number, number][] = [[0, 1], [1, 3], [3, 4], [0, 6], [4, 7], [5, 9], [8, 2], [9, 0]];
+
     const project = (x: number, y: number, z: number, cosA: number, sinA: number) => {
       const rx = x * cosA - z * sinA;
       const rz = x * sinA + z * cosA;
       const ry = y * cosT - rz * sinT;
       const rz2 = y * sinT + rz * cosT;
-      return { sx: cx + rx * R, sy: cy - ry * R, depth: rz2 }; // depth > 0 → front hemisphere
+      // depth > 0 → front hemisphere; (rx,ry,rz2) is the view-space unit normal
+      return { sx: cx + rx * R, sy: cy - ry * R, depth: rz2, nx: rx, ny: ry, nz: rz2 };
     };
 
     const drawArcLine = (kind: "meridian" | "parallel", v: number, cosA: number, sinA: number) => {
@@ -254,24 +271,37 @@ function NodeGlobe({ size = 420 }: { size?: number }) {
       const cosA = Math.cos(a);
       const sinA = Math.sin(a);
 
-      // ocean body — soft lit sphere
-      const og = ctx.createRadialGradient(cx - R * 0.28, cy - R * 0.3, R * 0.15, cx, cy, R);
-      og.addColorStop(0, "rgba(120,178,190,0.24)");
-      og.addColorStop(0.65, "rgba(62,138,158,0.15)");
-      og.addColorStop(1, "rgba(44,106,123,0.06)");
+      // outer atmosphere bloom
+      const glow = ctx.createRadialGradient(cx, cy, R * 0.82, cx, cy, R * 1.22);
+      glow.addColorStop(0, "rgba(62,138,158,0.20)");
+      glow.addColorStop(1, "rgba(62,138,158,0)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 1.22, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+
+      // ocean body — soft lit sphere (light from upper-left)
+      const og = ctx.createRadialGradient(cx - R * 0.32, cy - R * 0.36, R * 0.1, cx, cy, R);
+      og.addColorStop(0, "rgba(150,198,202,0.32)");
+      og.addColorStop(0.55, "rgba(62,138,158,0.16)");
+      og.addColorStop(1, "rgba(34,90,106,0.1)");
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
       ctx.fillStyle = og;
       ctx.fill();
 
       // graticule
-      ctx.strokeStyle = "rgba(62,138,158,0.09)";
+      ctx.strokeStyle = "rgba(62,138,158,0.08)";
       ctx.lineWidth = 0.6;
       for (let lng = -180; lng < 180; lng += 30) drawArcLine("meridian", lng, cosA, sinA);
       for (let lat = -60; lat <= 60; lat += 30) drawArcLine("parallel", lat, cosA, sinA);
 
-      // land dots, back-to-front
-      const proj = pts.map((p) => ({ ...project(p.x, p.y, p.z, cosA, sinA), accent: p.accent }));
+      // land dots with directional lighting, back-to-front
+      const proj = pts.map((p) => {
+        const pr = project(p.x, p.y, p.z, cosA, sinA);
+        const light = Math.max(0, pr.nx * lx + pr.ny * ly + pr.nz * lz);
+        return { sx: pr.sx, sy: pr.sy, depth: pr.depth, accent: p.accent, light };
+      });
       proj.sort((u, v) => u.depth - v.depth);
       for (let i = 0; i < proj.length; i++) {
         const p = proj[i];
@@ -280,16 +310,93 @@ function NodeGlobe({ size = 420 }: { size?: number }) {
         const r = 0.7 + d * 1.7;
         ctx.beginPath();
         ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
-        ctx.fillStyle = p.accent
-          ? `rgba(201,142,131,${0.35 + d * 0.5})`
-          : `rgba(44,106,123,${0.26 + d * 0.6})`;
+        if (p.accent) {
+          ctx.fillStyle = `rgba(201,142,131,${(0.4 + d * 0.45) * (0.55 + 0.45 * p.light) + 0.1})`;
+        } else {
+          const g = Math.round(96 + 34 * p.light);
+          const bl = Math.round(112 + 28 * p.light);
+          ctx.fillStyle = `rgba(${Math.round(36 + 22 * p.light)},${g},${bl},${0.32 + d * 0.55})`;
+        }
         ctx.fill();
       }
+
+      // animated "reach" arcs — data flowing between cities
+      const arcT = t * 0.00035;
+      ARCS.forEach(([i, j], k) => {
+        const A = project(hubVec[i].x, hubVec[i].y, hubVec[i].z, cosA, sinA);
+        const B = project(hubVec[j].x, hubVec[j].y, hubVec[j].z, cosA, sinA);
+        if (A.depth < 0.04 || B.depth < 0.04) return; // both endpoints front-facing
+        const mx = (A.sx + B.sx) / 2;
+        const my = (A.sy + B.sy) / 2;
+        let ox = mx - cx;
+        let oy = my - cy;
+        const ol = Math.hypot(ox, oy) || 1;
+        ox /= ol; oy /= ol;
+        const chord = Math.hypot(A.sx - B.sx, A.sy - B.sy);
+        const lift = R * 0.16 + chord * 0.2;
+        const ctrlX = mx + ox * lift;
+        const ctrlY = my + oy * lift;
+        const fade = Math.min(A.depth, B.depth);
+        ctx.beginPath();
+        ctx.moveTo(A.sx, A.sy);
+        ctx.quadraticCurveTo(ctrlX, ctrlY, B.sx, B.sy);
+        ctx.strokeStyle = `rgba(62,138,158,${0.14 + fade * 0.24})`;
+        ctx.lineWidth = 1.1;
+        ctx.stroke();
+        // travelling pulse along the arc
+        const ph = (arcT + k * 0.17) % 1;
+        const u = 1 - ph;
+        const px = u * u * A.sx + 2 * u * ph * ctrlX + ph * ph * B.sx;
+        const py = u * u * A.sy + 2 * u * ph * ctrlY + ph * ph * B.sy;
+        const pr = 7;
+        const pg = ctx.createRadialGradient(px, py, 0, px, py, pr);
+        pg.addColorStop(0, `rgba(201,142,131,${0.9 * fade + 0.1})`);
+        pg.addColorStop(1, "rgba(201,142,131,0)");
+        ctx.beginPath();
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
+        ctx.fillStyle = pg;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(px, py, 1.9, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(236,186,172,${0.5 + fade * 0.5})`;
+        ctx.fill();
+      });
+
+      // gently pulsing city hubs
+      hubVec.forEach((hv, k) => {
+        const P = project(hv.x, hv.y, hv.z, cosA, sinA);
+        if (P.depth < 0.04) return;
+        const pulse = 0.5 + 0.5 * Math.sin(t * 0.003 + k);
+        const rr = (2 + pulse * 1.5) * 2.4;
+        const hg = ctx.createRadialGradient(P.sx, P.sy, 0, P.sx, P.sy, rr);
+        hg.addColorStop(0, `rgba(62,138,158,${0.3 * P.depth})`);
+        hg.addColorStop(1, "rgba(62,138,158,0)");
+        ctx.beginPath();
+        ctx.arc(P.sx, P.sy, rr, 0, Math.PI * 2);
+        ctx.fillStyle = hg;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(P.sx, P.sy, 1.9, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(44,106,123,${0.55 * P.depth + 0.25})`;
+        ctx.fill();
+      });
+
+      // glossy specular highlight (clipped to the sphere)
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.clip();
+      const spec = ctx.createRadialGradient(cx - R * 0.36, cy - R * 0.42, 0, cx - R * 0.36, cy - R * 0.42, R * 0.75);
+      spec.addColorStop(0, "rgba(255,255,255,0.18)");
+      spec.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = spec;
+      ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+      ctx.restore();
 
       // atmosphere limb
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(62,138,158,0.18)";
+      ctx.strokeStyle = "rgba(62,138,158,0.2)";
       ctx.lineWidth = 1;
       ctx.stroke();
 
