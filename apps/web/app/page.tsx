@@ -138,7 +138,41 @@ function WaveBackground() {
   );
 }
 
-/* ---------- Rotating 3D customer-node globe (canvas) ---------- */
+/* ---------- Rotating 3D dotted Earth globe (canvas) ----------
+   Land dots form real continents (coarse 6° land mask), over a soft
+   ocean disc with a faint graticule and axial tilt. Same teal/sage/clay
+   palette as the rest of the site. */
+
+// Land mask as inclusive column ranges [row, colStart, colEnd].
+// row 0..29 maps latitude 90°..-90° in 6° steps; col 0..59 maps
+// longitude -180°..180° in 6° steps.
+const GLOBE_LAND: [number, number, number][] = [
+  // Greenland
+  [1, 22, 26], [2, 22, 27], [3, 22, 27], [4, 23, 26],
+  // North America
+  [3, 2, 20], [4, 3, 21], [5, 4, 20], [6, 8, 20], [7, 9, 19],
+  [8, 9, 18], [9, 10, 17], [10, 11, 16], [11, 12, 16], [12, 13, 15],
+  // South America
+  [13, 17, 22], [14, 17, 23], [15, 17, 23], [16, 17, 24], [17, 17, 23],
+  [18, 18, 23], [19, 18, 22], [20, 18, 21], [21, 18, 20], [22, 18, 20],
+  [23, 18, 19], [24, 18, 19],
+  // Europe
+  [5, 28, 40], [6, 28, 38], [7, 29, 37], [8, 28, 36], [9, 29, 36],
+  // Africa
+  [10, 28, 35], [11, 27, 38], [12, 27, 39], [13, 27, 41], [14, 28, 41],
+  [15, 31, 41], [16, 31, 41], [17, 32, 40], [18, 33, 39], [18, 40, 41],
+  [19, 33, 38], [20, 34, 37], [21, 35, 36],
+  // Asia
+  [2, 44, 54], [3, 36, 59], [4, 36, 59], [5, 41, 59], [6, 40, 55],
+  [7, 40, 55], [7, 56, 57], [8, 38, 55], [9, 38, 54], [9, 56, 56],
+  [10, 36, 52], [11, 43, 52], [12, 44, 53], [13, 49, 54], [14, 50, 55],
+  [15, 50, 56], [16, 51, 56],
+  // Australia + NZ
+  [17, 49, 56], [18, 48, 56], [19, 48, 56], [20, 49, 55], [21, 53, 55], [21, 57, 58],
+  // Antarctica
+  [26, 0, 59], [27, 0, 59], [28, 0, 59], [29, 0, 59],
+];
+
 function NodeGlobe({ size = 420 }: { size?: number }) {
   const ref = React.useRef<HTMLCanvasElement>(null);
   React.useEffect(() => {
@@ -151,88 +185,114 @@ function NodeGlobe({ size = 420 }: { size?: number }) {
     canvas.height = size * dpr;
     ctx.scale(dpr, dpr);
 
-    // even point distribution on a unit sphere (Fibonacci lattice)
-    const N = 190;
-    const R = size * 0.34;
-    const cam = R * 3.2; // camera distance → perspective
-    const pts: { x: number; y: number; z: number }[] = [];
-    for (let i = 0; i < N; i++) {
-      const phi = Math.acos(1 - (2 * (i + 0.5)) / N);
-      const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-      pts.push({
-        x: R * Math.sin(phi) * Math.cos(theta),
-        y: R * Math.sin(phi) * Math.sin(theta),
-        z: R * Math.cos(phi),
-      });
-    }
-    // precompute a stable neighbour graph in 3D so the lattice reads
-    // as one coherent sphere instead of a flickering 2D blob
-    const edges: [number, number][] = [];
-    const thresh = R * 0.46;
-    for (let i = 0; i < N; i++) {
-      for (let j = i + 1; j < N; j++) {
-        const dx = pts[i].x - pts[j].x;
-        const dy = pts[i].y - pts[j].y;
-        const dz = pts[i].z - pts[j].z;
-        if (dx * dx + dy * dy + dz * dz < thresh * thresh) edges.push([i, j]);
+    const cx = size / 2;
+    const cy = size / 2;
+    const R = size * 0.4;
+    const TILT = 0.41; // ~23.5° axial tilt
+
+    const isLand = (lat: number, lng: number) => {
+      const row = Math.round((90 - lat) / 6);
+      let col = Math.round((lng + 180) / 6);
+      if (col >= 60) col -= 60;
+      if (col < 0) col += 60;
+      for (let k = 0; k < GLOBE_LAND.length; k++) {
+        const r = GLOBE_LAND[k];
+        if (r[0] === row && col >= r[1] && col <= r[2]) return true;
+      }
+      return false;
+    };
+
+    // sample land points onto the unit sphere
+    const pts: { x: number; y: number; z: number; accent: boolean }[] = [];
+    for (let lat = -84; lat <= 84; lat += 3) {
+      const la = (lat * Math.PI) / 180;
+      const cosLa = Math.cos(la);
+      const sinLa = Math.sin(la);
+      for (let lng = -180; lng < 180; lng += 3) {
+        if (!isLand(lat, lng)) continue;
+        const lo = (lng * Math.PI) / 180;
+        const accent = (((Math.round(lat) * 73856093) ^ (Math.round(lng) * 19349663)) >>> 0) % 19 === 0;
+        pts.push({ x: cosLa * Math.sin(lo), y: sinLa, z: cosLa * Math.cos(lo), accent });
       }
     }
 
+    const cosT = Math.cos(TILT);
+    const sinT = Math.sin(TILT);
     let raf = 0;
-    const cx = size / 2;
-    const cy = size / 2;
-    const tilt = 0.5;
-    const cosT = Math.cos(tilt);
-    const sinT = Math.sin(tilt);
+
+    const project = (x: number, y: number, z: number, cosA: number, sinA: number) => {
+      const rx = x * cosA - z * sinA;
+      const rz = x * sinA + z * cosA;
+      const ry = y * cosT - rz * sinT;
+      const rz2 = y * sinT + rz * cosT;
+      return { sx: cx + rx * R, sy: cy - ry * R, depth: rz2 }; // depth > 0 → front hemisphere
+    };
+
+    const drawArcLine = (kind: "meridian" | "parallel", v: number, cosA: number, sinA: number) => {
+      ctx.beginPath();
+      let started = false;
+      const step = 4;
+      const lo0 = kind === "meridian" ? v : -180;
+      const lo1 = kind === "meridian" ? v : 180;
+      const la0 = kind === "meridian" ? -90 : v;
+      const la1 = kind === "meridian" ? 90 : v;
+      for (let d = 0; d <= 180; d += step) {
+        const lat = kind === "meridian" ? la0 + (la1 - la0) * (d / 180) : v;
+        const lng = kind === "meridian" ? v : lo0 + (lo1 - lo0) * (d / 360 * 2);
+        const la = (lat * Math.PI) / 180;
+        const lo = (lng * Math.PI) / 180;
+        const p = project(Math.cos(la) * Math.sin(lo), Math.sin(la), Math.cos(la) * Math.cos(lo), cosA, sinA);
+        if (p.depth < -0.04) { started = false; continue; }
+        if (!started) { ctx.moveTo(p.sx, p.sy); started = true; } else ctx.lineTo(p.sx, p.sy);
+      }
+      ctx.stroke();
+    };
 
     const draw = (t: number) => {
       ctx.clearRect(0, 0, size, size);
-      const a = t * 0.0002;
+      const a = t * 0.00014;
       const cosA = Math.cos(a);
       const sinA = Math.sin(a);
 
-      const proj = pts.map((p) => {
-        // rotate around vertical axis
-        const rx = p.x * cosA - p.z * sinA;
-        const rz = p.x * sinA + p.z * cosA;
-        // fixed tilt around horizontal axis
-        const ry = p.y * cosT - rz * sinT;
-        const rz2 = p.y * sinT + rz * cosT;
-        // perspective projection (uniform on both axes → round sphere)
-        const persp = cam / (cam - rz2);
-        return {
-          sx: cx + rx * persp,
-          sy: cy + ry * persp,
-          depth: (rz2 + R) / (2 * R), // 0 (back) → 1 (front)
-          persp,
-        };
-      });
+      // ocean body — soft lit sphere
+      const og = ctx.createRadialGradient(cx - R * 0.28, cy - R * 0.3, R * 0.15, cx, cy, R);
+      og.addColorStop(0, "rgba(120,178,190,0.24)");
+      og.addColorStop(0.65, "rgba(62,138,158,0.15)");
+      og.addColorStop(1, "rgba(44,106,123,0.06)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.fillStyle = og;
+      ctx.fill();
 
-      // lattice connections
+      // graticule
+      ctx.strokeStyle = "rgba(62,138,158,0.09)";
       ctx.lineWidth = 0.6;
-      edges.forEach(([i, j]) => {
-        const o = (0.06 + ((proj[i].depth + proj[j].depth) / 2) * 0.2);
-        ctx.strokeStyle = `rgba(62,138,158,${o})`;
-        ctx.beginPath();
-        ctx.moveTo(proj[i].sx, proj[i].sy);
-        ctx.lineTo(proj[j].sx, proj[j].sy);
-        ctx.stroke();
-      });
+      for (let lng = -180; lng < 180; lng += 30) drawArcLine("meridian", lng, cosA, sinA);
+      for (let lat = -60; lat <= 60; lat += 30) drawArcLine("parallel", lat, cosA, sinA);
 
-      // nodes — painter's algorithm, back to front
-      proj
-        .map((p, i) => ({ p, i }))
-        .sort((u, v) => u.p.depth - v.p.depth)
-        .forEach(({ p, i }) => {
-          const r = (1 + p.depth * 2.4) * p.persp;
-          const accent = i % 6 === 0;
-          ctx.beginPath();
-          ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
-          ctx.fillStyle = accent
-            ? `rgba(201,142,131,${0.4 + p.depth * 0.5})`
-            : `rgba(44,106,123,${0.28 + p.depth * 0.55})`;
-          ctx.fill();
-        });
+      // land dots, back-to-front
+      const proj = pts.map((p) => ({ ...project(p.x, p.y, p.z, cosA, sinA), accent: p.accent }));
+      proj.sort((u, v) => u.depth - v.depth);
+      for (let i = 0; i < proj.length; i++) {
+        const p = proj[i];
+        if (p.depth < -0.02) continue; // cull far side
+        const d = (p.depth + 1) / 2; // 0..1
+        const r = 0.7 + d * 1.7;
+        ctx.beginPath();
+        ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
+        ctx.fillStyle = p.accent
+          ? `rgba(201,142,131,${0.35 + d * 0.5})`
+          : `rgba(44,106,123,${0.26 + d * 0.6})`;
+        ctx.fill();
+      }
+
+      // atmosphere limb
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(62,138,158,0.18)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
