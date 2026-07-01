@@ -667,7 +667,7 @@ export default function LandingPage() {
         .nav-underlink::after{content:"";position:absolute;left:0;bottom:-4px;height:2px;width:0;background:${C.teal};transition:width .3s ease}
         .nav-underlink:hover::after{width:100%}
         input[type=range]{accent-color:${C.teal}}
-        @media(max-width:640px){.hero-h1{font-size:clamp(2.6rem,12vw,4.5rem)!important}}
+        @media(max-width:640px){.hero-h1{font-size:clamp(2rem,8.5vw,3.1rem)!important}}
       `}</style>
 
       {/* soft halo accents */}
@@ -685,7 +685,7 @@ export default function LandingPage() {
             Cove
           </span>
         </div>
-        <div className="hidden md:flex items-center gap-9 text-xs uppercase tracking-widest" style={{ fontFamily: "'JetBrains Mono',monospace", color: C.muted }}>
+        <div className="hidden lg:flex items-center gap-9 text-xs uppercase tracking-widest" style={{ fontFamily: "'JetBrains Mono',monospace", color: C.muted }}>
           {[["Platform", "#product"], ["How it works", "#features"], ["Pricing", "#pricing"], ["Channels", "#integrations"]].map(([l, h]) => (
             <a key={l} href={h} className="nav-underlink hover:text-[#2C6A7B] transition-colors">
               {l}
@@ -708,7 +708,7 @@ export default function LandingPage() {
       {/* ── HERO ── */}
       <main className="relative pt-24 md:pt-28 pb-16 px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
-          <div className="reveal-trigger reveal-active text-center lg:text-left">
+          <div className="reveal-trigger reveal-active text-center lg:text-left min-w-0">
             <h1 className="hero-h1 font-extrabold tracking-tight leading-[0.95] mb-6" style={{ fontFamily: "Syne,sans-serif", fontSize: "clamp(2.8rem,6vw,5rem)", color: C.ink }}>
               <span className="staggered-item block">Reach your shoppers</span>
               <span className="staggered-item block italic" style={{ color: C.teal, animationDelay: ".08s" }}>
@@ -718,9 +718,9 @@ export default function LandingPage() {
             <p className="staggered-item max-w-xl mx-auto lg:mx-0 text-lg mb-9 leading-relaxed" style={{ fontFamily: "DM Sans,sans-serif", color: C.muted, animationDelay: ".16s" }}>
               Stop blasting the same message to everyone. Cove segments your Shopify customers by behaviour and sends the right message — on WhatsApp, SMS, or email — the moment they&apos;re likely to buy again.
             </p>
-            <div className="staggered-item flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-9" style={{ animationDelay: ".24s" }}>
-              <SwipeButton label="Try it free — no card needed" onClick={() => router.push("/login")} className="px-8 py-4 rounded-xl text-white font-extrabold text-base hover:shadow-[0_16px_40px_-12px_rgba(62,138,158,.65)] transition-shadow" style={{ fontFamily: "Syne,sans-serif", background: C.teal }} />
-              <SwipeButton label="See how it works →" onClick={() => router.push("/dashboard")} className="px-8 py-4 rounded-xl font-bold text-base transition-colors" style={{ fontFamily: "Syne,sans-serif", color: C.tealDeep, background: "transparent", border: `1px solid ${C.border}` }} />
+            <div className="staggered-item flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-9 w-full" style={{ animationDelay: ".24s" }}>
+              <SwipeButton label="Try it free — no card needed" onClick={() => router.push("/login")} className="w-full sm:w-auto px-5 sm:px-8 py-4 rounded-xl text-white font-extrabold text-sm sm:text-base hover:shadow-[0_16px_40px_-12px_rgba(62,138,158,.65)] transition-shadow" style={{ fontFamily: "Syne,sans-serif", background: C.teal }} />
+              <SwipeButton label="See how it works →" onClick={() => router.push("/dashboard")} className="w-full sm:w-auto px-5 sm:px-8 py-4 rounded-xl font-bold text-sm sm:text-base transition-colors" style={{ fontFamily: "Syne,sans-serif", color: C.tealDeep, background: "transparent", border: `1px solid ${C.border}` }} />
             </div>
             <div className="staggered-item flex flex-wrap justify-center lg:justify-start gap-6 text-sm" style={{ color: C.muted, animationDelay: ".32s" }}>
               {["14-day free trial", "Setup in under 10 min", "No engineering required"].map((t) => (
@@ -1151,9 +1151,9 @@ export default function LandingPage() {
           <p className="text-lg mb-10 max-w-md mx-auto" style={{ color: C.muted, fontFamily: "DM Sans,sans-serif" }}>
             Connect your Shopify store, let Cove score your customers, and run your first campaign — all before lunch.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-10">
-            <SwipeButton label="Start free — no card needed" onClick={() => router.push("/login")} className="px-10 py-5 rounded-xl text-white font-black text-lg hover:shadow-[0_22px_50px_-16px_rgba(62,138,158,.65)] transition-shadow" style={{ background: C.teal, fontFamily: "Syne,sans-serif" }} />
-            <SwipeButton label="Talk to a human →" onClick={() => router.push("/login")} className="px-10 py-5 rounded-xl font-bold text-lg" style={{ color: C.tealDeep, border: `1px solid ${C.border}` }} />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-10 w-full">
+            <SwipeButton label="Start free — no card needed" onClick={() => router.push("/login")} className="w-full sm:w-auto px-6 sm:px-10 py-5 rounded-xl text-white font-black text-base sm:text-lg hover:shadow-[0_22px_50px_-16px_rgba(62,138,158,.65)] transition-shadow" style={{ background: C.teal, fontFamily: "Syne,sans-serif" }} />
+            <SwipeButton label="Talk to a human →" onClick={() => router.push("/login")} className="w-full sm:w-auto px-6 sm:px-10 py-5 rounded-xl font-bold text-base sm:text-lg" style={{ color: C.tealDeep, border: `1px solid ${C.border}` }} />
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-xs" style={{ color: C.muted }}>
             {["14-day free trial", "No credit card", "Cancel anytime", "SOC 2 compliant"].map((t) => (
